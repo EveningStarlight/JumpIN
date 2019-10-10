@@ -50,7 +50,6 @@ Piece</string>
     <void property="methods">
      <void property="text">
       <string>+TextTile(coord:Coord)
-+getCoord:Coord
 +getPiece:Piece
 +setPiece(piece:Piece)
 +isEmpty():Bool</string>
@@ -366,7 +365,7 @@ stack implementation</string>
 +setBoard(boardArr:ArrayList&lt;Piece&gt;)
 +undoMove
 +redoMove
--swapPiece()    throws InvalidMove</string>
+-swapPiece(coord:Coord)    throws InvalidMove</string>
      </void>
     </void>
     <void property="name">
