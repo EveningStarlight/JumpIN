@@ -22,19 +22,19 @@ Piece</string>
      <string>x</string>
      <void method="set">
       <object idref="Point2D$Double0"/>
-      <double>680.0</double>
+      <double>770.0</double>
      </void>
     </void>
     <void class="java.awt.geom.Point2D$Double" method="getField">
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double0"/>
-      <double>180.0</double>
+      <double>190.0</double>
      </void>
     </void>
     <void method="setLocation">
-     <double>680.0</double>
-     <double>180.0</double>
+     <double>770.0</double>
+     <double>190.0</double>
     </void>
    </object>
   </void>
@@ -49,10 +49,10 @@ Piece</string>
     </void>
     <void property="methods">
      <void property="text">
-      <string>+TextTile(coord:Coord)
+      <string>+TextTile(coord:Coord piece:Piece)
 +getPiece:Piece
 +setPiece(piece:Piece)
-+isEmpty():Bool</string>
++isEmpty():boolean</string>
      </void>
     </void>
     <void property="name">
