@@ -23,7 +23,12 @@ public class TextTile implements Tile{
 		this.piece = piece;
 	}
 	public boolean isEmpty(){
-		return true;
+		if(getPiece() == null){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 
 	public Coord getCoord() {
@@ -36,6 +41,11 @@ public class TextTile implements Tile{
 		return old;
 	}
 	public void print(){
-		
+		if(isEmpty()==true){
+			System.out.print("Empty");
+		}
+		else if(isEmpty()==false){
+			System.out.print(getPiece());
+		}
 	}
 }
