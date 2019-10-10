@@ -2,11 +2,11 @@
  * 
  * @author Matthew Harris
  * 			101 073 502
- * @version 1.0.2
+ * @version 1.0.4
  * 
- *  This class holds coordinates for other objects
+ *  This class controls the tiles
  */
-public class TextTile {
+public class TextTile implements Tile{
 	
 	public final Coord coord;
 	private Piece piece;
@@ -25,5 +25,9 @@ public class TextTile {
 	}
 	public boolean isEmpty(){
 		return true;
+	}
+
+	public Coord getCoord() {
+		return coord;
 	}
 }

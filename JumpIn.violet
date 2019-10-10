@@ -52,6 +52,7 @@ Piece</string>
       <string>+TextTile(coord:Coord piece:Piece)
 +getPiece:Piece
 +setPiece(piece:Piece)
++getCoord():Coord
 +isEmpty():boolean</string>
      </void>
     </void>
