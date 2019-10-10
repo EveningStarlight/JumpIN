@@ -11,9 +11,8 @@ public class TextTile implements Tile{
 	public final Coord coord;
 	private Piece piece;
 	
-	public TextTile(Coord coord, Piece piece){
+	public TextTile(Coord coord){
 		this.coord = coord;
-		this.piece = piece;
 	}
 	
 	public Piece getPiece(){
@@ -29,5 +28,14 @@ public class TextTile implements Tile{
 
 	public Coord getCoord() {
 		return coord;
+	}
+
+	public Piece removePiece() {
+		Piece old = piece;
+		this.piece = null;
+		return old;
+	}
+	public void print(){
+		
 	}
 }
