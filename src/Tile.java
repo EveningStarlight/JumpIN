@@ -1,15 +1,9 @@
 
 public interface Tile {
 
-    public Coord getCoord(){
+    public Coord getCoord();
 
-    }
+    public Piece getPiece();
 
-    public Piece getPiece(){
-
-    }
-
-    public void setPiece(Piece piece){
-
-    }
+    public void setPiece(Piece piece);
 }
