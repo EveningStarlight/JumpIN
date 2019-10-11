@@ -14,5 +14,7 @@ public interface Tile {
 
     public void setPiece(Piece piece);
     
+    public boolean isEmpty();
+    
     public Piece removePiece();
 }
