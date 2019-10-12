@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="1.8.0_221" class="java.beans.XMLDecoder">
+<java version="1.8.0_222" class="java.beans.XMLDecoder">
  <object class="com.horstmann.violet.ClassDiagramGraph">
   <void method="addNode">
    <object class="com.horstmann.violet.InterfaceNode" id="InterfaceNode0">
@@ -311,7 +311,7 @@ Piece</string>
       <string>width</string>
       <void method="set">
        <object idref="Rectangle2D$Double0"/>
-       <double>160.0</double>
+       <double>180.0</double>
       </void>
      </void>
     </void>
@@ -522,7 +522,7 @@ Tile</string>
       <string>width</string>
       <void method="set">
        <object idref="Rectangle2D$Double1"/>
-       <double>180.0</double>
+       <double>200.0</double>
       </void>
      </void>
     </void>
