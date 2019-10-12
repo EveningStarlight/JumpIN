@@ -29,12 +29,12 @@ Piece</string>
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double0"/>
-      <double>200.0</double>
+      <double>210.0</double>
      </void>
     </void>
     <void method="setLocation">
      <double>810.0</double>
-     <double>200.0</double>
+     <double>210.0</double>
     </void>
    </object>
   </void>
@@ -52,6 +52,7 @@ Piece</string>
       <string>+TextTile(coord:Coord)
 +getPiece:Piece
 +setPiece(piece:Piece)
++getCoord():Coord
 +isEmpty():Bool
 +removePiece():Piece
 +print()</string>

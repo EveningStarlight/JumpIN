@@ -23,7 +23,7 @@ public class Mushroom implements Piece{
      * This piece is not able to move, therefore returns false
      * @return
      */
-    public boolean isValidMove(){
+    public boolean isValidMove(Coord coord){
         return false;
     }
 

@@ -2,7 +2,8 @@
  * 
  * @author Adam Prins
  * 			100 879 683
- * @version 1.0.0
+ * @version 1.1.0
+ * 		added equals method
  * 
  *  This class holds coordinates for other objects
  */
@@ -20,8 +21,24 @@ public class Coord {
 	 * @param x the x position of the object
 	 * @param y the y position of the object 
 	 */
-	Coord(int x, int y) {
+	public Coord(int x, int y) {
 		this.x=x;
 		this.y=y;
+	}
+	
+	public boolean equals(Object o) {
+		if (!(o instanceof Coord)) {
+			return false;
+		}
+		else {
+			Coord coord = (Coord) o;
+			
+			if (coord.x==this.x && coord.y==this.y) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
 	}
 }
