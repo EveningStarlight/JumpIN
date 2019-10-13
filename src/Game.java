@@ -91,7 +91,16 @@ public class Game {
 	 */
 	public void setBoard(ArrayList<Piece> boardArr) {
 		clearBoard();
-		//TODO implement
+		
+		for (Piece piece:boardArr) {
+			this.getTile(piece.getCoord()).setPiece(piece);
+			
+			if (piece instanceof Fox) {
+				//TODO check setting of fox with Fox class
+				Fox fox = (Fox) piece;
+				this.getTile(Fox.getTail()).setPiece(piece);
+			}
+		}
 	}
 	
 	/**
