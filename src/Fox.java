@@ -64,5 +64,5 @@ public class Fox implements Piece{
     public Coord getCoord(){
         return this.head;
     }
-
 }
+
