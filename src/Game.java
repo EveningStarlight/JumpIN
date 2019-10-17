@@ -6,8 +6,10 @@ import java.util.Stack;
  * contains the board and is in charge of swapping pieces
  * @author Adam Prins
  * 			100 879 683
- * @version 1.1.0
- * 		Addition of the swapPieces code
+ * @version 1.3.0
+ * 		changed swapPiece to accept a boolean argument that allows you to swap the pieces without changing the stacks
+ * 		Added swap piece logic for the fox piece
+ * 		changed the stack implementations to use the swap piece method
  */
 public class Game {
 	public static final int BOARD_SIZE=5;
@@ -98,7 +100,7 @@ public class Game {
 			if (piece instanceof Fox) {
 				//TODO check setting of fox with Fox class
 				Fox fox = (Fox) piece;
-				this.getTile(Fox.getTail()).setPiece(piece);
+				this.getTile(fox.getTail()).setPiece(piece);
 			}
 		}
 	}
@@ -112,7 +114,8 @@ public class Game {
 		}
 		else {
 			Move move = undoStack.pop();
-			this.getTile(move.coordOld).setPiece(this.getTile(move.coordNew).removePiece());
+			tileSelected=this.getTile(move.coordNew);
+			swapPiece(move.coordOld, false);
 			redoStack.add(move);
 			if (undoStack.isEmpty()) {
 				//TODO disable undo button
@@ -129,8 +132,11 @@ public class Game {
 		}
 		else {
 			Move move = redoStack.pop();
-			this.getTile(move.coordNew).setPiece(this.getTile(move.coordOld).removePiece());
+
+			tileSelected=this.getTile(move.coordOld);
+			swapPiece(move.coordNew, false);
 			undoStack.add(move);
+			
 			if (redoStack.isEmpty()) {
 				//TODO disable redo button
 			}
@@ -158,11 +164,12 @@ public class Game {
 					while (++y<yMax) { //Will iterate over all tiles between the two coordinates
 						Tile tileCurr = this.getTile(new Coord(coord.x,y)); 
 						if (tileCurr.isEmpty()) {
+							tileSelected=null;
 							throw new IllegalArgumentException("The bunny cannot hop over empty spaces");
 						}
 					}
 					//If the for loop hasn't thrown an error, swap the pieces
-					swapPiece(coord);
+					swapPiece(coord, true);
 				}
 				else if(tileSelected.getCoord().y == coord.y) {
 					int x = Math.min(tileSelected.getCoord().x, coord.x);		//Lower x value
@@ -171,13 +178,15 @@ public class Game {
 					while (++x<xMax) { //Will iterate over all tiles between the two coordinates
 						Tile tileCurr = this.getTile(new Coord(x,coord.y));
 						if (tileCurr.isEmpty()) {
+							tileSelected=null;
 							throw new IllegalArgumentException("The bunny cannot hop over empty spaces");
 						}
 					}
 					//If the for loop hasn't thrown an error, swap the pieces
-					swapPiece(coord);
+					swapPiece(coord, true);
 				}
 				else {
+					tileSelected=null;
 					throw new IllegalArgumentException("Can not attempt a diagonal swap.");
 				}
 			}
@@ -192,11 +201,12 @@ public class Game {
 						Tile tileCurr = this.getTile(new Coord(coord.x,y)); 
 						if (!tileCurr.isEmpty() ||
 								!tileCurr.getPiece().equals(tileSelected.getPiece())) {
-							throw new IllegalArgumentException("The Fox can only pass threw empty spaces");
+							tileSelected=null;
+							throw new IllegalArgumentException("The Fox can only pass through empty spaces");
 						}
 					}
 					//If the for loop hasn't thrown an error, swap the pieces
-					swapPiece(coord);
+					swapPiece(coord, true);
 				}
 				else if(tileSelected.getCoord().y == coord.y) {
 					int x = Math.min(tileSelected.getCoord().x, coord.x);		//Lower x value
@@ -206,27 +216,54 @@ public class Game {
 						Tile tileCurr = this.getTile(new Coord(x,coord.y));
 						if (!tileCurr.isEmpty() ||
 								!tileCurr.getPiece().equals(tileSelected.getPiece())) {
-							throw new IllegalArgumentException("The Fox can only pass threw empty spaces");
+							tileSelected=null;
+							throw new IllegalArgumentException("The Fox can only pass through empty spaces");
 						}
 					}
 					//If the for loop hasn't thrown an error, swap the pieces
-					swapPiece(coord);
+					swapPiece(coord, true);
 				}
 				else {
+					tileSelected=null;
 					throw new IllegalArgumentException("Can not attempt a diagonal swap.");
 				}
 			}
 			else {
+				tileSelected=null;
 				throw new IllegalArgumentException("only Bunnies and Foxes can move.");
 			}
 			
 		}
+		else {
+			tileSelected=null;
+			throw new IllegalArgumentException("invalid move selected.");
+		}
 	}
 	
-	private void swapPiece(Coord coord) {
-		this.getTile(coord).setPiece(tileSelected.removePiece());
-		undoStack.add(new Move(tileSelected.getCoord(),coord));
-		redoStack.clear();
+	/**
+	 * 
+	 * @param coord the coord of the tile that tileSelected is to swap pieces with
+	 * @param changeStack used to decided if the undo/redo Stacks should be changed
+	 */
+	private void swapPiece(Coord coord, boolean changeStack) {
+		
+		if (tileSelected.getPiece() instanceof Fox) {
+			Fox fox = (Fox) tileSelected.getPiece();
+			
+			this.getTile(fox.getTail()).removePiece(); 
+			this.getTile(coord).setPiece(tileSelected.removePiece());
+			this.getTile(fox.getTail()).setPiece(tileSelected.removePiece());
+			
+		}
+		else { 
+			this.getTile(coord).setPiece(tileSelected.removePiece());
+		}
+		if (changeStack) {
+			undoStack.add(new Move(tileSelected.getCoord(),coord));
+			redoStack.clear();
+		}
+		
+		tileSelected=null;
 		
 	}
 	
