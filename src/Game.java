@@ -7,28 +7,12 @@ import java.util.Stack;
  * contains the board and is in charge of swapping pieces
  * @author Adam Prins
  * 			100 879 683
- * @version 1.6.0
- * 		SelectTile now throws caught error
+ * @version 1.7.0
+ * 		buns is now Dynamically populated on setBoard
  * 
- * 		trySwapPieces now checks for empty destination
- * 		trySwapPieces while loop now ignores when currTile holds the same Piece as piece
+ * 		game will now fetch puzzles from Puzzles
  * 
- * 		swapPieces now correctly changes the pieces coordinates
- * 
- * 		printGameBoard now shows selected tile
- * 
- * 		Main now selects one tile at a time (this fixes an error where the first selection would be invalid, but the second would be valid)
- * 
- * @author Alexander Beimers and Matthew Harris
- * @version 1.5.0
- * 		Code from consoleIO (author Alexander) now merged into game
- * 		ConsoleIO is now removed
- * 
- * 		main now allows for user input
- * 		main uses input to select tiles
- * 
- * 		bunny array added
- * 		endGame added, checks to see if all bunnies are in the holes. if true, the player has won.
+ * 		main will now increment through all of the puzzles in Puzzles
  * 		
  * 		
  */
@@ -46,9 +30,9 @@ public class Game {
 	 * sets up the game
 	 * populates the board with coordinates
 	 * fetches the puzzleArray
-	 * calls setBoard to populate the pieces using the puzzleArray
+	 * calls setBoard to populate the pieces using the puzzleArray from Puzzles
 	 * 
-	 * @param puzzleNum the puzzle that is to be initialized
+	 * @param puzzleNum the puzzle that is to be initialized from Puzzles
 	 */
 	public Game(int puzzleNum){
 		
@@ -62,17 +46,9 @@ public class Game {
 				board[x][y]=new TextTile(new Coord(x,y));
 			}
 		}
-		Bunny bun1 = new Bunny(new Coord(4,2));
-		Bunny bun2 = new Bunny(new Coord(0,2));
-		buns.add(bun1);
-		buns.add(bun2);
-		ArrayList<Piece> pieceArr = new ArrayList<Piece>();
-		pieceArr.add(new Fox(new Coord(1,3), new Coord(1,4)));
-		pieceArr.add(bun1);
-		pieceArr.add(new Mushroom(new Coord(3,2)));
-		pieceArr.add(bun2);
-		pieceArr.add(new Mushroom(new Coord(0,1)));
-		setBoard(pieceArr);
+		
+		setBoard(Puzzles.getPuzzle(puzzleNum));
+		
 		
 	}
 	
@@ -132,6 +108,9 @@ public class Game {
 			if (piece instanceof Fox) {
 				Fox fox = (Fox) piece;
 				this.getTile(fox.getTail()).setPiece(piece);
+			}
+			if (piece instanceof Bunny) {
+				buns.add((Bunny)piece);
 			}
 		}
 	}
@@ -315,11 +294,11 @@ public class Game {
 	 * @param piece The piece you want represented on the board
 	 */
 	public static void printPiece(Piece piece) {
-		if (piece.getPiece() instanceof Bunny) {
+		if (piece instanceof Bunny) {
 			System.out.print("Bun");
-		} else if (piece.getPiece() instanceof Mushroom) {
+		} else if (piece instanceof Mushroom) {
 			System.out.print("Shr");
-		} else if (piece.getPiece() instanceof Fox) {
+		} else if (piece instanceof Fox) {
 			System.out.print("Fox");
 		} else {
 			System.out.print("   ");
@@ -360,27 +339,40 @@ public class Game {
 	/**
 	 * Main game loop for text based implementation
 	 * creates and populates a game board
+	 * after completing a puzzle, it will fetch the next puzzle from Puzzles
 	 */
 	public static void main(String args[]) {
+		
+		int currPuzzle=1;
+		Game game = new Game(currPuzzle);
+		boolean won=false;
+		
 		Scanner reader = new Scanner(System.in);
-		Game game = new Game(0);
-		int xcoord;
-		int ycoord;
-		while (!game.endGame()) {
-			game.printGameBoard();
-			System.out.println("Select a Tile: ");
-			System.out.print("input x coordinate: ");
-			xcoord = reader.nextInt();
-			System.out.print("input y coordinate: ");
-			ycoord = reader.nextInt();
-			System.out.println();
-			Coord coord = new Coord(xcoord, ycoord);
-
-			try {
-				game.selectTile(coord);
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
+		while(!won) {
+			while (!game.endGame()) {
+				game.printGameBoard();
+				System.out.println("Select a Tile: ");
+				System.out.print("input x coordinate: ");
+				int xcoord = reader.nextInt();
+				System.out.print("input y coordinate: ");
+				int ycoord = reader.nextInt();
+				System.out.println();
+				Coord coord = new Coord(xcoord, ycoord);
+	
+				try {
+					game.selectTile(coord);
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
 			}
+			System.out.println("Congradulations! You compleated Puzzle " + currPuzzle + "!");
+			currPuzzle++;
+			try {
+				game.setBoard(Puzzles.getPuzzle(currPuzzle));
+			} catch(Exception e) {
+				won=true;
+			}
+			
 		}
 		System.out.println("GAME OVER YOU WIN!!!!!");
 		reader.close();
