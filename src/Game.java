@@ -6,10 +6,9 @@ import java.util.Stack;
  * contains the board and is in charge of swapping pieces
  * @author Adam Prins
  * 			100 879 683
- * @version 1.3.0
- * 		changed swapPiece to accept a boolean argument that allows you to swap the pieces without changing the stacks
- * 		Added swap piece logic for the fox piece
- * 		changed the stack implementations to use the swap piece method
+ * @version 1.4.0
+ * 		Major rework of trySwapPiece
+ * 		removes all duplicate lines with one while loop
  */
 public class Game {
 	public static final int BOARD_SIZE=5;
@@ -48,8 +47,6 @@ public class Game {
 	 * selects a tile if there is not currently a selected tile
 	 * deselects the tile if it was already the selected tile
 	 * Otherwise, it tries to swap the tiles
-	 * 
-	 * TODO GUI will have buttons not be selectable if mushroom or other conditions
 	 * 
 	 * @param coord the newly selected tile.
 	 */
@@ -98,7 +95,6 @@ public class Game {
 			this.getTile(piece.getCoord()).setPiece(piece);
 			
 			if (piece instanceof Fox) {
-				//TODO check setting of fox with Fox class
 				Fox fox = (Fox) piece;
 				this.getTile(fox.getTail()).setPiece(piece);
 			}
@@ -152,91 +148,52 @@ public class Game {
 	 * @param coord destination of piece stored at TileSelected
 	 */
 	private void trySwapPiece(Coord coord) {
+		Piece piece = tileSelected.getPiece();
 		
-		if (tileSelected.getPiece().isValidMove(coord)) { //Makes sure the attempted move is valid
+		if (piece.isValidMove(coord)) { //Makes sure the attempted move is valid
+			boolean empty;
 			
-			if (tileSelected.getPiece() instanceof Bunny ) {
-				//Will test to make sure all in between squares are filled
-				if (tileSelected.getCoord().x == coord.x) {
-					int y = Math.min(tileSelected.getCoord().y, coord.y);		//Lower y value
-					int yMax = Math.max(tileSelected.getCoord().y, coord.y);	//Higher y value
-					
-					while (++y<yMax) { //Will iterate over all tiles between the two coordinates
-						Tile tileCurr = this.getTile(new Coord(coord.x,y)); 
-						if (tileCurr.isEmpty()) {
-							tileSelected=null;
-							throw new IllegalArgumentException("The bunny cannot hop over empty spaces");
-						}
-					}
-					//If the for loop hasn't thrown an error, swap the pieces
-					swapPiece(coord, true);
-				}
-				else if(tileSelected.getCoord().y == coord.y) {
-					int x = Math.min(tileSelected.getCoord().x, coord.x);		//Lower x value
-					int xMax = Math.max(tileSelected.getCoord().x, coord.x);	//Higher x value
-					
-					while (++x<xMax) { //Will iterate over all tiles between the two coordinates
-						Tile tileCurr = this.getTile(new Coord(x,coord.y));
-						if (tileCurr.isEmpty()) {
-							tileSelected=null;
-							throw new IllegalArgumentException("The bunny cannot hop over empty spaces");
-						}
-					}
-					//If the for loop hasn't thrown an error, swap the pieces
-					swapPiece(coord, true);
-				}
-				else {
-					tileSelected=null;
-					throw new IllegalArgumentException("Can not attempt a diagonal swap.");
-				}
-			}
-			
-			else if (tileSelected.getPiece() instanceof Fox) {
-				//Will test to make sure all in between squares are empty
-				if (tileSelected.getCoord().x == coord.x) {
-					int y = Math.min(tileSelected.getCoord().y, coord.y);		//Lower y value
-					int yMax = Math.max(tileSelected.getCoord().y, coord.y);	//Higher y value
-					
-					while (++y<yMax) { //Will iterate over all tiles between the two coordinates
-						Tile tileCurr = this.getTile(new Coord(coord.x,y)); 
-						if (!tileCurr.isEmpty() ||
-								!tileCurr.getPiece().equals(tileSelected.getPiece())) {
-							tileSelected=null;
-							throw new IllegalArgumentException("The Fox can only pass through empty spaces");
-						}
-					}
-					//If the for loop hasn't thrown an error, swap the pieces
-					swapPiece(coord, true);
-				}
-				else if(tileSelected.getCoord().y == coord.y) {
-					int x = Math.min(tileSelected.getCoord().x, coord.x);		//Lower x value
-					int xMax = Math.max(tileSelected.getCoord().x, coord.x);	//Higher x value
-					
-					while (++x<xMax) { //Will iterate over all tiles between the two coordinates
-						Tile tileCurr = this.getTile(new Coord(x,coord.y));
-						if (!tileCurr.isEmpty() ||
-								!tileCurr.getPiece().equals(tileSelected.getPiece())) {
-							tileSelected=null;
-							throw new IllegalArgumentException("The Fox can only pass through empty spaces");
-						}
-					}
-					//If the for loop hasn't thrown an error, swap the pieces
-					swapPiece(coord, true);
-				}
-				else {
-					tileSelected=null;
-					throw new IllegalArgumentException("Can not attempt a diagonal swap.");
-				}
-			}
-			else {
+			if (piece instanceof Bunny ) {
+				empty=true; // empty spaces throw error
+			}else if (piece instanceof Fox ) {
+				empty=false; // full spaces throw error
+			}else{
 				tileSelected=null;
 				throw new IllegalArgumentException("only Bunnies and Foxes can move.");
 			}
 			
-		}
-		else {
-			tileSelected=null;
-			throw new IllegalArgumentException("invalid move selected.");
+			
+			int x = Math.min(tileSelected.getCoord().x, coord.x);		//Lower y value
+			int xMax = Math.max(tileSelected.getCoord().x, coord.x);	//Higher y value
+			int xChange=0;
+			int y = Math.min(tileSelected.getCoord().y, coord.y);		//Lower y value
+			int yMax = Math.max(tileSelected.getCoord().y, coord.y);	//Higher y value
+			int yChange=0;
+			
+			if 		(x==xMax) yChange=1;
+			else if (y==yMax) xChange=1;
+			else {
+				tileSelected=null;
+				throw new IllegalArgumentException("Can not attempt a diagonal swap.");
+			}
+			
+			//Will test to make sure all in between squares are filled or empty
+			while (x<xMax && y<yMax) {
+				Tile tileCurr = this.getTile(new Coord(x,y)); 
+				if (piece.equals(tileCurr.getPiece())) {
+					
+				}
+				else if (tileCurr.isEmpty()==empty) {
+					tileSelected=null;
+					if (piece instanceof Bunny) throw new IllegalArgumentException("The bunny cannot hop over empty spaces");
+					if (piece instanceof Fox) throw new IllegalArgumentException("The Fox cannot slide through full spaces");
+				}
+				x+=xChange;
+				y+=yChange;
+			}
+			//If the for loop hasn't thrown an error, swap the pieces
+			swapPiece(coord, true);
+
 		}
 	}
 	
