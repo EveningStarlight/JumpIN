@@ -1,4 +1,3 @@
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Stack;
@@ -8,18 +7,39 @@ import java.util.Stack;
  * contains the board and is in charge of swapping pieces
  * @author Adam Prins
  * 			100 879 683
- * @version 1.4.0
- * 		Major rework of trySwapPiece
- * 		removes all duplicate lines with one while loop
+ * @version 1.6.0
+ * 		SelectTile now throws caught error
+ * 
+ * 		trySwapPieces now checks for empty destination
+ * 		trySwapPieces while loop now ignores when currTile holds the same Piece as piece
+ * 
+ * 		swapPieces now correctly changes the pieces coordinates
+ * 
+ * 		printGameBoard now shows selected tile
+ * 
+ * 		Main now selects one tile at a time (this fixes an error where the first selection would be invalid, but the second would be valid)
+ * 
+ * @author Alexander Beimers and Matthew Harris
+ * @version 1.5.0
+ * 		Code from consoleIO (author Alexander) now merged into game
+ * 		ConsoleIO is now removed
+ * 
+ * 		main now allows for user input
+ * 		main uses input to select tiles
+ * 
+ * 		bunny array added
+ * 		endGame added, checks to see if all bunnies are in the holes. if true, the player has won.
+ * 		
+ * 		
  */
 public class Game {
+	
 	public static final int BOARD_SIZE=5;
 	private Tile board[][];
 	private Tile tileSelected;
 	private Stack<Move> undoStack;
 	private Stack<Move> redoStack;
-	ArrayList<Bunny> buns = new ArrayList<Bunny>();
-	private Scanner reader = new Scanner(System.in);
+	private ArrayList<Bunny> buns;
 	
 	
 	/**
@@ -35,6 +55,7 @@ public class Game {
 		board = new Tile[BOARD_SIZE][BOARD_SIZE];
 		undoStack = new Stack<Move>();
 		redoStack = new Stack<Move>();
+		buns  = new ArrayList<Bunny>();
 		
 		for (int x=0; x<BOARD_SIZE; x++) {
 			for (int y=0; y<BOARD_SIZE; y++) {
@@ -82,7 +103,7 @@ public class Game {
 				trySwapPiece(coord);
 			} catch(Exception e) {
 				tileSelected=null;
-				System.out.println(e);
+				throw e;
 			}
 		}
 	}
@@ -104,7 +125,7 @@ public class Game {
 	 */
 	public void setBoard(ArrayList<Piece> boardArr) {
 		clearBoard();
-		
+		tileSelected=null;
 		for (Piece piece:boardArr) {
 			this.getTile(piece.getCoord()).setPiece(piece);
 			
@@ -163,8 +184,14 @@ public class Game {
 	 */
 	private void trySwapPiece(Coord coord) {
 		Piece piece = tileSelected.getPiece();
-		
-		if (piece.isValidMove(coord)) { //Makes sure the attempted move is valid
+		if (!(piece.isValidMove(coord)) ) {
+			throw new IllegalArgumentException("Not a valid move.");
+		}
+		else if (!(this.getTile(coord).isEmpty()) && 
+				!piece.equals(this.getTile(coord).getPiece())) {
+			throw new IllegalArgumentException("The destination must be empty.");
+		}
+		else { //Makes sure the attempted move is valid
 			boolean empty;
 			
 			if (piece instanceof Bunny ) {
@@ -190,9 +217,10 @@ public class Game {
 				tileSelected=null;
 				throw new IllegalArgumentException("Can not attempt a diagonal swap.");
 			}
-			
+			x+=xChange;
+			y+=yChange;
 			//Will test to make sure all in between squares are filled or empty
-			while (x<xMax && y<yMax) {
+			while (x<xMax || y<yMax) {
 				Tile tileCurr = this.getTile(new Coord(x,y)); 
 				if (piece.equals(tileCurr.getPiece())) {
 					
@@ -212,8 +240,9 @@ public class Game {
 	}
 	
 	/**
+	 * Swaps two pieces. All moves should be valid if this method is called.
 	 * 
-	 * @param coord the coord of the tile that tileSelected is to swap pieces with
+	 * @param coord the coordinate of the tile that tileSelected is to swap pieces with
 	 * @param changeStack used to decided if the undo/redo Stacks should be changed
 	 */
 	private void swapPiece(Coord coord, boolean changeStack) {
@@ -223,16 +252,12 @@ public class Game {
 			
 			this.getTile(fox.getTail()).removePiece(); 
 			this.getTile(coord).setPiece(tileSelected.removePiece());
-			this.getTile(fox.getTail()).setPiece(tileSelected.removePiece());
+			fox.setCoord(coord);
+			this.getTile(fox.getTail()).setPiece(fox);
 			
 		}
 		else { 
-			for(int i = 0; i < buns.size(); i++){
-				if(buns.get(i).getCoord().equals(tileSelected.getCoord())){
-					buns.get(i).setCoord(coord);
-					break;
-				}
-			}
+			tileSelected.getPiece().setCoord(coord);
 			this.getTile(coord).setPiece(tileSelected.removePiece());
 		}
 		if (changeStack) {
@@ -245,13 +270,20 @@ public class Game {
 	}
 	
 	/**
+	 * checks to see if all the bunnies are in the holes
+	 * if they are, the game is won and this returns true
 	 * 
+	 * @return returns true if this puzzle has been solved
 	 */
 	private boolean endGame(){
 		int total = buns.size();
 		int count = 0;
 		for(int i = 0; i < buns.size(); i++){
-			if(buns.get(i).getCoord().equals(new Coord(0, 0)) || buns.get(i).getCoord().equals(new Coord(4, 0))|| buns.get(i).getCoord().equals(new Coord(2, 2))|| buns.get(i).getCoord().equals(new Coord(0, 4))|| buns.get(i).getCoord().equals(new Coord(4, 4))){
+			if(		buns.get(i).getCoord().equals(new Coord(0, 0)) || 
+					buns.get(i).getCoord().equals(new Coord(4, 0)) || 
+					buns.get(i).getCoord().equals(new Coord(2, 2)) || 
+					buns.get(i).getCoord().equals(new Coord(0, 4)) || 
+					buns.get(i).getCoord().equals(new Coord(4, 4))) {
 				count ++;
 			}
 		}
@@ -265,6 +297,7 @@ public class Game {
 	}
 	
 	/**
+	 * clears the board for reuse
 	 * removes all Pieces from the board
 	 */
 	private void clearBoard() {
@@ -279,9 +312,9 @@ public class Game {
 	/**
 	 * Prints out the name of the piece in 3 chars or 3 spaces if there is no piece 
 	 * 
-	 * @param piece object which you want to print
+	 * @param piece The piece you want represented on the board
 	 */
-	public static void printPiece(Tile piece) {
+	public static void printPiece(Piece piece) {
 		if (piece.getPiece() instanceof Bunny) {
 			System.out.print("Bun");
 		} else if (piece.getPiece() instanceof Mushroom) {
@@ -298,18 +331,23 @@ public class Game {
 	 * 
 	 * @param game object to be printed
 	 */
-	public static void printGameBoard(Game game) {
+	public void printGameBoard() {
 		System.out.println("-------------------------------");
 		for (int y = 0; y < Game.BOARD_SIZE; y++) {
 			System.out.print("|");
 			for (int x = 0; x < Game.BOARD_SIZE; x++) {
-				if (((x == 0 || x == 4) && (y == 0 || y == 4)) || (x == 2 && y == 2)) {
+				if (tileSelected!=null && tileSelected.getCoord().x==x && tileSelected.getCoord().y==y) {
+					System.out.print("•");
+					printPiece(this.getTile(new Coord(x, y)).getPiece());
+					System.out.print("•|");
+				}
+				else if (((x == 0 || x == 4) && (y == 0 || y == 4)) || (x == 2 && y == 2)) {
 					System.out.print(">");
-					printPiece(game.getTile(new Coord(x, y)));
+					printPiece(this.getTile(new Coord(x, y)).getPiece());
 					System.out.print("<|");
 				} else {
 					System.out.print(" ");
-					printPiece(game.getTile(new Coord(x, y)));
+					printPiece(this.getTile(new Coord(x, y)).getPiece());
 					System.out.print(" |");
 				}
 				
@@ -322,38 +360,29 @@ public class Game {
 	/**
 	 * Main game loop for text based implementation
 	 * creates and populates a game board
-	 * 
-	 * @param String args[]
-	 * TODO implement main game loop and player interaction
 	 */
 	public static void main(String args[]) {
 		Scanner reader = new Scanner(System.in);
 		Game game = new Game(0);
 		int xcoord;
 		int ycoord;
-		Coord firstTile;
-		Coord secondTile;
 		while (!game.endGame()) {
-			printGameBoard(game);
-			System.out.println("Select First Tile: ");
-			System.out.print("input first coordinate: ");
+			game.printGameBoard();
+			System.out.println("Select a Tile: ");
+			System.out.print("input x coordinate: ");
 			xcoord = reader.nextInt();
-			System.out.println();
-			System.out.print("input second coordinate: ");
+			System.out.print("input y coordinate: ");
 			ycoord = reader.nextInt();
 			System.out.println();
-			firstTile = new Coord(xcoord, ycoord);
-			System.out.println("Select Second Tile: ");
-			System.out.print("input first coordinate: ");
-			xcoord = reader.nextInt();
-			System.out.println();
-			System.out.print("input second coordinate: ");
-			ycoord = reader.nextInt();
-			System.out.println();
-			secondTile = new Coord(xcoord, ycoord);
-			game.selectTile(firstTile);
-			game.selectTile(secondTile);
+			Coord coord = new Coord(xcoord, ycoord);
+
+			try {
+				game.selectTile(coord);
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
 		}
 		System.out.println("GAME OVER YOU WIN!!!!!");
+		reader.close();
 	}
 }
