@@ -1,4 +1,6 @@
+import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.Stack;
 
 /**
@@ -17,6 +19,9 @@ public class Game {
 	private Tile tileSelected;
 	private Stack<Move> undoStack;
 	private Stack<Move> redoStack;
+	ArrayList<Bunny> buns = new ArrayList<Bunny>();
+	private Scanner reader = new Scanner(System.in);
+	
 	
 	/**
 	 * sets up the game
@@ -37,9 +42,18 @@ public class Game {
 				board[x][y]=new TextTile(new Coord(x,y));
 			}
 		}
+		Bunny bun1 = new Bunny(new Coord(4,2));
+		Bunny bun2 = new Bunny(new Coord(0,2));
+		buns.add(bun1);
+		buns.add(bun2);
+		ArrayList<Piece> pieceArr = new ArrayList<Piece>();
+		pieceArr.add(new Fox(new Coord(1,3), new Coord(1,4)));
+		pieceArr.add(bun1);
+		pieceArr.add(new Mushroom(new Coord(3,2)));
+		pieceArr.add(bun2);
+		pieceArr.add(new Mushroom(new Coord(0,1)));
+		setBoard(pieceArr);
 		
-		//TODO use puzzleNum to populate board with pieces
-		//setBoard();
 	}
 	
 	/**
@@ -256,6 +270,12 @@ public class Game {
 			
 		}
 		else { 
+			for(int i = 0; i < buns.size(); i++){
+				if(buns.get(i).getCoord().equals(tileSelected.getCoord())){
+					buns.get(i).setCoord(coord);
+					break;
+				}
+			}
 			this.getTile(coord).setPiece(tileSelected.removePiece());
 		}
 		if (changeStack) {
@@ -264,6 +284,26 @@ public class Game {
 		}
 		
 		tileSelected=null;
+		
+	}
+	
+	/**
+	 * 
+	 */
+	private boolean endGame(){
+		int total = buns.size();
+		int count = 0;
+		for(int i = 0; i < buns.size(); i++){
+			if(buns.get(i).getCoord().equals(new Coord(0, 0)) || buns.get(i).getCoord().equals(new Coord(4, 0))|| buns.get(i).getCoord().equals(new Coord(2, 2))|| buns.get(i).getCoord().equals(new Coord(0, 4))|| buns.get(i).getCoord().equals(new Coord(4, 4))){
+				count ++;
+			}
+		}
+		if(count == total){
+			return true;
+		}
+		else{
+		return false;
+		}
 		
 	}
 	
@@ -279,4 +319,84 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * Prints out the name of the piece in 3 chars or 3 spaces if there is no piece 
+	 * 
+	 * @param piece object which you want to print
+	 */
+	public static void printPiece(Tile piece) {
+		if (piece.getPiece() instanceof Bunny) {
+			System.out.print("Bun");
+		} else if (piece.getPiece() instanceof Mushroom) {
+			System.out.print("Shr");
+		} else if (piece.getPiece() instanceof Fox) {
+			System.out.print("Fox");
+		} else {
+			System.out.print("   ");
+		}
+	}
+	
+	/**
+	 * Prints out the game board and all pieces on it 
+	 * 
+	 * @param game object to be printed
+	 */
+	public static void printGameBoard(Game game) {
+		System.out.println("-------------------------------");
+		for (int y = 0; y < Game.BOARD_SIZE; y++) {
+			System.out.print("|");
+			for (int x = 0; x < Game.BOARD_SIZE; x++) {
+				if (((x == 0 || x == 4) && (y == 0 || y == 4)) || (x == 2 && y == 2)) {
+					System.out.print(">");
+					printPiece(game.getTile(new Coord(x, y)));
+					System.out.print("<|");
+				} else {
+					System.out.print(" ");
+					printPiece(game.getTile(new Coord(x, y)));
+					System.out.print(" |");
+				}
+				
+			}
+			System.out.println();
+			System.out.println("-------------------------------");
+		}
+	}
+	
+	/**
+	 * Main game loop for text based implementation
+	 * creates and populates a game board
+	 * 
+	 * @param String args[]
+	 * TODO implement main game loop and player interaction
+	 */
+	public static void main(String args[]) {
+		Scanner reader = new Scanner(System.in);
+		Game game = new Game(0);
+		int xcoord;
+		int ycoord;
+		Coord firstTile;
+		Coord secondTile;
+		while (!game.endGame()) {
+			printGameBoard(game);
+			System.out.println("Select First Tile: ");
+			System.out.print("input first coordinate: ");
+			xcoord = reader.nextInt();
+			System.out.println();
+			System.out.print("input second coordinate: ");
+			ycoord = reader.nextInt();
+			System.out.println();
+			firstTile = new Coord(xcoord, ycoord);
+			System.out.println("Select Second Tile: ");
+			System.out.print("input first coordinate: ");
+			xcoord = reader.nextInt();
+			System.out.println();
+			System.out.print("input second coordinate: ");
+			ycoord = reader.nextInt();
+			System.out.println();
+			secondTile = new Coord(xcoord, ycoord);
+			game.selectTile(firstTile);
+			game.selectTile(secondTile);
+		}
+		System.out.println("GAME OVER YOU WIN!!!!!");
+	}
 }
