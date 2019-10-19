@@ -64,5 +64,13 @@ public class Fox implements Piece{
     public Coord getCoord(){
         return this.head;
     }
+    
+    /**
+     * grabbing the coordinate of the tail of the fox
+     * @return the coordinate
+     */
+    public Coord getTail() {
+    	return this.tail;
+    }
 }
 

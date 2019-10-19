@@ -5,7 +5,7 @@
    <object class="com.horstmann.violet.InterfaceNode" id="InterfaceNode0">
     <void property="methods">
      <void property="text">
-      <string>+isValidMove:bool
+      <string>+isValidMove(coord:Coord):bool
 +getPiece:Piece
 +setCoord(Coord)</string>
      </void>
@@ -22,7 +22,7 @@ Piece</string>
      <string>x</string>
      <void method="set">
       <object idref="Point2D$Double0"/>
-      <double>810.0</double>
+      <double>770.0</double>
      </void>
     </void>
     <void class="java.awt.geom.Point2D$Double" method="getField">
@@ -33,7 +33,7 @@ Piece</string>
      </void>
     </void>
     <void method="setLocation">
-     <double>810.0</double>
+     <double>770.0</double>
      <double>210.0</double>
     </void>
    </object>
@@ -69,7 +69,7 @@ Piece</string>
      <string>x</string>
      <void method="set">
       <object idref="Point2D$Double1"/>
-      <double>460.0</double>
+      <double>420.0</double>
      </void>
     </void>
     <void class="java.awt.geom.Point2D$Double" method="getField">
@@ -80,7 +80,7 @@ Piece</string>
      </void>
     </void>
     <void method="setLocation">
-     <double>460.0</double>
+     <double>420.0</double>
      <double>190.0</double>
     </void>
    </object>
@@ -95,7 +95,7 @@ Piece</string>
     <void property="methods">
      <void property="text">
       <string>+Mushroom(coord:Coord)
-+isValidMove:false
++isValidMove(coord:Coord):bool
 +getPiece:this</string>
      </void>
     </void>
@@ -110,7 +110,7 @@ Piece</string>
      <string>x</string>
      <void method="set">
       <object idref="Point2D$Double2"/>
-      <double>600.0</double>
+      <double>550.0</double>
      </void>
     </void>
     <void class="java.awt.geom.Point2D$Double" method="getField">
@@ -121,7 +121,7 @@ Piece</string>
      </void>
     </void>
     <void method="setLocation">
-     <double>600.0</double>
+     <double>550.0</double>
      <double>380.0</double>
     </void>
    </object>
@@ -136,7 +136,7 @@ Piece</string>
     <void property="methods">
      <void property="text">
       <string>+Bunny(coord:Coord)
-+isValidMove:bool
++isValidMove(coord:Coord):bool
 +getPiece:this
 +SetCoord(Coord)</string>
      </void>
@@ -152,7 +152,7 @@ Piece</string>
      <string>x</string>
      <void method="set">
       <object idref="Point2D$Double3"/>
-      <double>800.0</double>
+      <double>780.0</double>
      </void>
     </void>
     <void class="java.awt.geom.Point2D$Double" method="getField">
@@ -163,7 +163,7 @@ Piece</string>
      </void>
     </void>
     <void method="setLocation">
-     <double>800.0</double>
+     <double>780.0</double>
      <double>380.0</double>
     </void>
    </object>
@@ -179,9 +179,10 @@ Piece</string>
     <void property="methods">
      <void property="text">
       <string>+Fox(coord:Coord)
-+isValidMove:Bool
++isValidMove(coord:Coord):bool
 +getPiece:this
-+setCoord(Coord)</string>
++setCoord(Coord)
++getTail():Coord</string>
      </void>
     </void>
     <void property="name">
@@ -195,7 +196,7 @@ Piece</string>
      <string>x</string>
      <void method="set">
       <object idref="Point2D$Double4"/>
-      <double>980.0</double>
+      <double>1000.0</double>
      </void>
     </void>
     <void class="java.awt.geom.Point2D$Double" method="getField">
@@ -206,7 +207,7 @@ Piece</string>
      </void>
     </void>
     <void method="setLocation">
-     <double>980.0</double>
+     <double>1000.0</double>
      <double>380.0</double>
     </void>
    </object>
@@ -221,7 +222,8 @@ Piece</string>
     </void>
     <void property="methods">
      <void property="text">
-      <string>Coord(x:int, y:int)</string>
+      <string>Coord(x:int, y:int)
+equals(o:Object):Bool</string>
      </void>
     </void>
     <void property="name">
@@ -235,7 +237,7 @@ Piece</string>
      <string>x</string>
      <void method="set">
       <object idref="Point2D$Double5"/>
-      <double>430.0</double>
+      <double>420.0</double>
      </void>
     </void>
     <void class="java.awt.geom.Point2D$Double" method="getField">
@@ -246,7 +248,7 @@ Piece</string>
      </void>
     </void>
     <void method="setLocation">
-     <double>430.0</double>
+     <double>420.0</double>
      <double>440.0</double>
     </void>
    </object>
@@ -366,7 +368,9 @@ stack implementation</string>
 +setBoard(boardArr:ArrayList&lt;Piece&gt;)
 +undoMove
 +redoMove
--swapPiece(coord:Coord)    throws InvalidMove</string>
+-trySwapPiece(coord:Coord)    throws InvalidMove
+-swapPiece(coord:Coord, changeStack:bool)
+-clearBoard()</string>
      </void>
     </void>
     <void property="name">
@@ -387,12 +391,12 @@ stack implementation</string>
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double8"/>
-      <double>170.0</double>
+      <double>160.0</double>
      </void>
     </void>
     <void method="setLocation">
      <double>60.0</double>
-     <double>170.0</double>
+     <double>160.0</double>
     </void>
    </object>
   </void>
@@ -419,7 +423,7 @@ Tile</string>
      <string>x</string>
      <void method="set">
       <object idref="Point2D$Double9"/>
-      <double>460.0</double>
+      <double>420.0</double>
      </void>
     </void>
     <void class="java.awt.geom.Point2D$Double" method="getField">
@@ -430,7 +434,7 @@ Tile</string>
      </void>
     </void>
     <void method="setLocation">
-     <double>460.0</double>
+     <double>420.0</double>
      <double>10.0</double>
     </void>
    </object>
