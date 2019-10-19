@@ -7,12 +7,8 @@ import java.util.Stack;
  * contains the board and is in charge of swapping pieces
  * @author Adam Prins
  * 			100 879 683
- * @version 1.7.0
- * 		buns is now Dynamically populated on setBoard
- * 
- * 		game will now fetch puzzles from Puzzles
- * 
- * 		main will now increment through all of the puzzles in Puzzles
+ * @version 1.7.1
+ * 		main moved coord generation from outside try/catch to inside it. This prevents crashing when invalid coords are input. 
  * 		
  * 		
  */
@@ -357,9 +353,10 @@ public class Game {
 				System.out.print("input y coordinate: ");
 				int ycoord = reader.nextInt();
 				System.out.println();
-				Coord coord = new Coord(xcoord, ycoord);
+				
 	
 				try {
+					Coord coord = new Coord(xcoord, ycoord);
 					game.selectTile(coord);
 				} catch (Exception e) {
 					System.out.println(e.getMessage());
