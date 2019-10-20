@@ -1,6 +1,13 @@
 # JumpIN
 Group Project for SYSC 3110
 
+Group Name: Exception("Taken");
+Group Members:
+  Adam Prins        100 879 683
+  Jay McCracken     101 066 860
+  Matthew Harris    101 073 502
+  Alexander Beimers 101 070 233
+
 A simple clone of the puzzle game JumpIn for the course SYSC 3110. This is being made for educational purposes only.
 4 main milestone goals:
   1. Basic game logic, implemented in text based format. Due October 18th (15%)
