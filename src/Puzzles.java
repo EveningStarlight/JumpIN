@@ -14,8 +14,9 @@ public class Puzzles {
 	/**
 	 * @param puzzleNumber the puzzle you would like to initialize
 	 * @return returns an ArrayList of Pieces that can be used to populate the game board
+	 * @throws Exception 
 	 */
-	public static ArrayList<Piece> getPuzzle(int puzzleNumber) {
+	public static ArrayList<Piece> getPuzzle(int puzzleNumber) throws Exception {
 		ArrayList<Piece> array = new ArrayList<Piece>();
 		try {
 			if (puzzleNumber==0) {
