@@ -5,9 +5,9 @@ import java.util.Stack;
 /**
  * Overall game implementation 
  * contains the board and is in charge of swapping pieces
- * @author Adam Prins
- * 			100 879 683
- * @version 1.7.1
+ * @authors Adam Prins, Matthew Harris, Alex Beimers
+ * 			100 879 683, 101 073 502,   
+ * @version 1.7.2
  * 		main moved coord generation from outside try/catch to inside it. This prevents crashing when invalid coords are input. 
  * 		
  * 		
@@ -56,8 +56,9 @@ public class Game {
 	 * Otherwise, it tries to swap the tiles
 	 * 
 	 * @param coord the newly selected tile.
+	 * @throws Exception 
 	 */
-	public void selectTile(Coord coord) {
+	public void selectTile(Coord coord) throws Exception {
 		
 		//If there is no tile selected, try to select this tile
 		if (tileSelected==null) {
@@ -362,16 +363,28 @@ public class Game {
 					System.out.println(e.getMessage());
 				}
 			}
-			System.out.println("Congradulations! You compleated Puzzle " + currPuzzle + "!");
-			currPuzzle++;
-			try {
-				game.setBoard(Puzzles.getPuzzle(currPuzzle));
-			} catch(Exception e) {
-				won=true;
+			System.out.println("Congratulations! You compleated Puzzle " + currPuzzle + "!");
+			game.printGameBoard();
+			System.out.print("Would you like to continue? y or n");
+			String nextGameStr = reader.next();
+			char nextGame = nextGameStr.charAt(0);
+			System.out.println(nextGame);
+			if(nextGame == 'y' || nextGame == 'Y'){
+				currPuzzle++;
+				try {
+					game.setBoard(Puzzles.getPuzzle(currPuzzle));
+				} catch(Exception e) {
+					won=true;
+				}
 			}
-			
+			else if(nextGame == 'n' || nextGame == 'N'){
+				won = true;
+			}
+			else{
+				won = true;
+			}
 		}
-		printGameBoard(game);
+		game.printGameBoard();
 		System.out.println("GAME OVER YOU WIN!!!!!");
 		reader.close();
 	}
