@@ -2,7 +2,7 @@
  *
  * @author Jay McCracken
  * 			101066860
- * @version 1.0.0
+ * @version 1.2.0
  *
  * Creation of a fox piece, this piece can move only move in the orientation of the fox
  *
