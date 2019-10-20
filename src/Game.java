@@ -29,8 +29,9 @@ public class Game {
 	 * calls setBoard to populate the pieces using the puzzleArray from Puzzles
 	 * 
 	 * @param puzzleNum the puzzle that is to be initialized from Puzzles
+	 * @throws Exception 
 	 */
-	public Game(int puzzleNum){
+	public Game(int puzzleNum) throws Exception{
 		
 		board = new Tile[BOARD_SIZE][BOARD_SIZE];
 		undoStack = new Stack<Move>();
@@ -337,8 +338,9 @@ public class Game {
 	 * Main game loop for text based implementation
 	 * creates and populates a game board
 	 * after completing a puzzle, it will fetch the next puzzle from Puzzles
+	 * @throws Exception 
 	 */
-	public static void main(String args[]) {
+	public static void main(String args[]) throws Exception {
 		
 		int currPuzzle=1;
 		Game game = new Game(currPuzzle);
