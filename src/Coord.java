@@ -1,11 +1,13 @@
 /**
  * 
+ * This class holds coordinates for other objects
+ * 
  * @author Adam Prins
  * 			100 879 683
- * @version 1.1.0
- * 		added equals method
+ * @version 1.2.0
+ * 		Will now only accept valid coordinate pairs as arguments in the constructor
  * 
- *  This class holds coordinates for other objects
+ *  
  */
 
 public class Coord {
@@ -22,6 +24,9 @@ public class Coord {
 	 * @param y the y position of the object 
 	 */
 	public Coord(int x, int y) {
+		if (x<0 || x>=Game.BOARD_SIZE || y<0 || y>=Game.BOARD_SIZE) {
+			throw new IllegalArgumentException("coordinates can only go from 0-"+(Game.BOARD_SIZE-1));
+		}
 		this.x=x;
 		this.y=y;
 	}
