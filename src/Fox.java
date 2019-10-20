@@ -16,8 +16,8 @@ public class Fox implements Piece{
      * @param coord
      */
     public Fox(Coord Head, Coord Tail){
-        this.head = Head;
-        this.tail = Tail;
+    		this.head = Head;
+    		this.tail = Tail;
     }
 
     /**
