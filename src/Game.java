@@ -368,7 +368,6 @@ public class Game {
 			System.out.print("Would you like to continue? y or n: ");
 			String nextGameStr = reader.next();
 			char nextGame = nextGameStr.charAt(0);
-			System.out.println(nextGame);
 			if(nextGame == 'y' || nextGame == 'Y'){
 				currPuzzle++;
 				try {
