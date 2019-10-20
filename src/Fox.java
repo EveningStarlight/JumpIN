@@ -17,7 +17,7 @@ public class Fox implements Piece{
      * @param coord
      */
     public Fox(Coord Head, Coord Tail) throws Exception{
-    	if (((Tail.x - Head.x) > 1 || (Tail.y - Head.y) > 1) && (Tail.x == Head.x || Tail.y == Head.y)){
+    	if ((Math.abs(Head.x - Tail.x)) + (Math.abs(Head.y - Tail.y)) != 1){
     		throw new IllegalArgumentException("This piece cannot placed like that");
     	}else {
     		this.head = Head;
