@@ -5,8 +5,8 @@ import java.util.ArrayList;
  * 
  * @author Adam Prins, Matthew Harris
  * 			100 879 683, 101 073 502
- * @version 1.1.0
- * 		Added try/catch for handling piece constructor errors
+ * @version 1.1.1
+ * 		puzzle number 0 now correctly called for testing and doesn't throw exception. (1 wasn't an else if)
  *
  */
 public class Puzzles {
@@ -19,9 +19,9 @@ public class Puzzles {
 	public static ArrayList<Piece> getPuzzle(int puzzleNumber) throws Exception {
 		ArrayList<Piece> array = new ArrayList<Piece>();
 		try {
-			if (puzzleNumber==0) {
+			if (puzzleNumber==0) { // Testing puzzle number. Not to be called while playing the game
 			}
-			if (puzzleNumber==1) {
+			else if (puzzleNumber==1) {
 				array.add(new Mushroom(new Coord(2,1)));
 				array.add(new Bunny(new Coord(2,0)));
 			}
