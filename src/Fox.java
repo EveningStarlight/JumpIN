@@ -17,11 +17,12 @@ public class Fox implements Piece{
      * @param coord
      */
     public Fox(Coord Head, Coord Tail) throws Exception{
-    	if ((Tail.x - Head.x) > 1) {
+    	if ((Tail.x - Head.x) > 1 || (Tail.y - Head.y) > 1) {
     		throw new IllegalArgumentException("This piece cannot placed like that");
-    	}
+    	}else {
     		this.head = Head;
     		this.tail = Tail;
+    	}
     }
 
     /**
@@ -30,7 +31,7 @@ public class Fox implements Piece{
      * @return true is they can make the move they are requesting, false if they can not
      */
     public boolean isValidMove(Coord coord){
-        if ((this.head.x == 3 && coord.x == 4) ||(this.head.y == 3 && coord.y == 4)) { //if the head is on row or column 4 and wants to move down say that it is not a vaild move
+        if (coord.x == 4 ||coord.y == 4) { //if the head is on row or column 3 and wants to move down say that it is not a vaild move
         	return false;
         }
     	if(this.head.x == coord.x && this.tail.x == coord.x) {
