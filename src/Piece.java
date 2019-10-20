@@ -11,6 +11,6 @@
 public interface Piece {
 	public boolean isValidMove(Coord coord);	//Can the piece move
 	public Piece getPiece();	//get what piece object
-	public void setCoord(Coord coord);	//set the coordinate of the object
+	public void setCoord(Coord coord) throws Exception;	//set the coordinate of the object
 	public Coord getCoord();	//get the coordinate of the object
 }

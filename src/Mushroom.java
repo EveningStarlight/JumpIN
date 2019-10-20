@@ -40,10 +40,8 @@ public class Mushroom implements Piece{
      * the param has no importantace
      * @param coord
      */
-    public void setCoord(Coord coord){
-        //TODO
-        //replace with exception
-        System.out.print("You can not move this piece.");
+    public void setCoord(Coord coord) throws Exception{
+    	throw new IllegalArgumentException("You can not move this piece.");
     }
 
     /**
