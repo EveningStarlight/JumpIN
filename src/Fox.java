@@ -26,7 +26,10 @@ public class Fox implements Piece{
      * @return true is they can make the move they are requesting, false if they can not
      */
     public boolean isValidMove(Coord coord){
-        if(this.head.x == coord.x && this.tail.x == coord.x) {
+        if ((this.head.x == 4 && coord.x == 5) ||(this.head.y == 4 && coord.y == 5)) { //if the head is on row or column 4 and wants to move down say that it is not a vaild move
+        	return false;
+        }
+    	if(this.head.x == coord.x && this.tail.x == coord.x) {
         	return true;
         } else if(this.head.y == coord.y && this.tail.y == coord.y) {
         	return true;
