@@ -5,8 +5,10 @@ import java.util.ArrayList;
  * 
  * @author Adam Prins, Matthew Harris
  * 			100 879 683, 101 073 502
- * @version 1.1.1
- * 		puzzle number 0 now correctly called for testing and doesn't throw exception. (1 wasn't an else if)
+ * @version 1.1.2
+ * 		getPuzzle now throws its caught error as intended
+ * 		fixed puzzle 4
+ * 		added puzzle 7
  *
  */
 public class Puzzles {
@@ -38,8 +40,8 @@ public class Puzzles {
 			else if (puzzleNumber==4) {
 				array.add(new Fox(new Coord(3,1), new Coord(4,1)));
 				array.add(new Fox(new Coord(1,0), new Coord(1,1)));
-				array.add(new Mushroom(new Coord(2,3)));
-				array.add(new Bunny(new Coord(0,2)));
+				array.add(new Mushroom(new Coord(0,2)));
+				array.add(new Bunny(new Coord(0,3)));
 			}
 			else if (puzzleNumber==5) {
 				array.add(new Fox(new Coord(3,3), new Coord(4,3)));
@@ -52,7 +54,15 @@ public class Puzzles {
 				array.add(new Fox(new Coord(1,0), new Coord(1,1)));
 				array.add(new Mushroom(new Coord(0,2)));
 				array.add(new Bunny(new Coord(0,3)));
-				array.add(new Bunny(new Coord(2, 4)));
+				array.add(new Bunny(new Coord(2,4)));
+			}
+			else if (puzzleNumber==7) {
+				array.add(new Fox(new Coord(3,0), new Coord(3,1)));
+				array.add(new Mushroom(new Coord(0,1)));
+				array.add(new Mushroom(new Coord(1,2)));
+				array.add(new Mushroom(new Coord(2,3)));
+				array.add(new Bunny(new Coord(4,2)));
+				array.add(new Bunny(new Coord(2,4)));
 			}
 			else {
 				throw new IllegalArgumentException("The puzzle number: " + puzzleNumber + " is not in bounds");
@@ -60,6 +70,8 @@ public class Puzzles {
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+			throw e;
+			
 		}
 		
 		return array;
