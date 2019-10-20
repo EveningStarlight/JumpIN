@@ -7,6 +7,7 @@
  * Creation of a fox piece, this piece can move only move in the orientation of the fox
  *
  */
+
 public class Fox implements Piece{
     private Coord head;
     private Coord tail;
