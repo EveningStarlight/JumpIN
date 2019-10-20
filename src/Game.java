@@ -7,8 +7,8 @@ import java.util.Stack;
  * contains the board and is in charge of swapping pieces
  * @authors Adam Prins, Matthew Harris, Alex Beimers
  * 			100 879 683, 101 073 502,   101 070 233
- * @version 1.7.3
- * 		main moved coord generation from outside try/catch to inside it. This prevents crashing when invalid coords are input. 
+ * @version 1.7.4
+ * 		Added logic to trySwapPiece that prevents fox tails from ending up on non empty pieces
  * 		
  * 		
  */
@@ -210,6 +210,19 @@ public class Game {
 				x+=xChange;
 				y+=yChange;
 			}
+			
+			if (piece instanceof Fox ) {
+				Coord head = piece.getCoord();
+				Coord tail = ((Fox)piece).getTail();
+				
+				Coord newTail = new Coord(coord.x + tail.x - head.x,
+										  coord.y + tail.y - head.y);
+				
+				if (!this.getTile(newTail).isEmpty() || piece.equals(this.getTile(newTail).getPiece())) {
+					throw new IllegalArgumentException("The tail must end in an empty spot");
+				}
+			}
+			
 			//If the for loop hasn't thrown an error, swap the pieces
 			swapPiece(coord, true);
 
@@ -346,7 +359,7 @@ public class Game {
 	 */
 	public static void main(String args[]) throws Exception {
 		
-		int currPuzzle=1;
+		int currPuzzle=0;
 		Game game = new Game(currPuzzle);
 		boolean won=false;
 		
