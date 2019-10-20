@@ -354,6 +354,7 @@ public class Game {
 			game.selectTile(firstTile);
 			game.selectTile(secondTile);
 		}
+		printGameBoard(game);
 		System.out.println("GAME OVER YOU WIN!!!!!");
 	}
 }
