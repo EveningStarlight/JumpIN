@@ -234,7 +234,11 @@ public class Game {
 			
 		}
 		else { 
-			tileSelected.getPiece().setCoord(coord);
+			try {
+				tileSelected.getPiece().setCoord(coord);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			this.getTile(coord).setPiece(tileSelected.removePiece());
 		}
 		if (changeStack) {
