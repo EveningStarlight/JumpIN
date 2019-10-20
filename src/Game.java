@@ -6,8 +6,8 @@ import java.util.Stack;
  * Overall game implementation 
  * contains the board and is in charge of swapping pieces
  * @authors Adam Prins, Matthew Harris, Alex Beimers
- * 			100 879 683, 101 073 502,   
- * @version 1.7.2
+ * 			100 879 683, 101 073 502,   101 070 233
+ * @version 1.7.3
  * 		main moved coord generation from outside try/catch to inside it. This prevents crashing when invalid coords are input. 
  * 		
  * 		
@@ -365,7 +365,7 @@ public class Game {
 			}
 			System.out.println("Congratulations! You compleated Puzzle " + currPuzzle + "!");
 			game.printGameBoard();
-			System.out.print("Would you like to continue? y or n");
+			System.out.print("Would you like to continue? y or n: ");
 			String nextGameStr = reader.next();
 			char nextGame = nextGameStr.charAt(0);
 			System.out.println(nextGame);
