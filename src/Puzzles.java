@@ -3,8 +3,8 @@ import java.util.ArrayList;
 /**
  * A collection of the puzzles that can be played through for the game JumpIN
  * 
- * @author Adam Prins
- * 			100 879 683
+ * @author Adam Prins, Matthew Harris
+ * 			100 879 683, 101 073 502
  * @version 1.0.0
  * 		First creation of Puzzles
  * 		contains the first 4 puzzles
@@ -37,8 +37,21 @@ public class Puzzles {
 		else if (puzzleNumber==4) {
 			array.add(new Fox(new Coord(3,1), new Coord(4,1)));
 			array.add(new Fox(new Coord(1,0), new Coord(1,1)));
-			array.add(new Mushroom(new Coord(2,2)));
+			array.add(new Mushroom(new Coord(2,3)));
 			array.add(new Bunny(new Coord(0,2)));
+		}
+		else if (puzzleNumber==5) {
+			array.add(new Fox(new Coord(3,3), new Coord(4,3)));
+			array.add(new Fox(new Coord(1,0), new Coord(1,1)));
+			array.add(new Mushroom(new Coord(0,2)));
+			array.add(new Bunny(new Coord(0,3)));
+		}
+		else if (puzzleNumber==6) {
+			array.add(new Fox(new Coord(3,1), new Coord(4,1)));
+			array.add(new Fox(new Coord(1,0), new Coord(1,1)));
+			array.add(new Mushroom(new Coord(0,2)));
+			array.add(new Bunny(new Coord(0,3)));
+			array.add(new Bunny(new Coord(2, 4)));
 		}
 		else {
 			throw new IllegalArgumentException("The puzzle number: " + puzzleNumber + " is not in bounds");
