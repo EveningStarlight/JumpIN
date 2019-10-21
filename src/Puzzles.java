@@ -3,7 +3,7 @@ import java.util.ArrayList;
 /**
  * A collection of the puzzles that can be played through for the game JumpIN
  * 
- * @author Adam Prins, Matthew Harris
+ * @authors Adam Prins, Matthew Harris
  * 			100 879 683, 101 073 502
  * @version 1.1.1
  * 		puzzle number 0 now correctly called for testing and doesn't throw exception. (1 wasn't an else if)
