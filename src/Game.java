@@ -7,8 +7,10 @@ import java.util.Stack;
  * contains the board and is in charge of swapping pieces
  * @authors Adam Prins, Matthew Harris, Alex Beimers
  * 			100 879 683, 101 073 502,   101 070 233
- * @version 1.7.4
- * 		Added logic to trySwapPiece that prevents fox tails from ending up on non empty pieces
+ * @version 1.7.5
+ * 		Game now ends properly when there are no more puzzles
+ * 		Game no longer asks you if you want to play the next puzzle if there are no more puzzles
+ * 		Game no longer duplicates board prints when the game ends
  * 		
  * 		
  */
@@ -211,6 +213,7 @@ public class Game {
 				y+=yChange;
 			}
 			
+			//If the piece is a fox, its tail must be on an empty spot
 			if (piece instanceof Fox ) {
 				Coord head = piece.getCoord();
 				Coord tail = ((Fox)piece).getTail();
@@ -359,7 +362,9 @@ public class Game {
 	 */
 	public static void main(String args[]) throws Exception {
 		
-		int currPuzzle=0;
+		//TODO make sure this submits with a value of 1!
+		int currPuzzle=1;
+		
 		Game game = new Game(currPuzzle);
 		boolean won=false;
 		
@@ -384,25 +389,22 @@ public class Game {
 			}
 			System.out.println("Congratulations! You compleated Puzzle " + currPuzzle + "!");
 			game.printGameBoard();
+			
+			currPuzzle++;
+			try {
+				game.setBoard(Puzzles.getPuzzle(currPuzzle));
+			} catch(Exception e) {
+				won=true;
+				break;
+			}
+			
 			System.out.print("Would you like to continue? y or n: ");
 			String nextGameStr = reader.next();
 			char nextGame = nextGameStr.charAt(0);
-			if(nextGame == 'y' || nextGame == 'Y'){
-				currPuzzle++;
-				try {
-					game.setBoard(Puzzles.getPuzzle(currPuzzle));
-				} catch(Exception e) {
-					won=true;
-				}
-			}
-			else if(nextGame == 'n' || nextGame == 'N'){
-				won = true;
-			}
-			else{
+			if(!(nextGame == 'y' || nextGame == 'Y')) {
 				won = true;
 			}
 		}
-		game.printGameBoard();
 		System.out.println("GAME OVER YOU WIN!!!!!");
 		reader.close();
 	}
