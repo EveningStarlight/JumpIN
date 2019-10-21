@@ -7,10 +7,8 @@ import java.util.Stack;
  * contains the board and is in charge of swapping pieces
  * @authors Adam Prins, Matthew Harris, Alex Beimers
  * 			100 879 683, 101 073 502,   101 070 233
- * @version 1.7.5
- * 		Game now ends properly when there are no more puzzles
- * 		Game no longer asks you if you want to play the next puzzle if there are no more puzzles
- * 		Game no longer duplicates board prints when the game ends
+ * @version 1.7.6
+ * 		Fixed fox head invalidating move based on new tail position. (Brackets were missing around the or statement)
  * 		
  * 		
  */
@@ -221,7 +219,7 @@ public class Game {
 				Coord newTail = new Coord(coord.x + tail.x - head.x,
 										  coord.y + tail.y - head.y);
 				
-				if (!this.getTile(newTail).isEmpty() || piece.equals(this.getTile(newTail).getPiece())) {
+				if ( !(this.getTile(newTail).isEmpty() || piece.equals(this.getTile(newTail).getPiece())) ) {
 					throw new IllegalArgumentException("The tail must end in an empty spot");
 				}
 			}
