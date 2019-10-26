@@ -6,12 +6,9 @@ import java.util.Stack;
  * contains the board and is in charge of swapping pieces
  * @authors Adam Prins, Matthew Harris, Alex Beimers
  * 			100 879 683, 101 073 502,   101 070 233
- * @version 2.1.0
- * 		added getSelectedTile method
- * 		renamed tileSelected to selectedTile
- * 		clearBoard empties out the buns array
- * 		
- * 		
+ * @version 2.1.1
+ * clearBoard now clears the undo and redo stacks
+ * 
  */
 public class Game {
 	
@@ -306,6 +303,8 @@ public class Game {
 	private void clearBoard() {
 		selectedTile=null;
 		buns.clear();
+		undoStack.clear();
+		redoStack.clear();
 		for(Tile[] tileLine:board) {
 			for(Tile tile:tileLine) {
 				tile.removePiece();
