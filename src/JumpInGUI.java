@@ -10,8 +10,12 @@ import javax.swing.event.*;
  *  
  * @author Adam Prins
  * 			100 879 683
- * @version 1.3.1
- * 		Merging from GUI branch onto master
+ * @version 1.5.0
+ * 		added basic button labeling
+ * 		fixed display of button selections
+ * 		added puzzleNumber to help advance through levels
+ * 		added nextLevel button
+ * 		implemented reset button function
  * 		
  */
 public class JumpInGUI implements ActionListener {
@@ -22,6 +26,8 @@ public class JumpInGUI implements ActionListener {
 	
 	public static final int BOARD_SIZE = 5;
 	
+	private int puzzleNumber=1;
+	
 	/* The reset menu item */
     private JMenuItem resetItem;
     
@@ -29,12 +35,15 @@ public class JumpInGUI implements ActionListener {
     private JMenuItem quitItem;
     
     /* the selected tile and the game board */
-    private ButtonTile tileSelected;
+    private ButtonTile selectedTile;
     private ButtonTile board[][];
     
     /* The undo and redo Buttons */
     private JButton undo;
     private JButton redo;
+    
+    /* The next level button */
+    private JButton nextLevel;
     
     /* The output fields */
     private JLabel outputStatic;
@@ -117,6 +126,17 @@ public class JumpInGUI implements ActionListener {
 	    c.gridwidth=3;
 	    interfacePanel.add(Box.createGlue(),c);
 	    
+	    c.weightx=1;
+	    c.weighty=1;
+	    c.gridx = 0;
+	    c.gridy = 10;
+	    c.gridwidth=3;
+	    nextLevel = new JButton("Next Level");
+	    nextLevel.setPreferredSize(new Dimension(50,30));
+	    nextLevel.addActionListener(this);
+	    nextLevel.setEnabled(false);
+	    interfacePanel.add(nextLevel,c);
+	    
 	    
 	    JPanel boardPanel = new JPanel();
 	    boardPanel.setLayout(new GridBagLayout());
@@ -160,7 +180,12 @@ public class JumpInGUI implements ActionListener {
         frame.setResizable(true); // we can resize it
         frame.setVisible(true); // make it visible
         
-        game = new Game(board);
+        try {
+			game = new Game(board, puzzleNumber);
+			drawButtons();
+		} catch (Exception e) {
+			output.setText(e.getMessage());
+		}
         //drawButtons();
 
 	}
@@ -178,23 +203,17 @@ public class JumpInGUI implements ActionListener {
         if (o instanceof ButtonTile) {
         	ButtonTile button = (ButtonTile) o;
         	try {
+        		if (selectedTile!=null)  selectedTile.setSelected(false);
         		game.selectTile(button.getCoord());
-        		if (tileSelected==null) {
-            		button.setSelected(true);
-                	tileSelected = button;
-            	}
-            	else if (tileSelected == button) {
-            		button.setSelected(false);
-            		tileSelected = null;
-            	}
-            	else {
-            		tileSelected.setSelected(false);
-            		button.setSelected(true);
-            		tileSelected = button;
-            	}
+        		selectedTile = (ButtonTile) game.getSelectedTile();
+        		if (selectedTile!=null)  selectedTile.setSelected(true);
+        		
+        		drawButtons();
+        		if (game.endGame()) endGame();
+        		
         	} catch (Exception exception) {
         		output.setText(exception.getMessage());
-        		tileSelected=null;
+        		selectedTile=null;
         	}
         	
         	
@@ -204,6 +223,7 @@ public class JumpInGUI implements ActionListener {
         	 if (button == undo) {
         		 try {
         		 game.undoMove();
+        		 drawButtons();
         		 } catch (Exception exception) {
         			 output.setText(exception.getMessage());
         		 }
@@ -211,15 +231,21 @@ public class JumpInGUI implements ActionListener {
         	 else if (button == redo) {
         		 try {
         			 game.redoMove();
+        			 drawButtons();
         		 } catch (Exception exception) {
         			 output.setText(exception.getMessage());
         		 }
+        	 }
+        	 else if (button == nextLevel) {
+        		 setBoard(++puzzleNumber);
         	 }
         }
         else if (o instanceof JMenuItem){ // it's a JMenuItem
             JMenuItem item = (JMenuItem)o;
 
             if (item == resetItem) {
+            	System.out.println("reset");
+            	setBoard(puzzleNumber);
             } 
             else if (item == quitItem) {
                 System.exit(0);
@@ -228,10 +254,63 @@ public class JumpInGUI implements ActionListener {
 
     }
     
+    /**
+     * Handles the logic of setting the board
+     * 
+     * @param puzzleNumber the puzzle number that is to be set up
+     */
+    private void setBoard(int puzzleNumber) {
+    	this.puzzleNumber=puzzleNumber;
+    	if (selectedTile!=null)  selectedTile.setSelected(false);
+		selectedTile=null;
+		
+		for(ButtonTile[] tileLine:board) {
+			for(ButtonTile tile:tileLine) {
+				tile.setEnabled(true);
+			}
+		}
+		try {
+			game.setBoard(Puzzles.getPuzzle(puzzleNumber));
+		} catch(Exception e) {
+			System.out.print(e.getMessage());
+		}
+		undo.setEnabled(true);
+		redo.setEnabled(true);
+		nextLevel.setEnabled(false);
+		drawButtons();
+		output.setText("Welcome to puzzle: " + puzzleNumber);
+    }
+    
+    private void endGame() {
+    	if (selectedTile!=null)  selectedTile.setSelected(false);
+		selectedTile=null;
+		
+		for(ButtonTile[] tileLine:board) {
+			for(ButtonTile tile:tileLine) {
+				tile.setEnabled(false);
+			}
+		}
+
+		undo.setEnabled(false);
+		redo.setEnabled(false);
+		nextLevel.setEnabled(true);
+    }
+    
     private void drawButtons() {
     	for(ButtonTile[] tileLine:board) {
 			for(ButtonTile tile:tileLine) {
-				Piece p = tile.getPiece();
+				Piece piece = tile.getPiece();
+				
+				//TODO replace with pictures
+				if (piece == null) {
+					tile.setText("   ");
+				} else if (piece instanceof Bunny) {
+					tile.setText("Bun");
+				} else if (piece instanceof Mushroom) {
+					tile.setText("Shr");
+				} else if (piece instanceof Fox) {
+					tile.setText("Fox");
+				}
 				
 			}
 		}
