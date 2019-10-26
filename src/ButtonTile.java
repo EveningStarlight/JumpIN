@@ -4,9 +4,9 @@ import javax.swing.JButton;
  * 
  * @author Matthew Harris
  * 			101 073 502
- * @version 1.0.2
- * 
- *  This class holds coordinates for other objects
+ * @version 1.1.0
+ * 		Removal of piece from the constructor
+ *  
  */
 public class ButtonTile extends JButton implements Tile{
 	
@@ -17,10 +17,9 @@ public class ButtonTile extends JButton implements Tile{
 	public final Coord coord;
 	private Piece piece;
 	
-	public ButtonTile(Coord coord, Piece piece){
+	public ButtonTile(Coord coord){
 		super();
 		this.coord = coord;
-		this.piece = piece;
 	}
 
 	public Coord getCoord() {
