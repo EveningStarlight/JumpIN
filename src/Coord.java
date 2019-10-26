@@ -4,8 +4,9 @@
  * 
  * @author Adam Prins
  * 			100 879 683
- * @version 1.2.0
- * 		Will now only accept valid coordinate pairs as arguments in the constructor
+ * @version 1.3.0
+ * 		Added toString method (from GUI branch)
+ * 		Added JavaDoc comments
  * 
  *  
  */
@@ -31,6 +32,14 @@ public class Coord {
 		this.y=y;
 	}
 	
+	/**
+	 * Determines if a given object is equal to this coordinate
+	 * They are said to be equal if they are both coordinates, and their
+	 * x and y values are the same.
+	 * 
+	 * @return returns true if the coordinates are equal. (x1=x2, y1=y2)
+	 */
+	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof Coord)) {
 			return false;
@@ -45,5 +54,15 @@ public class Coord {
 				return false;
 			}
 		}
+	}
+	
+	/**
+	 * returns a string representation of the coordinate
+	 * 
+	 * @return returns the coordinate in the form of (x,y)
+	 */
+	@Override
+	public String toString() {
+		return "("+x+","+y+")";
 	}
 }
