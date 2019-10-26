@@ -6,12 +6,10 @@ import java.util.Stack;
  * contains the board and is in charge of swapping pieces
  * @authors Adam Prins, Matthew Harris, Alex Beimers
  * 			100 879 683, 101 073 502,   101 070 233
- * @version 2.0.0
- * 		Updating for GUI support
- * 		New constructor that takes a preestablished board as an argument
- * 		Removal of previous constructor
- * 		endGame is now a public method
- * 		Deletion of text based methods
+ * @version 2.1.0
+ * 		added getSelectedTile method
+ * 		renamed tileSelected to selectedTile
+ * 		clearBoard empties out the buns array
  * 		
  * 		
  */
@@ -22,7 +20,7 @@ public class Game {
 	/* the game board */
 	private Tile board[][];
 	/* The currently selected tile */
-	private Tile tileSelected;
+	private Tile selectedTile;
 	/* The undo and redo stacks */
 	private Stack<Move> undoStack;
 	private Stack<Move> redoStack;
@@ -64,21 +62,21 @@ public class Game {
 	public void selectTile(Coord coord) throws Exception {
 		
 		//If there is no tile selected, try to select this tile
-		if (tileSelected==null) {
+		if (selectedTile==null) {
 			if (this.getTile(coord).isEmpty() || this.getTile(coord).getPiece() instanceof Mushroom) {
 				throw new IllegalArgumentException("This piece cannot be selected");
 			}
-			tileSelected=this.getTile(this.getTile(coord).getPiece().getCoord());
+			selectedTile=this.getTile(this.getTile(coord).getPiece().getCoord());
 		}
 		//If there is a tile selected, and its this one, deselect it
-		else if (tileSelected==this.getTile(coord)){
-			tileSelected=null;
+		else if (selectedTile==this.getTile(coord)){
+			selectedTile=null;
 		}
 		else {
 			try {
 				trySwapPiece(coord);
 			} catch(Exception e) {
-				tileSelected=null;
+				selectedTile=null;
 				throw e;
 			}
 		}
@@ -101,7 +99,7 @@ public class Game {
 	 */
 	public void setBoard(ArrayList<Piece> boardArr) {
 		clearBoard();
-		tileSelected=null;
+		selectedTile=null;
 		for (Piece piece:boardArr) {
 			this.getTile(piece.getCoord()).setPiece(piece);
 			
@@ -124,7 +122,7 @@ public class Game {
 		}
 		else {
 			Move move = undoStack.pop();
-			tileSelected=this.getTile(move.coordNew);
+			selectedTile=this.getTile(move.coordNew);
 			swapPiece(move.coordOld, false);
 			redoStack.add(move);
 			if (undoStack.isEmpty()) {
@@ -143,7 +141,7 @@ public class Game {
 		else {
 			Move move = redoStack.pop();
 
-			tileSelected=this.getTile(move.coordOld);
+			selectedTile=this.getTile(move.coordOld);
 			swapPiece(move.coordNew, false);
 			undoStack.add(move);
 			
@@ -151,6 +149,14 @@ public class Game {
 				//TODO disable redo button
 			}
 		}
+	}
+	
+	/**
+	 * 
+	 * @return returns the currently selected tile
+	 */
+	public Tile getSelectedTile() {
+		return selectedTile;
 	}
 	
 	/**
@@ -162,7 +168,7 @@ public class Game {
 	 * @param coord destination of piece stored at TileSelected
 	 */
 	private void trySwapPiece(Coord coord) {
-		Piece piece = tileSelected.getPiece();
+		Piece piece = selectedTile.getPiece();
 		if (!(piece.isValidMove(coord)) ) {
 			throw new IllegalArgumentException("Not a valid move.");
 		}
@@ -178,22 +184,22 @@ public class Game {
 			}else if (piece instanceof Fox ) {
 				empty=false; // full spaces throw error
 			}else{
-				tileSelected=null;
+				selectedTile=null;
 				throw new IllegalArgumentException("only Bunnies and Foxes can move.");
 			}
 			
 			
-			int x = Math.min(tileSelected.getCoord().x, coord.x);		//Lower y value
-			int xMax = Math.max(tileSelected.getCoord().x, coord.x);	//Higher y value
+			int x = Math.min(selectedTile.getCoord().x, coord.x);		//Lower y value
+			int xMax = Math.max(selectedTile.getCoord().x, coord.x);	//Higher y value
 			int xChange=0;
-			int y = Math.min(tileSelected.getCoord().y, coord.y);		//Lower y value
-			int yMax = Math.max(tileSelected.getCoord().y, coord.y);	//Higher y value
+			int y = Math.min(selectedTile.getCoord().y, coord.y);		//Lower y value
+			int yMax = Math.max(selectedTile.getCoord().y, coord.y);	//Higher y value
 			int yChange=0;
 			
 			if 		(x==xMax) yChange=1;
 			else if (y==yMax) xChange=1;
 			else {
-				tileSelected=null;
+				selectedTile=null;
 				throw new IllegalArgumentException("Can not attempt a diagonal swap.");
 			}
 			x+=xChange;
@@ -205,7 +211,7 @@ public class Game {
 					
 				}
 				else if (tileCurr.isEmpty()==empty) {
-					tileSelected=null;
+					selectedTile=null;
 					if (piece instanceof Bunny) throw new IllegalArgumentException("The bunny cannot hop over empty spaces");
 					if (piece instanceof Fox) throw new IllegalArgumentException("The Fox cannot slide through full spaces");
 				}
@@ -235,34 +241,34 @@ public class Game {
 	/**
 	 * Swaps two pieces. All moves should be valid if this method is called.
 	 * 
-	 * @param coord the coordinate of the tile that tileSelected is to swap pieces with
+	 * @param coord the coordinate of the tile that selectedTile is to swap pieces with
 	 * @param changeStack used to decided if the undo/redo Stacks should be changed
 	 */
 	private void swapPiece(Coord coord, boolean changeStack) {
 		
-		if (tileSelected.getPiece() instanceof Fox) {
-			Fox fox = (Fox) tileSelected.getPiece();
+		if (selectedTile.getPiece() instanceof Fox) {
+			Fox fox = (Fox) selectedTile.getPiece();
 			
 			this.getTile(fox.getTail()).removePiece(); 
-			this.getTile(coord).setPiece(tileSelected.removePiece());
+			this.getTile(coord).setPiece(selectedTile.removePiece());
 			fox.setCoord(coord);
 			this.getTile(fox.getTail()).setPiece(fox);
 			
 		}
 		else { 
 			try {
-				tileSelected.getPiece().setCoord(coord);
+				selectedTile.getPiece().setCoord(coord);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			this.getTile(coord).setPiece(tileSelected.removePiece());
+			this.getTile(coord).setPiece(selectedTile.removePiece());
 		}
 		if (changeStack) {
-			undoStack.add(new Move(tileSelected.getCoord(),coord));
+			undoStack.add(new Move(selectedTile.getCoord(),coord));
 			redoStack.clear();
 		}
 		
-		tileSelected=null;
+		selectedTile=null;
 		
 	}
 	
@@ -298,7 +304,8 @@ public class Game {
 	 * removes all Pieces from the board
 	 */
 	private void clearBoard() {
-		tileSelected=null;
+		selectedTile=null;
+		buns.clear();
 		for(Tile[] tileLine:board) {
 			for(Tile tile:tileLine) {
 				tile.removePiece();
