@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.Stack;
 
 /**
@@ -7,47 +6,50 @@ import java.util.Stack;
  * contains the board and is in charge of swapping pieces
  * @authors Adam Prins, Matthew Harris, Alex Beimers
  * 			100 879 683, 101 073 502,   101 070 233
- * @version 1.7.6
- * 		Fixed fox head invalidating move based on new tail position. (Brackets were missing around the or statement)
+ * @version 2.0.0
+ * 		Updating for GUI support
+ * 		New constructor that takes a preestablished board as an argument
+ * 		Removal of previous constructor
+ * 		endGame is now a public method
+ * 		Deletion of text based methods
  * 		
  * 		
  */
 public class Game {
 	
+	/* The size of the board (5x5) */
 	public static final int BOARD_SIZE=5;
+	/* the game board */
 	private Tile board[][];
+	/* The currently selected tile */
 	private Tile tileSelected;
+	/* The undo and redo stacks */
 	private Stack<Move> undoStack;
 	private Stack<Move> redoStack;
+	/* The list of all Bunny pieces on the game board */
 	private ArrayList<Bunny> buns;
 	
 	
 	/**
 	 * sets up the game
-	 * populates the board with coordinates
+	 * Create a new game using a preestablished board
 	 * fetches the puzzleArray
 	 * calls setBoard to populate the pieces using the puzzleArray from Puzzles
 	 * 
+	 * @param board the board that is to be used by Game. This should usually be a ButtonTile array
 	 * @param puzzleNum the puzzle that is to be initialized from Puzzles
 	 * @throws Exception 
 	 */
-	public Game(int puzzleNum) throws Exception{
+	public Game(Tile[][] board, int puzzleNum) throws Exception {
 		
-		board = new Tile[BOARD_SIZE][BOARD_SIZE];
+		this.board=board;
 		undoStack = new Stack<Move>();
 		redoStack = new Stack<Move>();
 		buns  = new ArrayList<Bunny>();
 		
-		for (int x=0; x<BOARD_SIZE; x++) {
-			for (int y=0; y<BOARD_SIZE; y++) {
-				board[x][y]=new TextTile(new Coord(x,y));
-			}
-		}
-		
 		setBoard(Puzzles.getPuzzle(puzzleNum));
-		
-		
 	}
+	
 	
 	/**
 	 * used for playing the game
@@ -270,7 +272,7 @@ public class Game {
 	 * 
 	 * @return returns true if this puzzle has been solved
 	 */
-	private boolean endGame(){
+	public boolean endGame(){
 		int total = buns.size();
 		int count = 0;
 		for(int i = 0; i < buns.size(); i++){
@@ -302,108 +304,5 @@ public class Game {
 				tile.removePiece();
 			}
 		}
-	}
-	
-	/**
-	 * Prints out the name of the piece in 3 chars or 3 spaces if there is no piece 
-	 * 
-	 * @param piece The piece you want represented on the board
-	 */
-	public static void printPiece(Piece piece) {
-		if (piece instanceof Bunny) {
-			System.out.print("Bun");
-		} else if (piece instanceof Mushroom) {
-			System.out.print("Shr");
-		} else if (piece instanceof Fox) {
-			System.out.print("Fox");
-		} else {
-			System.out.print("   ");
-		}
-	}
-	
-	/**
-	 * Prints out the game board and all pieces on it 
-	 * 
-	 * @param game object to be printed
-	 */
-	public void printGameBoard() {
-		System.out.println("-------------------------------");
-		for (int y = 0; y < Game.BOARD_SIZE; y++) {
-			System.out.print("|");
-			for (int x = 0; x < Game.BOARD_SIZE; x++) {
-				if (tileSelected!=null && tileSelected.getCoord().x==x && tileSelected.getCoord().y==y) {
-					System.out.print("•");
-					printPiece(this.getTile(new Coord(x, y)).getPiece());
-					System.out.print("•|");
-				}
-				else if (((x == 0 || x == 4) && (y == 0 || y == 4)) || (x == 2 && y == 2)) {
-					System.out.print(">");
-					printPiece(this.getTile(new Coord(x, y)).getPiece());
-					System.out.print("<|");
-				} else {
-					System.out.print(" ");
-					printPiece(this.getTile(new Coord(x, y)).getPiece());
-					System.out.print(" |");
-				}
-				
-			}
-			System.out.println();
-			System.out.println("-------------------------------");
-		}
-	}
-	
-	/**
-	 * Main game loop for text based implementation
-	 * creates and populates a game board
-	 * after completing a puzzle, it will fetch the next puzzle from Puzzles
-	 * @throws Exception 
-	 */
-	public static void main(String args[]) throws Exception {
-		
-		//TODO make sure this submits with a value of 1!
-		int currPuzzle=1;
-		
-		Game game = new Game(currPuzzle);
-		boolean won=false;
-		
-		Scanner reader = new Scanner(System.in);
-		while(!won) {
-			while (!game.endGame()) {
-				game.printGameBoard();
-				System.out.println("Select a Tile: ");
-				System.out.print("input x coordinate: ");
-				int xcoord = reader.nextInt();
-				System.out.print("input y coordinate: ");
-				int ycoord = reader.nextInt();
-				System.out.println();
-				
-	
-				try {
-					Coord coord = new Coord(xcoord, ycoord);
-					game.selectTile(coord);
-				} catch (Exception e) {
-					System.out.println(e.getMessage());
-				}
-			}
-			System.out.println("Congratulations! You compleated Puzzle " + currPuzzle + "!");
-			game.printGameBoard();
-			
-			currPuzzle++;
-			try {
-				game.setBoard(Puzzles.getPuzzle(currPuzzle));
-			} catch(Exception e) {
-				won=true;
-				break;
-			}
-			
-			System.out.print("Would you like to continue? y or n: ");
-			String nextGameStr = reader.next();
-			char nextGame = nextGameStr.charAt(0);
-			if(!(nextGame == 'y' || nextGame == 'Y')) {
-				won = true;
-			}
-		}
-		System.out.println("GAME OVER YOU WIN!!!!!");
-		reader.close();
 	}
 }
