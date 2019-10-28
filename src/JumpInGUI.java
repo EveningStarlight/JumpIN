@@ -10,12 +10,9 @@ import javax.swing.event.*;
  *  
  * @author Adam Prins
  * 			100 879 683
- * @version 1.5.0
- * 		added basic button labeling
- * 		fixed display of button selections
- * 		added puzzleNumber to help advance through levels
- * 		added nextLevel button
- * 		implemented reset button function
+ * @version 1.5.1
+ * 		GUI layout edited to look better
+ * 		removed print statement from reset
  * 		
  */
 public class JumpInGUI implements ActionListener {
@@ -88,22 +85,26 @@ public class JumpInGUI implements ActionListener {
 	    c.anchor = (GridBagConstraints.LINE_START);
 	    c.fill = GridBagConstraints.HORIZONTAL;
 	    
+	    c.gridx = 0;
+	    c.weightx=1;
+	    interfacePanel.add(Box.createGlue(), c);
+	    
 	    c.weightx=0;
 	    c.weighty=0;
-	    c.gridx = 0;
+	    c.gridx = 1;
 	    c.gridy = 0;
 	    undo = new JButton("undo");
-	    undo.setPreferredSize(new Dimension(75,40));
+	    undo.setPreferredSize(new Dimension(60,40));
 	    undo.addActionListener(this);
 	    interfacePanel.add(undo, c);
 	    
-	    c.gridx = 1;
+	    c.gridx = 2;
 	    redo = new JButton("redo");
-	    redo.setPreferredSize(new Dimension(75,40));
+	    redo.setPreferredSize(new Dimension(60,40));
 	    redo.addActionListener(this);
 	    interfacePanel.add(redo, c);
 	    
-	    c.gridx = 2;
+	    c.gridx = 3;
 	    c.weightx=1;
 	    interfacePanel.add(Box.createGlue(), c);
 	    
@@ -113,11 +114,22 @@ public class JumpInGUI implements ActionListener {
 	    interfacePanel.add(outputStatic,c);
 	    c.weightx=1;
 	    c.gridx = 0;
-	    c.gridwidth=2;
+	    c.gridwidth=4;
 	    c.gridy = 6;
 	    output = new JLabel("Game Start");
-	    output.setPreferredSize(new Dimension(200,30));
+	    output.setPreferredSize(new Dimension(150,30));
 	    interfacePanel.add(output,c);
+	    
+	    c.weightx=1;
+	    c.weighty=1;
+	    c.gridx = 0;
+	    c.gridy = 10;
+	    c.gridwidth=4;
+	    nextLevel = new JButton("Next Level");
+	    nextLevel.setPreferredSize(new Dimension(150,30));
+	    nextLevel.addActionListener(this);
+	    nextLevel.setEnabled(false);
+	    interfacePanel.add(nextLevel,c);
 	    
 	    c.weightx=1;
 	    c.weighty=1;
@@ -125,17 +137,6 @@ public class JumpInGUI implements ActionListener {
 	    c.gridy = 20;
 	    c.gridwidth=3;
 	    interfacePanel.add(Box.createGlue(),c);
-	    
-	    c.weightx=1;
-	    c.weighty=1;
-	    c.gridx = 0;
-	    c.gridy = 10;
-	    c.gridwidth=3;
-	    nextLevel = new JButton("Next Level");
-	    nextLevel.setPreferredSize(new Dimension(50,30));
-	    nextLevel.addActionListener(this);
-	    nextLevel.setEnabled(false);
-	    interfacePanel.add(nextLevel,c);
 	    
 	    
 	    JPanel boardPanel = new JPanel();
@@ -169,15 +170,21 @@ public class JumpInGUI implements ActionListener {
 	    c.weightx=0;
 	    contentPane.add(boardPanel,c);
 	    
-	    c.gridx=6;	c.gridwidth=4;
+	    c.gridx=6;	c.gridwidth=1;
+	    c.gridy=0;	c.gridheight=6;
+	    c.ipadx = 10; c.ipady = 5;	//c.ipadx fully controls the space between contentPane and interfacePanel
+	    c.weightx=0;
+	    contentPane.add(Box.createGlue(),c);
+	    
+	    c.gridx=7;	c.gridwidth=4;
 	    c.gridy=0;	c.gridheight=6;
 	    c.ipadx = 5; c.ipady = 5;
 	    c.weightx=1;
 	    contentPane.add(interfacePanel,c);
 	    
-	    frame.setPreferredSize(new Dimension(800,600));
+	    frame.setPreferredSize(new Dimension(750,600));
 	    frame.pack(); // pack contents into our frame
-        frame.setResizable(true); // we can resize it
+        frame.setResizable(false); // we can resize it
         frame.setVisible(true); // make it visible
         
         try {
@@ -244,7 +251,6 @@ public class JumpInGUI implements ActionListener {
             JMenuItem item = (JMenuItem)o;
 
             if (item == resetItem) {
-            	System.out.println("reset");
             	setBoard(puzzleNumber);
             } 
             else if (item == quitItem) {
