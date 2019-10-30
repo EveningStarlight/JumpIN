@@ -10,8 +10,8 @@ import javax.swing.event.*;
  *  
  * @author Adam Prins
  * 			100 879 683
- * @version 1.5.2
- * 		Undo/Redo buttons disabled and enabled if they are empty or not 
+ * @version 1.5.3
+ * 		Removed own BOARD_SIZE, uses games.BOARD_SIZE only now
  * 		
  */
 public class JumpInGUI implements ActionListener {
@@ -19,8 +19,6 @@ public class JumpInGUI implements ActionListener {
 	public static void main(String[] args) {
 		new JumpInGUI();
 	}
-	
-	public static final int BOARD_SIZE = 5;
 	
 	private int puzzleNumber=1;
 	
@@ -144,10 +142,10 @@ public class JumpInGUI implements ActionListener {
         
         
 	    /* The button that is clicked to increment the counter. */
-	    board = new ButtonTile[BOARD_SIZE][BOARD_SIZE];
+	    board = new ButtonTile[Game.BOARD_SIZE][Game.BOARD_SIZE];
 		
-		for (int x=0; x<BOARD_SIZE; x++) {
-			for (int y=0; y<BOARD_SIZE; y++) {
+		for (int x=0; x<Game.BOARD_SIZE; x++) {
+			for (int y=0; y<Game.BOARD_SIZE; y++) {
                 c.gridx = x;
                 c.gridy = y;
                 board[x][y]= new ButtonTile(new Coord(x,y));
