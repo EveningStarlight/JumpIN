@@ -6,9 +6,8 @@ import java.util.Stack;
  * contains the board and is in charge of swapping pieces
  * @authors Adam Prins, Matthew Harris, Alex Beimers
  * 			100 879 683, 101 073 502,   101 070 233
- * @version 2.1.2
- * 		Can now ask if the undo/redo stacks are empty
- * 		removed previous todos from stack code
+ * @version 2.1.3
+ * 		endGame now uses the isHole method from Coord
  * 
  */
 public class Game {
@@ -289,11 +288,7 @@ public class Game {
 		int total = buns.size();
 		int count = 0;
 		for(int i = 0; i < buns.size(); i++){
-			if(		buns.get(i).getCoord().equals(new Coord(0, 0)) || 
-					buns.get(i).getCoord().equals(new Coord(4, 0)) || 
-					buns.get(i).getCoord().equals(new Coord(2, 2)) || 
-					buns.get(i).getCoord().equals(new Coord(0, 4)) || 
-					buns.get(i).getCoord().equals(new Coord(4, 4))) {
+			if(buns.get(i).getCoord().isHole()) {
 				count ++;
 			}
 		}
