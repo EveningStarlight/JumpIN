@@ -10,9 +10,8 @@ import javax.swing.event.*;
  *  
  * @author Adam Prins
  * 			100 879 683
- * @version 1.5.1
- * 		GUI layout edited to look better
- * 		removed print statement from reset
+ * @version 1.5.2
+ * 		Undo/Redo buttons disabled and enabled if they are empty or not 
  * 		
  */
 public class JumpInGUI implements ActionListener {
@@ -320,6 +319,10 @@ public class JumpInGUI implements ActionListener {
 				
 			}
 		}
+    	
+    	undo.setEnabled(!game.isUndoEmpty());
+    	redo.setEnabled(!game.isRedoEmpty());
     }
+    
     
 }
