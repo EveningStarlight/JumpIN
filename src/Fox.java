@@ -1,22 +1,31 @@
+import java.awt.Image;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author Jay McCracken
  * 			101066860
- * @version 1.0.0
+ * @version 2.0.0
  *
  * Creation of a fox piece, this piece can move only move in the orientation of the fox
  *
  */
 
-public class Fox implements Piece{
+public class Fox extends Piece{
     private Coord head;
     private Coord tail;
+
+    public static final ImageIcon iconHead = new ImageIcon("ButtonIcons/fox_head.png");
+    public static final ImageIcon iconTail = new ImageIcon("ButtonIcons/fox_tail.png");
 
     /**
      * The creation of the fox piece, spot selected by coordinates
      * @param coord
      */
     public Fox(Coord Head, Coord Tail) throws Exception{
+    	super(Head);
     	if (((Tail.x - Head.x) > 1 || (Tail.y - Head.y) > 1) && (Tail.x == Head.x || Tail.y == Head.y)){
     		throw new IllegalArgumentException("This piece cannot placed like that");
     	}else {
@@ -41,14 +50,6 @@ public class Fox implements Piece{
         }else {
     	return false;
         }
-    }
-
-    /**
-     * Grabbing the specific fox object
-     * @return
-     */
-    public Piece getPiece(){
-        return this;
     }
 
     /**
