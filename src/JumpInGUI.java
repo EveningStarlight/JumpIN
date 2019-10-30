@@ -10,8 +10,11 @@ import javax.swing.event.*;
  *  
  * @author Adam Prins
  * 			100 879 683
- * @version 1.5.3
- * 		Removed own BOARD_SIZE, uses games.BOARD_SIZE only now
+ * @version 1.6.1
+ * 		frame close behaviour set to use JFrame constant
+ * 
+ * @version 1.6.0
+ * 		GUI now uses images on button instead of text
  * 		
  */
 public class JumpInGUI implements ActionListener {
@@ -183,7 +186,7 @@ public class JumpInGUI implements ActionListener {
 	    frame.pack(); // pack contents into our frame
         frame.setResizable(false); // we can resize it
         frame.setVisible(true); // make it visible
-        frame.setDefaultCloseOperation(1); //stops the program when the x is pressed
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //stops the program when the x is pressed
         
         try {
 			game = new Game(board, puzzleNumber);
