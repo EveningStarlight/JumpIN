@@ -183,6 +183,7 @@ public class JumpInGUI implements ActionListener {
 	    frame.pack(); // pack contents into our frame
         frame.setResizable(false); // we can resize it
         frame.setVisible(true); // make it visible
+        frame.setDefaultCloseOperation(1); //stops the program when the x is pressed
         
         try {
 			game = new Game(board, puzzleNumber);
@@ -299,6 +300,9 @@ public class JumpInGUI implements ActionListener {
 		nextLevel.setEnabled(true);
     }
     
+    /**
+     * Adding icons to the buttons
+     */
     private void drawButtons() {
     	for(ButtonTile[] tileLine:board) {
 			for(ButtonTile tile:tileLine) {
@@ -306,13 +310,21 @@ public class JumpInGUI implements ActionListener {
 				
 				//TODO replace with pictures
 				if (piece == null) {
-					tile.setText("   ");
+					if (tile.getCoord().isHole()) {
+						tile.setIcon(Piece.iconHole);
+					}else {
+						tile.setIcon(Piece.icon);
+					}					
 				} else if (piece instanceof Bunny) {
-					tile.setText("Bun");
+					tile.setIcon(Bunny.icon);
 				} else if (piece instanceof Mushroom) {
-					tile.setText("Shr");
+					tile.setIcon(Mushroom.icon);
 				} else if (piece instanceof Fox) {
-					tile.setText("Fox");
+					if (tile.getCoord().equals(piece.getCoord())) {
+						tile.setIcon(Fox.iconHead);
+					}else {
+						tile.setIcon(Fox.iconTail);
+					}
 				}
 				
 			}
