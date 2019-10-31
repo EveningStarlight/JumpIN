@@ -1,6 +1,3 @@
-import java.awt.Image;
-
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 /**
@@ -18,7 +15,7 @@ public class Fox extends Piece{
     private Coord tail;
 
     public static final ImageIcon iconHead = new ImageIcon("ButtonIcons/fox_head.png");
-    public static final ImageIcon iconTail = new ImageIcon("ButtonIcons/fox_tail.png");
+    public static final ImageIcon iconTail = new ImageIcon("ButtonIcons/fox_taile.png");
 
     /**
      * The creation of the fox piece, spot selected by coordinates

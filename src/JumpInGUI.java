@@ -8,8 +8,9 @@ import javax.swing.event.*;
  * GUI implementation 
  * holds the game layout and the other intractable elements
  *  
- * @author Adam Prins
- * 			100 879 683
+ * @author Adam Prins, Jay McCracken
+ * 		   100 879 683, 101 066 860
+ * 
  * @version 1.5.3
  * 		Removed own BOARD_SIZE, uses games.BOARD_SIZE only now
  * 		
