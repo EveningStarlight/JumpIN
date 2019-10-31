@@ -6,7 +6,6 @@ import java.awt.event.*;
  * GUI implementation 
  * holds the game layout and the other intractable elements
  *  
-<<<<<<< HEAD
  * @author Adam Prins, Jay McCracken
  * 		   100 879 683, 101 066 860
  * 
@@ -90,13 +89,13 @@ public class JumpInGUI implements ActionListener {
 	    c.gridx = 1;
 	    c.gridy = 0;
 	    undo = new JButton("undo");
-	    undo.setPreferredSize(new Dimension(60,40));
+	    undo.setPreferredSize(new Dimension(100,40));
 	    undo.addActionListener(this);
 	    interfacePanel.add(undo, c);
 	    
 	    c.gridx = 2;
 	    redo = new JButton("redo");
-	    redo.setPreferredSize(new Dimension(60,40));
+	    redo.setPreferredSize(new Dimension(100,40));
 	    redo.addActionListener(this);
 	    interfacePanel.add(redo, c);
 	    
