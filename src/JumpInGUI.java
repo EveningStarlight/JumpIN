@@ -1,8 +1,6 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
 
 /**
  * GUI implementation 
@@ -10,8 +8,8 @@ import javax.swing.event.*;
  *  
  * @author Adam Prins
  * 			100 879 683
- * @version 1.7.1
- * 		Fixed button borders on undo/redo and reset
+ * @version 1.7.2
+ * 		Fixed selection not disappearing after a invalid move
  * 		
  */
 public class JumpInGUI implements ActionListener {
@@ -219,6 +217,7 @@ public class JumpInGUI implements ActionListener {
         	} catch (Exception exception) {
         		output.setText(exception.getMessage());
         		selectedTile=null;
+        		drawButtons();
         	}
         	
         	
