@@ -16,9 +16,11 @@ public class Fox extends Piece{
     private Coord head;
     private Coord tail;
 
-    // The picture of the head and tail for use on buttons
-    public static final ImageIcon iconHead = new ImageIcon("ButtonIcons/foxHead.png");
-    public static final ImageIcon iconTail = new ImageIcon("ButtonIcons/foxTail.png");
+    //the images to be placed on the buttons
+    public static final ImageIcon iconHead = new ImageIcon("ButtonIcons/fox_head.png");
+    public static final ImageIcon iconTail = new ImageIcon("ButtonIcons/fox_tail.png");
+
+
 
     /**
      * The creation of the fox piece, spot selected by coordinates

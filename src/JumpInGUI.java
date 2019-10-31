@@ -6,11 +6,11 @@ import java.awt.event.*;
  * GUI implementation 
  * holds the game layout and the other intractable elements
  *  
- * @author Adam Prins
- * 			100 879 683
- * @version 1.7.2
- * 		Fixed selection not disappearing after a invalid move
- * 		
+ * @author Adam Prins, Jay McCracken
+ * 		   100 879 683, 101 066 860
+ * 
+ * @version 1.8.0
+ *		
  */
 public class JumpInGUI implements ActionListener {
 	
@@ -89,13 +89,13 @@ public class JumpInGUI implements ActionListener {
 	    c.gridx = 1;
 	    c.gridy = 0;
 	    undo = new JButton("undo");
-	    undo.setPreferredSize(new Dimension(60,40));
+	    undo.setPreferredSize(new Dimension(100,40));
 	    undo.addActionListener(this);
 	    interfacePanel.add(undo, c);
 	    
 	    c.gridx = 2;
 	    redo = new JButton("redo");
-	    redo.setPreferredSize(new Dimension(60,40));
+	    redo.setPreferredSize(new Dimension(100,40));
 	    redo.addActionListener(this);
 	    interfacePanel.add(redo, c);
 	    
@@ -311,19 +311,21 @@ public class JumpInGUI implements ActionListener {
 				tile.setBorder(BorderFactory.createLineBorder(Color.black));
 				tile.setSelected(false);
 				if (piece == null) {
-					if (tile.getCoord().isHole())tile.setIcon(Piece.iconHole);
-					else tile.setIcon(Piece.icon);
+					if (tile.getCoord().isHole()) {
+						tile.setIcon(Piece.iconHole);
+					}else tile.setIcon(Piece.icon);
 					
 				} else if (piece instanceof Bunny) {
-					if (tile.getCoord().isHole()) tile.setIcon(Bunny.iconHole);
-					else tile.setIcon(Bunny.icon);
+					if (tile.getCoord().isHole()) {
+						tile.setIcon(Bunny.iconHole);
+					}else tile.setIcon(Bunny.icon);
 					
 				} else if (piece instanceof Mushroom) {
 					tile.setIcon(Mushroom.icon);
 				} else if (piece instanceof Fox) {
-					if (tile.getCoord().equals(piece.getCoord())) tile.setIcon(Fox.iconHead);
-					else tile.setIcon(Fox.iconTail);
-						
+					if (tile.getCoord().equals(piece.getCoord())) {
+						tile.setIcon(Fox.iconHead);
+					}else tile.setIcon(Fox.iconTail);	
 				}
 			}
 		}
