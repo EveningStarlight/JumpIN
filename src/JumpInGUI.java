@@ -10,11 +10,8 @@ import javax.swing.event.*;
  *  
  * @author Adam Prins
  * 			100 879 683
- * @version 1.6.1
- * 		frame close behaviour set to use JFrame constant
- * 
- * @version 1.6.0
- * 		GUI now uses images on button instead of text
+ * @version 1.6.2
+ * 		drawButtons now has an additional picture for a bunny in a hole
  * 		
  */
 public class JumpInGUI implements ActionListener {
@@ -311,25 +308,21 @@ public class JumpInGUI implements ActionListener {
 			for(ButtonTile tile:tileLine) {
 				Piece piece = tile.getPiece();
 				
-				//TODO replace with pictures
 				if (piece == null) {
-					if (tile.getCoord().isHole()) {
-						tile.setIcon(Piece.iconHole);
-					}else {
-						tile.setIcon(Piece.icon);
-					}					
+					if (tile.getCoord().isHole()) tile.setIcon(Piece.iconHole);
+					else tile.setIcon(Piece.icon);
+					
 				} else if (piece instanceof Bunny) {
-					tile.setIcon(Bunny.icon);
+					if (tile.getCoord().isHole()) tile.setIcon(Bunny.iconHole);
+					else tile.setIcon(Bunny.icon);
+					
 				} else if (piece instanceof Mushroom) {
 					tile.setIcon(Mushroom.icon);
 				} else if (piece instanceof Fox) {
-					if (tile.getCoord().equals(piece.getCoord())) {
-						tile.setIcon(Fox.iconHead);
-					}else {
-						tile.setIcon(Fox.iconTail);
-					}
+					if (tile.getCoord().equals(piece.getCoord())) tile.setIcon(Fox.iconHead);
+					else tile.setIcon(Fox.iconTail);
+						
 				}
-				
 			}
 		}
     	
