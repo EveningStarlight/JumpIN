@@ -10,9 +10,8 @@ import javax.swing.event.*;
  *  
  * @author Adam Prins
  * 			100 879 683
- * @version 1.7.0
- * 		Added boarders to ButtonTiles
- * 		Added white boarder to selected tiles
+ * @version 1.7.1
+ * 		Fixed button borders on undo/redo and reset
  * 		
  */
 public class JumpInGUI implements ActionListener {
@@ -211,27 +210,8 @@ public class JumpInGUI implements ActionListener {
         if (o instanceof ButtonTile) {
         	ButtonTile button = (ButtonTile) o;
         	try {
-        		if (selectedTile!=null)  {
-        			selectedTile.setSelected(false);
-        			selectedTile.setBorder(BorderFactory.createLineBorder(Color.black));
-        			if (selectedTile.getPiece() instanceof Fox) {
-        				ButtonTile tail = (ButtonTile) game.getTile(((Fox) selectedTile.getPiece()).getTail());
-        				tail.setSelected(false);
-        				tail.setBorder(BorderFactory.createLineBorder(Color.black));
-        			}
-        		}
         		game.selectTile(button.getCoord());
         		selectedTile = (ButtonTile) game.getSelectedTile();
-        		
-        		if (selectedTile!=null)  {
-        			selectedTile.setSelected(true);
-        			selectedTile.setBorder(BorderFactory.createLineBorder(Color.white));
-        			if (selectedTile.getPiece() instanceof Fox) {
-        				ButtonTile tail = (ButtonTile) game.getTile(((Fox) selectedTile.getPiece()).getTail());
-        				tail.setSelected(false);
-        				tail.setBorder(BorderFactory.createLineBorder(Color.white));
-        			}
-        		}
         		
         		drawButtons();
         		if (game.endGame()) endGame();
@@ -248,6 +228,7 @@ public class JumpInGUI implements ActionListener {
         	 if (button == undo) {
         		 try {
         		 game.undoMove();
+        		 selectedTile=null;
         		 drawButtons();
         		 } catch (Exception exception) {
         			 output.setText(exception.getMessage());
@@ -256,6 +237,7 @@ public class JumpInGUI implements ActionListener {
         	 else if (button == redo) {
         		 try {
         			 game.redoMove();
+        			 selectedTile=null;
         			 drawButtons();
         		 } catch (Exception exception) {
         			 output.setText(exception.getMessage());
@@ -327,7 +309,8 @@ public class JumpInGUI implements ActionListener {
     	for(ButtonTile[] tileLine:board) {
 			for(ButtonTile tile:tileLine) {
 				Piece piece = tile.getPiece();
-				
+				tile.setBorder(BorderFactory.createLineBorder(Color.black));
+				tile.setSelected(false);
 				if (piece == null) {
 					if (tile.getCoord().isHole()) tile.setIcon(Piece.iconHole);
 					else tile.setIcon(Piece.icon);
@@ -343,6 +326,15 @@ public class JumpInGUI implements ActionListener {
 					else tile.setIcon(Fox.iconTail);
 						
 				}
+			}
+		}
+    	if (selectedTile!=null)  {
+			selectedTile.setSelected(true);
+			selectedTile.setBorder(BorderFactory.createLineBorder(Color.white));
+			if (selectedTile.getPiece() instanceof Fox) {
+				ButtonTile tail = (ButtonTile) game.getTile(((Fox) selectedTile.getPiece()).getTail());
+				tail.setSelected(true);
+				tail.setBorder(BorderFactory.createLineBorder(Color.white));
 			}
 		}
     	
