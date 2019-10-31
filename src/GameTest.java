@@ -78,9 +78,6 @@ public class GameTest {
 		assertEquals(board[4][1].getPiece(), game.getTile(coordShr2).getPiece());
 	}
 
-	@Test
-	public void testGetSelectedTile() {
-	}
 
 	@Test
 	public void testEndGame() {
