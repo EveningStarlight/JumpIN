@@ -1,6 +1,3 @@
-import java.awt.Image;
-
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 /**
@@ -14,15 +11,19 @@ import javax.swing.ImageIcon;
  */
 
 public class Fox extends Piece{
+	
+	// The location of the head of the fox and tail of the fox
     private Coord head;
     private Coord tail;
 
+    // The picture of the head and tail for use on buttons
     public static final ImageIcon iconHead = new ImageIcon("ButtonIcons/foxHead.png");
     public static final ImageIcon iconTail = new ImageIcon("ButtonIcons/foxTail.png");
 
     /**
      * The creation of the fox piece, spot selected by coordinates
-     * @param coord
+     * @param head the location of the head of the fox
+     * @param tail the location of the tail of the fox
      */
     public Fox(Coord Head, Coord Tail) throws Exception{
     	super(Head);
@@ -37,7 +38,7 @@ public class Fox extends Piece{
     /**
      * This piece can only move in the direction the fox is oriented this ensures the request
      * is asking for that.
-     * @return true is they can make the move they are requesting, false if they can not
+     * @return true is proposed coordinate is valid, false if it is not
      */
     public boolean isValidMove(Coord coord){
         if (coord.x == 4 ||coord.y == 4) { //if the head is on row or column 3 and wants to move down say that it is not a vaild move
@@ -54,7 +55,7 @@ public class Fox extends Piece{
 
     /**
      * setting the coordinate of the fox determined by the orientation of it (the head of the fox is always up or to the left)
-     * @param coord this value will always be the head of the fox
+     * @param coord The new coordinate of the head of the fox
      */
     public void setCoord(Coord coord){
         if (this.head.y == this.tail.y) {
@@ -68,7 +69,7 @@ public class Fox extends Piece{
 
     /**
      * grabbing the coordinate of the head of the fox
-     * @return the coordinate
+     * @return the coordinate of the head
      */
     public Coord getCoord(){
         return this.head;
@@ -76,7 +77,7 @@ public class Fox extends Piece{
     
     /**
      * grabbing the coordinate of the tail of the fox
-     * @return the coordinate
+     * @return the coordinate of the tail
      */
     public Coord getTail() {
     	return this.tail;
