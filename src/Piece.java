@@ -6,17 +6,18 @@ import javax.swing.ImageIcon;
  * 			101066860
  * @version 2.0.0
  * 
- * This is the interface for the generic piece
- * Objects implementing this will be the Bunny, Mushroom, and Fox
+ * This is the abstract class for the generic piece
+ * Objects extending this will be the Bunny, Mushroom, and Fox
  *
  */
 public abstract class Piece {
-	/**
-	 * Variable to store the image for the piece
-	 */
+	
+	// The location of the piece
 	protected Coord coord;
-	public static final ImageIcon icon = new ImageIcon("ButtonIcons/blankspace.png");
-	public static final ImageIcon iconHole = new ImageIcon("ButtonIcons/hole.png");
+	
+	// The picture of the ground and hole for use on buttons
+	public static final ImageIcon icon = new ImageIcon("ButtonIcons/spaceBlank.png");
+	public static final ImageIcon iconHole = new ImageIcon("ButtonIcons/SpaceHole.png");
 	
 	
 	public Piece(Coord coord) {
@@ -39,10 +40,12 @@ public abstract class Piece {
 	};	
 	
 	/**
-     * setting the new coordanate of the piece throws error if it can not
+     * setting the new coordinate of the piece throws error if it can not
      * @param coord
      */
-	public void setCoord(Coord coord) throws Exception{};	
+	public void setCoord(Coord coord) throws Exception{
+    	throw new IllegalArgumentException("You can not move this piece.");
+    }
 	
 	/**
      * Grabbing the coordinate of the specific object

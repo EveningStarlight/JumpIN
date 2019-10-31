@@ -1,18 +1,23 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
 
 /**
  * GUI implementation 
  * holds the game layout and the other intractable elements
  *  
+<<<<<<< HEAD
  * @author Adam Prins, Jay McCracken
  * 		   100 879 683, 101 066 860
  * 
  * @version 1.5.3
  * 		Removed own BOARD_SIZE, uses games.BOARD_SIZE only now
+=======
+ * @author Adam Prins
+ * 			100 879 683
+ * @version 1.7.1
+ * 		Fixed button borders on undo/redo and reset
+>>>>>>> branch 'master' of https://github.com/AdamPrins/JumpIN
  * 		
  */
 public class JumpInGUI implements ActionListener {
@@ -152,9 +157,11 @@ public class JumpInGUI implements ActionListener {
                 board[x][y]= new ButtonTile(new Coord(x,y));
                 board[x][y].setPreferredSize(new Dimension(100,100));
                 board[x][y].setMargin(new Insets(0,0,0,0));
+                board[x][y].setBorder(BorderFactory.createLineBorder(Color.black));
                 board[x][y].setEnabled(true);
                 boardPanel.add(board[x][y],c);
                 board[x][y].addActionListener(this);
+                
 			}
 		}
 	    
@@ -184,7 +191,7 @@ public class JumpInGUI implements ActionListener {
 	    frame.pack(); // pack contents into our frame
         frame.setResizable(false); // we can resize it
         frame.setVisible(true); // make it visible
-        frame.setDefaultCloseOperation(1); //stops the program when the x is pressed
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //stops the program when the x is pressed
         
         try {
 			game = new Game(board, puzzleNumber);
@@ -209,10 +216,8 @@ public class JumpInGUI implements ActionListener {
         if (o instanceof ButtonTile) {
         	ButtonTile button = (ButtonTile) o;
         	try {
-        		if (selectedTile!=null)  selectedTile.setSelected(false);
         		game.selectTile(button.getCoord());
         		selectedTile = (ButtonTile) game.getSelectedTile();
-        		if (selectedTile!=null)  selectedTile.setSelected(true);
         		
         		drawButtons();
         		if (game.endGame()) endGame();
@@ -229,6 +234,7 @@ public class JumpInGUI implements ActionListener {
         	 if (button == undo) {
         		 try {
         		 game.undoMove();
+        		 selectedTile=null;
         		 drawButtons();
         		 } catch (Exception exception) {
         			 output.setText(exception.getMessage());
@@ -237,6 +243,7 @@ public class JumpInGUI implements ActionListener {
         	 else if (button == redo) {
         		 try {
         			 game.redoMove();
+        			 selectedTile=null;
         			 drawButtons();
         		 } catch (Exception exception) {
         			 output.setText(exception.getMessage());
@@ -308,26 +315,32 @@ public class JumpInGUI implements ActionListener {
     	for(ButtonTile[] tileLine:board) {
 			for(ButtonTile tile:tileLine) {
 				Piece piece = tile.getPiece();
-				
-				//TODO replace with pictures
+				tile.setBorder(BorderFactory.createLineBorder(Color.black));
+				tile.setSelected(false);
 				if (piece == null) {
-					if (tile.getCoord().isHole()) {
-						tile.setIcon(Piece.iconHole);
-					}else {
-						tile.setIcon(Piece.icon);
-					}					
+					if (tile.getCoord().isHole()) tile.setIcon(Piece.iconHole);
+					else tile.setIcon(Piece.icon);
+					
 				} else if (piece instanceof Bunny) {
-					tile.setIcon(Bunny.icon);
+					if (tile.getCoord().isHole()) tile.setIcon(Bunny.iconHole);
+					else tile.setIcon(Bunny.icon);
+					
 				} else if (piece instanceof Mushroom) {
 					tile.setIcon(Mushroom.icon);
 				} else if (piece instanceof Fox) {
-					if (tile.getCoord().equals(piece.getCoord())) {
-						tile.setIcon(Fox.iconHead);
-					}else {
-						tile.setIcon(Fox.iconTail);
-					}
+					if (tile.getCoord().equals(piece.getCoord())) tile.setIcon(Fox.iconHead);
+					else tile.setIcon(Fox.iconTail);
+						
 				}
-				
+			}
+		}
+    	if (selectedTile!=null)  {
+			selectedTile.setSelected(true);
+			selectedTile.setBorder(BorderFactory.createLineBorder(Color.white));
+			if (selectedTile.getPiece() instanceof Fox) {
+				ButtonTile tail = (ButtonTile) game.getTile(((Fox) selectedTile.getPiece()).getTail());
+				tail.setSelected(true);
+				tail.setBorder(BorderFactory.createLineBorder(Color.white));
 			}
 		}
     	

@@ -1,4 +1,3 @@
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 /**
@@ -8,11 +7,14 @@ import javax.swing.ImageIcon;
  * @version 2.0.0
  *
  * Creation of a bunny piece, this piece can move vertically or horizontally
+ * by jumping over other pieces
  *
  */
 public class Bunny extends Piece{
 	
-	public static final ImageIcon icon = new ImageIcon("ButtonIcons/bunny_face.png");
+	// The picture of the Bunny and the Bunny in a hole for use on buttons
+	public static final ImageIcon icon = new ImageIcon("ButtonIcons/bunnyBlank.png");
+	public static final ImageIcon iconHole = new ImageIcon("ButtonIcons/bunnyHole.png");
 
     /**
      * The creation of the bunny piece, spot selected by coordinates
@@ -23,9 +25,10 @@ public class Bunny extends Piece{
     }
 
     /**
-     * This piece can only move vertically or horizontally this ensures the request
-     * is asking for that.
-     * @return true is they can make the move they are requesting, false if they can not
+     * This piece can only move vertically or horizontally and must jump over at
+     * least one piece. this ensures the request is valid based only on the x and y positions.
+     * 
+     * @return true is proposed coordinate is valid, false if it is not
      */
     public boolean isValidMove(Coord coord){
         if(this.coord.x == coord.x && (Math.abs(this.coord.y - coord.y) > 1)) {
@@ -39,7 +42,7 @@ public class Bunny extends Piece{
 
     /**
      * set new coordinates of the bunny
-     * @param coord
+     * @param coord the new coordinates of the bunny
      */
     public void setCoord(Coord coord){
         this.coord = coord;
