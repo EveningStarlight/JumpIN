@@ -15,8 +15,8 @@ public abstract class Piece {
 	 * Variable to store the image for the piece
 	 */
 	protected Coord coord;
-	public static final ImageIcon icon = new ImageIcon("ButtonIcons/blankspace.png");
-	public static final ImageIcon iconHole = new ImageIcon("ButtonIcons/hole.png");
+	public static final ImageIcon icon = new ImageIcon("ButtonIcons/spaceBlank.png");
+	public static final ImageIcon iconHole = new ImageIcon("ButtonIcons/spaceHole.png");
 	
 	
 	public Piece(Coord coord) {

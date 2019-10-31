@@ -1,6 +1,3 @@
-import java.awt.Image;
-
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 /**
@@ -14,7 +11,7 @@ import javax.swing.ImageIcon;
  *
  */
 public class Mushroom extends Piece{
-	public static final ImageIcon icon = new ImageIcon("ButtonIcons/Mushroom.png");
+	public static final ImageIcon icon = new ImageIcon("ButtonIcons/mushroom.png");
     /**
      * The creation of the mushroom piece, spot selected by coordanites
      * @param coord

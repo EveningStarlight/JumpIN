@@ -12,7 +12,8 @@ import javax.swing.ImageIcon;
  */
 public class Bunny extends Piece{
 	
-	public static final ImageIcon icon = new ImageIcon("ButtonIcons/bunny_face.png");
+	public static final ImageIcon icon = new ImageIcon("ButtonIcons/bunnyBlank.png");
+	public static final ImageIcon iconHole = new ImageIcon("ButtonIcons/bunnyHole.png");
 
     /**
      * The creation of the bunny piece, spot selected by coordinates
