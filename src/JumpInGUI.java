@@ -10,8 +10,9 @@ import javax.swing.event.*;
  *  
  * @author Adam Prins
  * 			100 879 683
- * @version 1.6.2
- * 		drawButtons now has an additional picture for a bunny in a hole
+ * @version 1.7.0
+ * 		Added boarders to ButtonTiles
+ * 		Added white boarder to selected tiles
  * 		
  */
 public class JumpInGUI implements ActionListener {
@@ -151,9 +152,11 @@ public class JumpInGUI implements ActionListener {
                 board[x][y]= new ButtonTile(new Coord(x,y));
                 board[x][y].setPreferredSize(new Dimension(100,100));
                 board[x][y].setMargin(new Insets(0,0,0,0));
+                board[x][y].setBorder(BorderFactory.createLineBorder(Color.black));
                 board[x][y].setEnabled(true);
                 boardPanel.add(board[x][y],c);
                 board[x][y].addActionListener(this);
+                
 			}
 		}
 	    
@@ -208,10 +211,27 @@ public class JumpInGUI implements ActionListener {
         if (o instanceof ButtonTile) {
         	ButtonTile button = (ButtonTile) o;
         	try {
-        		if (selectedTile!=null)  selectedTile.setSelected(false);
+        		if (selectedTile!=null)  {
+        			selectedTile.setSelected(false);
+        			selectedTile.setBorder(BorderFactory.createLineBorder(Color.black));
+        			if (selectedTile.getPiece() instanceof Fox) {
+        				ButtonTile tail = (ButtonTile) game.getTile(((Fox) selectedTile.getPiece()).getTail());
+        				tail.setSelected(false);
+        				tail.setBorder(BorderFactory.createLineBorder(Color.black));
+        			}
+        		}
         		game.selectTile(button.getCoord());
         		selectedTile = (ButtonTile) game.getSelectedTile();
-        		if (selectedTile!=null)  selectedTile.setSelected(true);
+        		
+        		if (selectedTile!=null)  {
+        			selectedTile.setSelected(true);
+        			selectedTile.setBorder(BorderFactory.createLineBorder(Color.white));
+        			if (selectedTile.getPiece() instanceof Fox) {
+        				ButtonTile tail = (ButtonTile) game.getTile(((Fox) selectedTile.getPiece()).getTail());
+        				tail.setSelected(false);
+        				tail.setBorder(BorderFactory.createLineBorder(Color.white));
+        			}
+        		}
         		
         		drawButtons();
         		if (game.endGame()) endGame();
