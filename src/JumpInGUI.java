@@ -10,9 +10,8 @@ import javax.swing.event.*;
  *  
  * @author Adam Prins
  * 			100 879 683
- * @version 1.5.1
- * 		GUI layout edited to look better
- * 		removed print statement from reset
+ * @version 1.6.2
+ * 		drawButtons now has an additional picture for a bunny in a hole
  * 		
  */
 public class JumpInGUI implements ActionListener {
@@ -20,8 +19,6 @@ public class JumpInGUI implements ActionListener {
 	public static void main(String[] args) {
 		new JumpInGUI();
 	}
-	
-	public static final int BOARD_SIZE = 5;
 	
 	private int puzzleNumber=1;
 	
@@ -145,10 +142,10 @@ public class JumpInGUI implements ActionListener {
         
         
 	    /* The button that is clicked to increment the counter. */
-	    board = new ButtonTile[BOARD_SIZE][BOARD_SIZE];
+	    board = new ButtonTile[Game.BOARD_SIZE][Game.BOARD_SIZE];
 		
-		for (int x=0; x<BOARD_SIZE; x++) {
-			for (int y=0; y<BOARD_SIZE; y++) {
+		for (int x=0; x<Game.BOARD_SIZE; x++) {
+			for (int y=0; y<Game.BOARD_SIZE; y++) {
                 c.gridx = x;
                 c.gridy = y;
                 board[x][y]= new ButtonTile(new Coord(x,y));
@@ -186,6 +183,7 @@ public class JumpInGUI implements ActionListener {
 	    frame.pack(); // pack contents into our frame
         frame.setResizable(false); // we can resize it
         frame.setVisible(true); // make it visible
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //stops the program when the x is pressed
         
         try {
 			game = new Game(board, puzzleNumber);
@@ -302,24 +300,35 @@ public class JumpInGUI implements ActionListener {
 		nextLevel.setEnabled(true);
     }
     
+    /**
+     * Adding icons to the buttons
+     */
     private void drawButtons() {
     	for(ButtonTile[] tileLine:board) {
 			for(ButtonTile tile:tileLine) {
 				Piece piece = tile.getPiece();
 				
-				//TODO replace with pictures
 				if (piece == null) {
-					tile.setText("   ");
+					if (tile.getCoord().isHole()) tile.setIcon(Piece.iconHole);
+					else tile.setIcon(Piece.icon);
+					
 				} else if (piece instanceof Bunny) {
-					tile.setText("Bun");
+					if (tile.getCoord().isHole()) tile.setIcon(Bunny.iconHole);
+					else tile.setIcon(Bunny.icon);
+					
 				} else if (piece instanceof Mushroom) {
-					tile.setText("Shr");
+					tile.setIcon(Mushroom.icon);
 				} else if (piece instanceof Fox) {
-					tile.setText("Fox");
+					if (tile.getCoord().equals(piece.getCoord())) tile.setIcon(Fox.iconHead);
+					else tile.setIcon(Fox.iconTail);
+						
 				}
-				
 			}
 		}
+    	
+    	undo.setEnabled(!game.isUndoEmpty());
+    	redo.setEnabled(!game.isRedoEmpty());
     }
+    
     
 }

@@ -1,21 +1,26 @@
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author Jay McCracken
  * 			101066860
- * @version 1.0.0
+ * @version 2.0.0
  *
  * Creation of a bunny piece, this piece can move vertically or horizontally
  *
  */
-public class Bunny implements Piece{
-    private Coord coord;
+public class Bunny extends Piece{
+	
+	public static final ImageIcon icon = new ImageIcon("ButtonIcons/bunnyBlank.png");
+	public static final ImageIcon iconHole = new ImageIcon("ButtonIcons/bunnyHole.png");
 
     /**
      * The creation of the bunny piece, spot selected by coordinates
      * @param coord
      */
     public Bunny(Coord coord){
-        this.coord = coord;
+    	super(coord);
     }
 
     /**
@@ -34,27 +39,10 @@ public class Bunny implements Piece{
     }
 
     /**
-     * Grabbing the specific bunny object
-     * @return
-     */
-    public Piece getPiece(){
-        return this;
-    }
-
-    /**
      * set new coordinates of the bunny
      * @param coord
      */
     public void setCoord(Coord coord){
         this.coord = coord;
     }
-
-    /**
-     * Grabbing the coordinate of the specific bunny object
-     * @return the coordinate
-     */
-    public Coord getCoord(){
-        return this.coord;
-    }
-
 }

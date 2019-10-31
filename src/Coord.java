@@ -4,11 +4,8 @@
  * 
  * @author Adam Prins
  * 			100 879 683
- * @version 1.3.0
- * 		Added toString method (from GUI branch)
- * 		Added JavaDoc comments
- * 
- *  
+ * @version 1.4.1
+ *		wrong logic. Used && instead of || 
  */
 
 public class Coord {
@@ -64,5 +61,13 @@ public class Coord {
 	@Override
 	public String toString() {
 		return "("+x+","+y+")";
+	}
+	
+	/**
+	 * 
+	 * @return true if this location is a hole. (0,0), (0,4), (4,0), (4,4), (2,2)
+	 */
+	public Boolean isHole() {
+		return ((x==0 || x==4) && (y==0 || y==4)) || (x==2 && y==2);
 	}
 }

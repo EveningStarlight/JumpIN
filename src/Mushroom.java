@@ -1,38 +1,23 @@
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author Jay McCracken
  * 			101066860
- * @version 1.0.0
+ * @version 2.0.0
  *
  * Creation of a mushroom piece, the mushroom can not move and is stuck in place
  * it set in a certian spot during creation
  *
  */
-public class Mushroom implements Piece{
-    private Coord coord;
-
+public class Mushroom extends Piece{
+	public static final ImageIcon icon = new ImageIcon("ButtonIcons/mushroom.png");
     /**
      * The creation of the mushroom piece, spot selected by coordanites
      * @param coord
      */
     public Mushroom(Coord coord){
-        this.coord = coord;
-    }
-
-    /**
-     * This piece is not able to move, therefore returns false
-     * @return
-     */
-    public boolean isValidMove(Coord coord){
-        return false;
-    }
-
-    /**
-     * Grabbing the specific mushroom object
-     * @return
-     */
-    public Piece getPiece(){
-        return this;
+    	super(coord);
     }
 
     /**
@@ -44,12 +29,6 @@ public class Mushroom implements Piece{
     	throw new IllegalArgumentException("You can not move this piece.");
     }
 
-    /**
-     * Grabbing the coordinate of the specific mushroom object
-     * @return the coordinate
-     */
-    public Coord getCoord(){
-        return this.coord;
-    }
+
 
 }

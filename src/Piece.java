@@ -1,16 +1,54 @@
+import javax.swing.ImageIcon;
+
 /**
  * 
  * @author Jay McCracken
  * 			101066860
- * @version 1.0.0
+ * @version 2.0.0
  * 
  * This is the interface for the generic piece
  * Objects implementing this will be the Bunny, Mushroom, and Fox
  *
  */
-public interface Piece {
-	public boolean isValidMove(Coord coord);	//Can the piece move
-	public Piece getPiece();	//get what piece object
-	public void setCoord(Coord coord) throws Exception;	//set the coordinate of the object
-	public Coord getCoord();	//get the coordinate of the object
+public abstract class Piece {
+	/**
+	 * Variable to store the image for the piece
+	 */
+	protected Coord coord;
+	public static final ImageIcon icon = new ImageIcon("ButtonIcons/spaceBlank.png");
+	public static final ImageIcon iconHole = new ImageIcon("ButtonIcons/spaceHole.png");
+	
+	
+	public Piece(Coord coord) {
+		this.coord = coord;
+	}
+	/**
+     * Checking if a piece can move, default no
+     * @return
+     */
+	public boolean isValidMove(Coord coord) {
+		return false;
+	};	
+	
+	/**
+     * Grabbing the specific object
+     * @return
+     */
+	public Piece getPiece() {
+		return this;
+	};	
+	
+	/**
+     * setting the new coordanate of the piece throws error if it can not
+     * @param coord
+     */
+	public void setCoord(Coord coord) throws Exception{};	
+	
+	/**
+     * Grabbing the coordinate of the specific object
+     * @return the coordinate
+     */
+	public Coord getCoord() {
+		return this.coord;
+	};	
 }

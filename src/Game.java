@@ -6,8 +6,8 @@ import java.util.Stack;
  * contains the board and is in charge of swapping pieces
  * @authors Adam Prins, Matthew Harris, Alex Beimers
  * 			100 879 683, 101 073 502,   101 070 233
- * @version 2.1.1
- * clearBoard now clears the undo and redo stacks
+ * @version 2.1.3
+ * 		endGame now uses the isHole method from Coord
  * 
  */
 public class Game {
@@ -122,10 +122,15 @@ public class Game {
 			selectedTile=this.getTile(move.coordNew);
 			swapPiece(move.coordOld, false);
 			redoStack.add(move);
-			if (undoStack.isEmpty()) {
-				//TODO disable undo button
-			}
 		}
+	}
+	
+	/**
+	 * 
+	 * @return returns true if the undoStack is empty
+	 */
+	public boolean isUndoEmpty() {
+		return undoStack.isEmpty();
 	}
 	
 	/**
@@ -141,11 +146,15 @@ public class Game {
 			selectedTile=this.getTile(move.coordOld);
 			swapPiece(move.coordNew, false);
 			undoStack.add(move);
-			
-			if (redoStack.isEmpty()) {
-				//TODO disable redo button
-			}
 		}
+	}
+	
+	/**
+	 * 
+	 * @return returns true if the redoStack is empty
+	 */
+	public boolean isRedoEmpty() {
+		return redoStack.isEmpty();
 	}
 	
 	/**
@@ -279,11 +288,7 @@ public class Game {
 		int total = buns.size();
 		int count = 0;
 		for(int i = 0; i < buns.size(); i++){
-			if(		buns.get(i).getCoord().equals(new Coord(0, 0)) || 
-					buns.get(i).getCoord().equals(new Coord(4, 0)) || 
-					buns.get(i).getCoord().equals(new Coord(2, 2)) || 
-					buns.get(i).getCoord().equals(new Coord(0, 4)) || 
-					buns.get(i).getCoord().equals(new Coord(4, 4))) {
+			if(buns.get(i).getCoord().isHole()) {
 				count ++;
 			}
 		}
