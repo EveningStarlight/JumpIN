@@ -85,4 +85,3 @@ public class Fox extends Piece{
     	return this.tail;
     }
 }
-
