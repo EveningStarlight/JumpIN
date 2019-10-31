@@ -5,10 +5,8 @@ import java.util.ArrayList;
  * 
  * @authors Adam Prins, Matthew Harris
  * 			100 879 683, 101 073 502
- * @version 2.0.0
- * 		Puzzles now has a static ArrayList containing all the puzzles
- * 		changed getPuzzle() to reflect this change
- * 		added a getLastPuzzle method 
+ * @version 2.0.1
+ * 		Removed duplicate puzzle
  *
  */
 public class Puzzles {
@@ -52,16 +50,9 @@ public class Puzzles {
 			add(new Fox(new Coord(1,0), new Coord(1,1)));
 			add(new Mushroom(new Coord(0,2)));
 			add(new Bunny(new Coord(0,3)));
-		}});
-		// Puzzle 6
-		add(new ArrayList<Piece>() {{
-			add(new Fox(new Coord(3,1), new Coord(4,1)));
-			add(new Fox(new Coord(1,0), new Coord(1,1)));
-			add(new Mushroom(new Coord(0,2)));
-			add(new Bunny(new Coord(0,3)));
 			add(new Bunny(new Coord(2,4)));
 		}});
-		// Puzzle 7
+		// Puzzle 6
 		add(new ArrayList<Piece>() {{
 			add(new Fox(new Coord(3,0), new Coord(3,1)));
 			add(new Mushroom(new Coord(0,1)));
