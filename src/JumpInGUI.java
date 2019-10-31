@@ -10,15 +10,8 @@ import java.awt.event.*;
  * @author Adam Prins, Jay McCracken
  * 		   100 879 683, 101 066 860
  * 
- * @version 1.5.3
- * 		Removed own BOARD_SIZE, uses games.BOARD_SIZE only now
-=======
- * @author Adam Prins
- * 			100 879 683
- * @version 1.7.1
- * 		Fixed button borders on undo/redo and reset
->>>>>>> branch 'master' of https://github.com/AdamPrins/JumpIN
- * 		
+ * @version 1.8.0
+ *		
  */
 public class JumpInGUI implements ActionListener {
 	
@@ -225,6 +218,7 @@ public class JumpInGUI implements ActionListener {
         	} catch (Exception exception) {
         		output.setText(exception.getMessage());
         		selectedTile=null;
+        		drawButtons();
         	}
         	
         	
@@ -318,19 +312,21 @@ public class JumpInGUI implements ActionListener {
 				tile.setBorder(BorderFactory.createLineBorder(Color.black));
 				tile.setSelected(false);
 				if (piece == null) {
-					if (tile.getCoord().isHole()) tile.setIcon(Piece.iconHole);
-					else tile.setIcon(Piece.icon);
+					if (tile.getCoord().isHole()) {
+						tile.setIcon(Piece.iconHole);
+					}else tile.setIcon(Piece.icon);
 					
 				} else if (piece instanceof Bunny) {
-					if (tile.getCoord().isHole()) tile.setIcon(Bunny.iconHole);
-					else tile.setIcon(Bunny.icon);
+					if (tile.getCoord().isHole()) {
+						tile.setIcon(Bunny.iconHole);
+					}else tile.setIcon(Bunny.icon);
 					
 				} else if (piece instanceof Mushroom) {
 					tile.setIcon(Mushroom.icon);
 				} else if (piece instanceof Fox) {
-					if (tile.getCoord().equals(piece.getCoord())) tile.setIcon(Fox.iconHead);
-					else tile.setIcon(Fox.iconTail);
-						
+					if (tile.getCoord().equals(piece.getCoord())) {
+						tile.setIcon(Fox.iconHead);
+					}else tile.setIcon(Fox.iconTail);	
 				}
 			}
 		}
