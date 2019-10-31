@@ -312,7 +312,7 @@ public class JumpInGUI implements ActionListener {
 				tile.setBorder(BorderFactory.createLineBorder(Color.black));
 				tile.setSelected(false);
 				if (piece == null) {
-					if (tile.getCoord().isHole()) tile.setIcon(Piece.iconHole);
+					if (tile.getCoord().isHole())tile.setIcon(Piece.iconHole);
 					else tile.setIcon(Piece.icon);
 					
 				} else if (piece instanceof Bunny) {

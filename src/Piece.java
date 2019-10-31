@@ -16,7 +16,7 @@ public abstract class Piece {
 	 */
 	protected Coord coord;
 	public static final ImageIcon icon = new ImageIcon("ButtonIcons/spaceBlank.png");
-	public static final ImageIcon iconHole = new ImageIcon("ButtonIcons/spaceHole.png");
+	public static final ImageIcon iconHole = new ImageIcon("ButtonIcons/SpaceHole.png");
 	
 	
 	public Piece(Coord coord) {
