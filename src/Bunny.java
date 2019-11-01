@@ -4,17 +4,14 @@ import javax.swing.ImageIcon;
  *
  * @author Jay McCracken
  * 			101066860
- * @version 2.0.0
- *
- * Creation of a bunny piece, this piece can move vertically or horizontally
- * by jumping over other pieces
- *
+ * @version 2.0.1
+ *		fields now represent their static nature
  */
 public class Bunny extends Piece{
 	
 	// The picture of the Bunny and the Bunny in a hole for use on buttons
-	public static final ImageIcon icon = new ImageIcon("ButtonIcons/bunnyBlank.png");
-	public static final ImageIcon iconHole = new ImageIcon("ButtonIcons/bunnyHole.png");
+	public static final ImageIcon ICON = new ImageIcon("ButtonIcons/bunnyBlank.png");
+	public static final ImageIcon ICON_HOLE = new ImageIcon("ButtonIcons/bunnyHole.png");
 
     /**
      * The creation of the bunny piece, spot selected by coordinates

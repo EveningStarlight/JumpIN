@@ -4,9 +4,9 @@ import javax.swing.ImageIcon;
  *
  * @author Jay McCracken
  * 			101066860
- * @version 2.0.0
- *
- * Creation of a fox piece, this piece can move only move in the orientation of the fox
+ * 
+ * @version 2.0.1
+ * fields now represent their static nature
  *
  */
 
@@ -17,8 +17,8 @@ public class Fox extends Piece{
     private Coord tail;
 
     //the images to be placed on the buttons
-    public static final ImageIcon iconHead = new ImageIcon("ButtonIcons/foxHead.png");
-    public static final ImageIcon iconTail = new ImageIcon("ButtonIcons/foxTail.png");
+    public static final ImageIcon ICON_HEAD = new ImageIcon("ButtonIcons/foxHead.png");
+    public static final ImageIcon ICON_TAIL = new ImageIcon("ButtonIcons/foxTail.png");
 
 
 
