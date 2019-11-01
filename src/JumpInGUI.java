@@ -209,6 +209,7 @@ public class JumpInGUI implements ActionListener {
     public void actionPerformed(ActionEvent e)
     {
         Object o = e.getSource(); // get the action 
+        
 
         // see if it's a JButton
         if (o instanceof ButtonTile) {
@@ -254,7 +255,8 @@ public class JumpInGUI implements ActionListener {
         }
         else if (o instanceof JMenuItem){ // it's a JMenuItem
             JMenuItem item = (JMenuItem)o;
-
+            int levelNumber = 0;
+            
             if (item == resetItem) {
             	setBoard(puzzleNumber);
             } 
@@ -264,7 +266,10 @@ public class JumpInGUI implements ActionListener {
             else if (item == levelSelect) {
             	int counter = 0;
             	String level =  JOptionPane.showInputDialog("Please enter the level you wish to go to (1-" + (Puzzles.getMaxPuzzle() - 1) + ")");
-            	int levelNumber = Integer.parseInt(level);
+            	try {
+            		levelNumber = Integer.parseInt(level);
+                } catch (NumberFormatException | NullPointerException nfe) {
+                }
             	if (levelNumber > 7 || levelNumber < 1) {
             		while(levelNumber > 7 || levelNumber < 1) {
             			counter ++;
