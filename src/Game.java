@@ -4,8 +4,8 @@ import java.util.Stack;
 /**
  * Overall game implementation 
  * contains the board and is in charge of swapping pieces
- * @authors Adam Prins, Matthew Harris, Alex Beimers
- * 			100 879 683, 101 073 502,   101 070 233
+ * @authors Adam Prins, Matthew Harris
+ * 			100 879 683, 101 073 502
  * @version 2.1.4
  * 		Move fields renamed
  * 
