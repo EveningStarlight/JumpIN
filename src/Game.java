@@ -6,8 +6,8 @@ import java.util.Stack;
  * contains the board and is in charge of swapping pieces
  * @authors Adam Prins, Matthew Harris, Alex Beimers
  * 			100 879 683, 101 073 502,   101 070 233
- * @version 2.1.3
- * 		endGame now uses the isHole method from Coord
+ * @version 2.1.4
+ * 		Move fields renamed
  * 
  */
 public class Game {
@@ -119,8 +119,8 @@ public class Game {
 		}
 		else {
 			Move move = undoStack.pop();
-			selectedTile=this.getTile(move.coordNew);
-			swapPiece(move.coordOld, false);
+			selectedTile=this.getTile(move.COORD_NEW);
+			swapPiece(move.COORD_OLD, false);
 			redoStack.add(move);
 		}
 	}
@@ -143,8 +143,8 @@ public class Game {
 		else {
 			Move move = redoStack.pop();
 
-			selectedTile=this.getTile(move.coordOld);
-			swapPiece(move.coordNew, false);
+			selectedTile=this.getTile(move.COORD_OLD);
+			swapPiece(move.COORD_NEW, false);
 			undoStack.add(move);
 		}
 	}

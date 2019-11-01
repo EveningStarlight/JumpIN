@@ -5,15 +5,16 @@ import java.util.ArrayList;
  * 
  * @authors Adam Prins, Matthew Harris
  * 			100 879 683, 101 073 502
- * @version 2.0.1
- * 		Removed duplicate puzzle
+ * @version 2.0.2
+ * 		Renaming of field
+ * 		made field explicitly public and also final
  *
  */
 public class Puzzles {
 	
 	// How to populate a static array:
 	// https://alvinalexander.com/source-code/java/how-create-populate-static-list-arraylist-linkedlist-syntax-in-java
-	static ArrayList<ArrayList<Piece>> arrayArray = new ArrayList<ArrayList<Piece>>() {{
+	public static final ArrayList<ArrayList<Piece>> PUZZLE_ARRAY = new ArrayList<ArrayList<Piece>>() {{
 		try {
 		// Puzzle 0 - Used for Testing. Not to be called while playing the game
 		add(new ArrayList<Piece>() {{
@@ -86,7 +87,7 @@ public class Puzzles {
 		if (puzzleNumber < 0 || puzzleNumber > getMaxPuzzle()) puzzleNumber=1;
 		
 		ArrayList<Piece> array = new ArrayList<Piece>();
-		for (Piece piece:arrayArray.get(puzzleNumber)) {
+		for (Piece piece:PUZZLE_ARRAY.get(puzzleNumber)) {
 			if (piece instanceof Fox) {
 				Fox fox = (Fox) piece;
 				try {
@@ -109,7 +110,7 @@ public class Puzzles {
 	 * this is one higher than the puzzleNumber of the last puzzle
 	 */
 	public static int getMaxPuzzle() {
-		return arrayArray.size();
+		return PUZZLE_ARRAY.size();
 	}
 	
 	

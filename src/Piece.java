@@ -4,11 +4,8 @@ import javax.swing.ImageIcon;
  * 
  * @author Jay McCracken
  * 			101066860
- * @version 2.0.0
- * 
- * This is the abstract class for the generic piece
- * Objects extending this will be the Bunny, Mushroom, and Fox
- *
+ * @version 2.0.1
+ *		fields now represent their static nature
  */
 public abstract class Piece {
 	
@@ -16,8 +13,8 @@ public abstract class Piece {
 	protected Coord coord;
 	
 	// The picture of the ground and hole for use on buttons
-	public static final ImageIcon icon = new ImageIcon("ButtonIcons/spaceBlank.png");
-	public static final ImageIcon iconHole = new ImageIcon("ButtonIcons/SpaceHole.png");
+	public static final ImageIcon ICON = new ImageIcon("ButtonIcons/spaceBlank.png");
+	public static final ImageIcon ICON_HOLE = new ImageIcon("ButtonIcons/spaceHole.png");
 	
 	
 	public Piece(Coord coord) {

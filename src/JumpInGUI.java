@@ -9,7 +9,8 @@ import java.awt.event.*;
  * @author Adam Prins, Jay McCracken
  * 		   100 879 683, 101 066 860
  * 
- * @version 1.8.0
+ * @version 1.8.1
+ * 		Piece icons renamed
  *		
  */
 public class JumpInGUI implements ActionListener {
@@ -312,20 +313,20 @@ public class JumpInGUI implements ActionListener {
 				tile.setSelected(false);
 				if (piece == null) {
 					if (tile.getCoord().isHole()) {
-						tile.setIcon(Piece.iconHole);
-					}else tile.setIcon(Piece.icon);
+						tile.setIcon(Piece.ICON_HOLE);
+					}else tile.setIcon(Piece.ICON);
 					
 				} else if (piece instanceof Bunny) {
 					if (tile.getCoord().isHole()) {
-						tile.setIcon(Bunny.iconHole);
-					}else tile.setIcon(Bunny.icon);
+						tile.setIcon(Bunny.ICON_HOLE);
+					}else tile.setIcon(Bunny.ICON);
 					
 				} else if (piece instanceof Mushroom) {
-					tile.setIcon(Mushroom.icon);
+					tile.setIcon(Mushroom.ICON);
 				} else if (piece instanceof Fox) {
 					if (tile.getCoord().equals(piece.getCoord())) {
-						tile.setIcon(Fox.iconHead);
-					}else tile.setIcon(Fox.iconTail);	
+						tile.setIcon(Fox.ICON_HEAD);
+					}else tile.setIcon(Fox.ICON_TAIL);	
 				}
 			}
 		}
