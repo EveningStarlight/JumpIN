@@ -27,6 +27,7 @@ public class JumpInGUI implements ActionListener {
     /* The quit menu item */
     private JMenuItem quitItem;
     
+    private JMenuItem levelSelect;
     /* the selected tile and the game board */
     private ButtonTile selectedTile;
     private ButtonTile board[][];
@@ -61,6 +62,9 @@ public class JumpInGUI implements ActionListener {
 	
 	    JMenu fileMenu = new JMenu("Options"); // create a menu
 	    menubar.add(fileMenu); // and add to our menu bar
+	    
+	    levelSelect = new JMenuItem("Level Select");// creates a new option on the menu
+	    menubar.add(levelSelect);	    // add to the menu bar
 	
 	    resetItem = new JMenuItem("Reset"); // create a menu item called "Reset"
 	    fileMenu.add(resetItem); // and add to our menu
@@ -70,7 +74,8 @@ public class JumpInGUI implements ActionListener {
 	
 	    // listen for menu selections
 	    resetItem.addActionListener(this); 
-	    quitItem.addActionListener(this); // create an anonymous inner class
+	    quitItem.addActionListener(this); 
+	    levelSelect.addActionListener(this);// create an anonymous inner class
 	
 	    
 	    
@@ -255,6 +260,40 @@ public class JumpInGUI implements ActionListener {
             } 
             else if (item == quitItem) {
                 System.exit(0);
+            }
+            else if (item == levelSelect) {
+            	int counter = 0;
+            	String level =  JOptionPane.showInputDialog("Please enter the level you wish to go to (1-" + (Puzzles.getMaxPuzzle() - 1) + ")");
+            	int levelNumber = Integer.parseInt(level);
+            	if (levelNumber > 7 || levelNumber < 1) {
+            		while(levelNumber > 7 || levelNumber < 1) {
+            			counter ++;
+            			switch(counter) {
+            				case 1: 
+            					level =  JOptionPane.showInputDialog("Reminder: You must select a level number in the range (1-" + (Puzzles.getMaxPuzzle() - 1) + ")");
+            					levelNumber = Integer.parseInt(level);
+            					break;
+            				case 2: 
+            					level =  JOptionPane.showInputDialog("Excuse me, I said between (1-" + (Puzzles.getMaxPuzzle() - 1) + ")");
+            					levelNumber = Integer.parseInt(level);
+            					break;
+            				case 3: 
+            					level =  JOptionPane.showInputDialog("You are serious? Between (1-" + (Puzzles.getMaxPuzzle() - 1) + ")");
+            					levelNumber = Integer.parseInt(level);
+            					break;
+            				case 4: 
+            					level =  JOptionPane.showInputDialog("Alright last time... Between (1-" + (Puzzles.getMaxPuzzle() - 1) + ")");
+            					levelNumber = Integer.parseInt(level);
+            					break;
+            				case 5: 
+            					JFrame f = new JFrame();
+            					JOptionPane.showMessageDialog(f, "YOU LOSE");
+            					System.exit(0);
+            			}   		
+            		}
+            	}
+            	setBoard(levelNumber);
+            	
             }
         }
 
