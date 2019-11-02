@@ -9,8 +9,15 @@ import java.awt.event.*;
  * @author Adam Prins, Jay McCracken
  * 		   100 879 683, 101 066 860
  * 
- * @version 1.8.1
- * 		Piece icons renamed
+ * @version 1.9.2
+ * 		Removed hard coded 7's from level select
+ * 		moved local variables to right before they are needed
+ * 
+ * @version 1.9.1
+ * 		Added Try/Catch to Integer Parser for level selection
+ * 
+ * @version 1.9.0
+ * 		Created a level selection JMenuItem
  *		
  */
 public class JumpInGUI implements ActionListener {
@@ -255,7 +262,6 @@ public class JumpInGUI implements ActionListener {
         }
         else if (o instanceof JMenuItem){ // it's a JMenuItem
             JMenuItem item = (JMenuItem)o;
-            int levelNumber = 0;
             
             if (item == resetItem) {
             	setBoard(puzzleNumber);
@@ -264,14 +270,15 @@ public class JumpInGUI implements ActionListener {
                 System.exit(0);
             }
             else if (item == levelSelect) {
-            	int counter = 0;
             	String level =  JOptionPane.showInputDialog("Please enter the level you wish to go to (1-" + (Puzzles.getMaxPuzzle() - 1) + ")");
+            	int levelNumber = 0;
             	try {
             		levelNumber = Integer.parseInt(level);
                 } catch (NumberFormatException | NullPointerException nfe) {
                 }
-            	if (levelNumber > 7 || levelNumber < 1) {
-            		while(levelNumber > 7 || levelNumber < 1) {
+            	if (levelNumber >= Puzzles.getMaxPuzzle() || levelNumber < 1) {
+            		int counter = 0;
+            		while(levelNumber >= Puzzles.getMaxPuzzle() || levelNumber < 1) {
             			counter ++;
             			switch(counter) {
             				case 1: 
