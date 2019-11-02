@@ -9,8 +9,9 @@ import java.awt.event.*;
  * @author Adam Prins, Jay McCracken
  * 		   100 879 683, 101 066 860
  * 
- * @version 1.8.1
- * 		Piece icons renamed
+ * @version 1.9.3
+ * 		Output is cleared upon a valid selection or move
+ * 		If statement removed from before while loop (duplication of tests)
  *		
  */
 public class JumpInGUI implements ActionListener {
@@ -214,6 +215,7 @@ public class JumpInGUI implements ActionListener {
         // see if it's a JButton
         if (o instanceof ButtonTile) {
         	ButtonTile button = (ButtonTile) o;
+        	output.setText(" ");
         	try {
         		game.selectTile(button.getCoord());
         		selectedTile = (ButtonTile) game.getSelectedTile();
@@ -255,7 +257,6 @@ public class JumpInGUI implements ActionListener {
         }
         else if (o instanceof JMenuItem){ // it's a JMenuItem
             JMenuItem item = (JMenuItem)o;
-            int levelNumber = 0;
             
             if (item == resetItem) {
             	setBoard(puzzleNumber);
@@ -264,39 +265,38 @@ public class JumpInGUI implements ActionListener {
                 System.exit(0);
             }
             else if (item == levelSelect) {
-            	int counter = 0;
             	String level =  JOptionPane.showInputDialog("Please enter the level you wish to go to (1-" + (Puzzles.getMaxPuzzle() - 1) + ")");
+            	int levelNumber = 0;
             	try {
             		levelNumber = Integer.parseInt(level);
                 } catch (NumberFormatException | NullPointerException nfe) {
                 }
-            	if (levelNumber > 7 || levelNumber < 1) {
-            		while(levelNumber > 7 || levelNumber < 1) {
-            			counter ++;
-            			switch(counter) {
-            				case 1: 
-            					level =  JOptionPane.showInputDialog("Reminder: You must select a level number in the range (1-" + (Puzzles.getMaxPuzzle() - 1) + ")");
-            					levelNumber = Integer.parseInt(level);
-            					break;
-            				case 2: 
-            					level =  JOptionPane.showInputDialog("Excuse me, I said between (1-" + (Puzzles.getMaxPuzzle() - 1) + ")");
-            					levelNumber = Integer.parseInt(level);
-            					break;
-            				case 3: 
-            					level =  JOptionPane.showInputDialog("You are serious? Between (1-" + (Puzzles.getMaxPuzzle() - 1) + ")");
-            					levelNumber = Integer.parseInt(level);
-            					break;
-            				case 4: 
-            					level =  JOptionPane.showInputDialog("Alright last time... Between (1-" + (Puzzles.getMaxPuzzle() - 1) + ")");
-            					levelNumber = Integer.parseInt(level);
-            					break;
-            				case 5: 
-            					JFrame f = new JFrame();
-            					JOptionPane.showMessageDialog(f, "YOU LOSE");
-            					System.exit(0);
-            			}   		
-            		}
-            	}
+        		int counter = 0;
+        		while(levelNumber >= Puzzles.getMaxPuzzle() || levelNumber < 1) {
+        			counter ++;
+        			switch(counter) {
+        				case 1: 
+        					level =  JOptionPane.showInputDialog("Reminder: You must select a level number in the range (1-" + (Puzzles.getMaxPuzzle() - 1) + ")");
+        					levelNumber = Integer.parseInt(level);
+        					break;
+        				case 2: 
+        					level =  JOptionPane.showInputDialog("Excuse me, I said between (1-" + (Puzzles.getMaxPuzzle() - 1) + ")");
+        					levelNumber = Integer.parseInt(level);
+        					break;
+        				case 3: 
+        					level =  JOptionPane.showInputDialog("You are serious? Between (1-" + (Puzzles.getMaxPuzzle() - 1) + ")");
+        					levelNumber = Integer.parseInt(level);
+        					break;
+        				case 4: 
+        					level =  JOptionPane.showInputDialog("Alright last time... Between (1-" + (Puzzles.getMaxPuzzle() - 1) + ")");
+        					levelNumber = Integer.parseInt(level);
+        					break;
+        				case 5: 
+        					JFrame f = new JFrame();
+        					JOptionPane.showMessageDialog(f, "YOU LOSE");
+        					System.exit(0);
+        			}   		
+        		}
             	setBoard(levelNumber);
             	
             }
