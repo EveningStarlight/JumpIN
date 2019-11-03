@@ -277,19 +277,31 @@ public class JumpInGUI implements ActionListener {
         			switch(counter) {
         				case 1: 
         					level =  JOptionPane.showInputDialog("Reminder: You must select a level number in the range (1-" + (Puzzles.getMaxPuzzle() - 1) + ")");
-        					levelNumber = Integer.parseInt(level);
+        					try {
+        	            		levelNumber = Integer.parseInt(level);
+        	                } catch (NumberFormatException | NullPointerException nfe) {
+        	                }
         					break;
         				case 2: 
         					level =  JOptionPane.showInputDialog("Excuse me, I said between (1-" + (Puzzles.getMaxPuzzle() - 1) + ")");
-        					levelNumber = Integer.parseInt(level);
+        					try {
+        	            		levelNumber = Integer.parseInt(level);
+        	                } catch (NumberFormatException | NullPointerException nfe) {
+        	                }
         					break;
         				case 3: 
         					level =  JOptionPane.showInputDialog("You are serious? Between (1-" + (Puzzles.getMaxPuzzle() - 1) + ")");
-        					levelNumber = Integer.parseInt(level);
+        					try {
+        	            		levelNumber = Integer.parseInt(level);
+        	                } catch (NumberFormatException | NullPointerException nfe) {
+        	                }
         					break;
         				case 4: 
         					level =  JOptionPane.showInputDialog("Alright last time... Between (1-" + (Puzzles.getMaxPuzzle() - 1) + ")");
-        					levelNumber = Integer.parseInt(level);
+        					try {
+        	            		levelNumber = Integer.parseInt(level);
+        	                } catch (NumberFormatException | NullPointerException nfe) {
+        	                }
         					break;
         				case 5: 
         					JFrame f = new JFrame();
