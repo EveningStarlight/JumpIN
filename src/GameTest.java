@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * 
+ * Test cases for the Game class 
  * 
  * @author Matthew Harris,
  * 			101 073 502
@@ -16,6 +16,10 @@ public class GameTest {
     private Game game = null;
     private TextTile[][] board = null;
     
+   /**
+    * Method that runs before all the test methods 
+    * to set up a test game to test
+    */
     @Before
     public void setUp() throws Exception{
         board = new TextTile[5][5];
@@ -27,17 +31,20 @@ public class GameTest {
         game = new Game(board,1);
     }
 
-
-	@After
-	public void tearDown() throws Exception {
-	}
-
+    /**
+     * Method to test the Game constructor
+     * @throws Exception
+     */
 	@Test
 	public void testGame() throws Exception {
 		Game testGame = new Game(board,1);
 		assertNotNull(testGame);
 	}
 
+	/**
+	 * Method to test the selectTile method in the Game class
+	 * @throws Exception
+	 */
 	@Test
 	public void testSelectTile() throws Exception {
 		Coord coordinate = new Coord(2,0);
@@ -47,24 +54,42 @@ public class GameTest {
 		assertNull(game.getSelectedTile());
 	}
 	
+	/**
+	 * Method to test the selectTile method in the Game class
+	 * for the case that the tile is unselectable
+	 * @throws Exception
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSelectTileUnselectableTile() throws Exception{
 		Coord coordinate = new Coord(2,1);
 		game.selectTile(coordinate);
 	}
 	
+	/**
+	 * Method to test the selectTile method in the Game class
+	 * for the case that the coordinate is game of the range 
+	 * of the game board
+	 * @throws Exception
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSelectTileTileOutOfRange() throws Exception{
 		Coord coordinate = new Coord(5,5);
 		game.selectTile(coordinate);
 	}
 
+	/**
+	 * Method to test the getTile method in the Game class
+	 * @throws Exception
+	 */
 	@Test
 	public void testGetTile() {
 		Coord coordinate = new Coord(2,0);
 		assertEquals(board[2][0], game.getTile(coordinate));
 	}
-
+	
+	/**
+	 * Method to test the setBoard method in the Game class
+	 */
 	@Test
 	public void testSetBoard() {
 		game.setBoard(Puzzles.getPuzzle(2));
@@ -78,11 +103,17 @@ public class GameTest {
 		assertEquals(board[4][1].getPiece(), game.getTile(coordShr2).getPiece());
 	}
 
-
+	/**
+	 * Method to test the endGame method in the Game class
+	 * @throws Exception 
+	 */
 	@Test
-	public void testEndGame() {
-		assertEquals(false, game.endGame());
-		
+	public void testEndGame() throws Exception {
+		assertNotNull(game);
+		assertFalse(game.endGame());
+		game.selectTile(new Coord(2, 0));
+		game.selectTile(new Coord(2, 2));
+		assertTrue(game.endGame());
 	}
 
 }

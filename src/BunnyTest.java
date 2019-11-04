@@ -4,19 +4,29 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-
+/**
+ * Test cases for the Bunny class 
+ * 
+ * @author Matthew Harris,
+ * 			101 073 502
+ *
+ */
 public class BunnyTest {
 	
 	Bunny bun;
+	
+	/**
+	* Method that runs before all the test methods 
+	* to set up a test bunny object to test
+	*/
 	@Before
 	public void setUp() throws Exception {
 		bun = new Bunny(new Coord(3, 3));
 	}
 
-	@After
-	public void tearDown() throws Exception {
-	}
-
+	/**
+	 * Method to test the isValidMove method in the Bunny class
+	 */
 	@Test
 	public void testIsValidMove() {
 		assertNotNull(bun);
@@ -42,6 +52,9 @@ public class BunnyTest {
 		
 	}
 
+	/**
+	 * Method to test the setCoord method in the Bunny class
+	 */
 	@Test
 	public void testSetCoord() {
 		assertNotNull(bun);
@@ -51,6 +64,9 @@ public class BunnyTest {
 		
 	}
 
+	/**
+    * Method to test the Game constructor
+    */
 	@Test
 	public void testBunny() {
 		Coord coordinate  = new Coord(4, 2);

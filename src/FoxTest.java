@@ -4,20 +4,29 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-
+/**
+ * Test cases for the Fox class 
+ * 
+ * @author Matthew Harris,
+ * 			101 073 502
+ *
+ */
 public class FoxTest {
 	
 	Fox fox;
 
+	/**
+	* Method that runs before all the test methods 
+	* to set up a test Fox object to test
+	*/
 	@Before
 	public void setUp() throws Exception {
 		fox = new Fox(new Coord(2, 1),new Coord(3, 1));
 	}
 
-	@After
-	public void tearDown() throws Exception {
-	}
-
+	/**
+	 * Method to test the isValidMove method in the Fox class
+	 */
 	@Test
 	public void testIsValidMove() {
 		assertNotNull(fox);
@@ -32,6 +41,9 @@ public class FoxTest {
 		assertTrue(fox.isValidMove(new Coord(0, 1)));
 	}
 
+	/**
+	 * Method to test the setCoord method in the Fox class
+	 */
 	@Test
 	public void testSetCoord() {
 		assertNotNull(fox);
@@ -42,6 +54,9 @@ public class FoxTest {
 		assertEquals(new Coord(1,1), fox.getTail());
 	}
 
+	/**
+	 * Method to test the getCoord method in the Fox class
+	 */
 	@Test
 	public void testGetCoord() {
 		assertNotNull(fox);
@@ -49,6 +64,10 @@ public class FoxTest {
 		assertEquals(coord, fox.getCoord());
 	}
 
+	/**
+	* Method to test the Fox constructor
+	* @throws Exception
+	*/
 	@Test
 	public void testFox() throws Exception {
 		Fox fox1 = new Fox(new Coord(2, 1),new Coord(3, 1));
@@ -57,12 +76,19 @@ public class FoxTest {
 		assertNotNull(fox2);
 	}
 	
+	/**
+	* Method to test the Fox constructor in the case of illegal arguments
+	* @throws Exception
+	*/
 	@Test(expected = IllegalArgumentException.class)
 	public void testFoxIllegal() throws Exception {
 		Fox fox1 = new Fox(new Coord(2, 1),new Coord(4, 1));
 		assertNotNull(fox1);
 	}
 
+	/**
+	 * Method to test the getCoord method in the Fox class
+	 */
 	@Test
 	public void testGetTail() {
 		assertNotNull(fox);
