@@ -45,8 +45,7 @@
    <object class="com.horstmann.violet.ClassNode" id="ClassNode1">
     <void property="attributes">
      <void property="text">
-      <string>-coord: Coord
-+&lt;u&gt; ICON: ImageIcon &lt;/u&gt;</string>
+      <string>+&lt;u&gt; ICON: ImageIcon &lt;/u&gt;</string>
      </void>
     </void>
     <void property="methods">
@@ -85,8 +84,7 @@
    <object class="com.horstmann.violet.ClassNode" id="ClassNode2">
     <void property="attributes">
      <void property="text">
-      <string>-coord: Coord
-+&lt;u&gt; ICON: ImageIcon &lt;/u&gt;</string>
+      <string>+&lt;u&gt; ICON: ImageIcon &lt;/u&gt;</string>
      </void>
     </void>
     <void property="methods">
