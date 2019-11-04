@@ -1,3 +1,7 @@
+package Model;
+
+import Pieces.*;
+
 import java.util.ArrayList;
 
 /**
@@ -14,7 +18,7 @@ public class Puzzles {
 	
 	// How to populate a static array:
 	// https://alvinalexander.com/source-code/java/how-create-populate-static-list-arraylist-linkedlist-syntax-in-java
-	public static final ArrayList<ArrayList<Piece>> PUZZLE_ARRAY = new ArrayList<ArrayList<Piece>>() {{
+	private static final ArrayList<ArrayList<Piece>> PUZZLE_ARRAY = new ArrayList<ArrayList<Piece>>() {{
 		try {
 		// Puzzle 0 - Used for Testing. Not to be called while playing the game
 		add(new ArrayList<Piece>() {{

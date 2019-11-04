@@ -1,9 +1,8 @@
+package Tests;
+
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
-
-import junit.framework.*;
-import junit.runner.*;
 
 /**
  * Class to hold the classes of the tests for the suite

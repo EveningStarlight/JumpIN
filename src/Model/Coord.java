@@ -1,3 +1,5 @@
+package Model;
+
 /**
  * 
  * This class holds coordinates for other objects

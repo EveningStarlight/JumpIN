@@ -1,3 +1,8 @@
+package GUI;
+
+import Pieces.*;
+import Model.*;
+
 import javax.swing.JButton;
 
 /**

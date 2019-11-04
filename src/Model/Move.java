@@ -1,3 +1,5 @@
+package Model;
+
 /**
  * A simple class that holds a record of the game moves as a collection 
  * of the previous location and the new current location

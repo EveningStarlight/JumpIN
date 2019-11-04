@@ -1,3 +1,8 @@
+package GUI;
+
+import Pieces.*;
+import Model.*;
+
 /**
  * 
  * @author Matthew Harris

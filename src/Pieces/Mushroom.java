@@ -1,3 +1,7 @@
+package Pieces;
+
+import Model.*;
+
 import javax.swing.ImageIcon;
 
 /**

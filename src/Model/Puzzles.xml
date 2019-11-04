@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<predefined_Puzzles>
+	<puzzle>
+		<Number>0</Number>
+	</puzzle>
+	
+	<puzzle>
+		<Number>1</Number>
+		<piece>
+			<Type>Mushroom</Type>
+			<X_Head>2</X_Head>
+			<Y_Head>1</Y_Head>
+		</piece>
+		<piece>
+			<Type>Bunny</Type>
+			<X_Head>2</X_Head>
+			<Y_Head>0</Y_Head>
+		</piece>
+	</puzzle>
+	
+	<puzzle>
+		<Number>2</Number>
+		<piece>
+			<Type>Mushroom</Type>
+			<X_Head>3</X_Head>
+			<Y_Head>2</Y_Head>
+		</piece>
+		<piece>
+			<Type>Mushroom</Type>
+			<X_Head>0</X_Head>
+			<Y_Head>1</Y_Head>
+		</piece>
+		<piece>
+			<Type>Bunny</Type>
+			<X_Head>4</X_Head>
+			<Y_Head>2</Y_Head>
+		</piece>
+		<piece>
+			<Type>Bunny</Type>
+			<X_Head>0</X_Head>
+			<Y_Head>2</Y_Head>
+		</piece>
+	</puzzle>
+	
+	<puzzle>
+		<Number>3</Number>
+		<piece>
+			<Type>Fox</Type>
+			<X_Head>3</X_Head>
+			<Y_Head>1</Y_Head>
+			<X_Tail>4</X_Tail>
+			<Y_Tail>1</Y_Tail>
+		</piece>
+		<piece>
+			<Type>Bunny</Type>
+			<X_Head>0</X_Head>
+			<Y_Head>2</Y_Head>
+		</piece>
+	</puzzle>
+	
+	<puzzle>
+		<Number>4</Number>
+	</puzzle>
+	
+	<puzzle>
+		<Number>5</Number>
+	</puzzle>
+	
+	<puzzle>
+		<Number>6</Number>
+	</puzzle>
+</predefined_Puzzles>

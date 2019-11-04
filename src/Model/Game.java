@@ -1,3 +1,8 @@
+package Model;
+
+import GUI.*;
+import Pieces.*;
+
 import java.util.ArrayList;
 import java.util.Stack;
 
