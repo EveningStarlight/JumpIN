@@ -9,12 +9,9 @@ import Model.Puzzles;
 import Pieces.Piece;
 
 /**
- * The solver for the puzzles
+ * The solver for the puzzles, with hints and how to solve each puzzle
  * @authors Jay McCracken, Matthew Harris
  * 			101066860       101073502
- * @version 1.0.0
- * 		
- * 
  */
 public class Solver {
 
