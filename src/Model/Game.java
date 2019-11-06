@@ -115,13 +115,8 @@ public class Game {
 		}
 	}
 	
-	public Tile[][] getBoard(){
-		Tile[][] boardState = new Tile[BOARD_SIZE][BOARD_SIZE];
-		for(int i = 0; i< BOARD_SIZE; i++){
-			for(int j = 0; j<BOARD_SIZE; j++){
-				boardState[i][j] = new TextTile(new Coord(i,j));
-			}
-		}
+	public ArrayList<Piece> getBoard(){
+		ArrayList<Piece> pieces = new ArrayList<Piece>();
 		for(int i = 0; i< BOARD_SIZE; i++){
 			for(int j = 0; j<BOARD_SIZE; j++){
 				if(!board[i][j].isEmpty()){
@@ -129,20 +124,20 @@ public class Game {
 					if (piece instanceof Fox) {
 						Fox fox = (Fox) piece;
 						try {
-						boardState[i][j].setPiece(new Fox(piece.getCoord(),((Fox) piece).getTail()));
+						pieces.add(new Fox(piece.getCoord(),((Fox) piece).getTail()));
 						} catch (Exception e) {}
 					}
 					else if (piece instanceof Bunny) {
-						boardState[i][j].setPiece(new Bunny(piece.getCoord()));
+						pieces.add(new Bunny(piece.getCoord()));
 					}
 					else if (piece instanceof Mushroom) {
-						boardState[i][j].setPiece(new Mushroom(piece.getCoord()));
+						pieces.add(new Mushroom(piece.getCoord()));
 					}
 				}
 				
 			}
 		}
-		return boardState;
+		return pieces;
 	}
 	/**
 	 * undoes the last move made as described on the undoStack

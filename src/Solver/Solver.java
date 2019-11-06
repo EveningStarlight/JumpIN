@@ -23,7 +23,7 @@ public class Solver {
 
 	private ArrayList<Piece> pieces;
 	private HashMap<Piece, Boolean> visitedPieces;
-	private Game game;
+	private Game solverGame;
 	private Tile[][] board;
 	private Queue<String> movesTaken;
 	
@@ -31,14 +31,15 @@ public class Solver {
 		pieces = new ArrayList<Piece>(Puzzles.getPuzzle(puzzleNumber));
 		visitedPieces = new HashMap<Piece, Boolean>();
 		movesTaken = new LinkedList<String>();
-		game = new Game(board, puzzleNumber);
+		solverGame = new Game(board, puzzleNumber);
 		}
 	
-	public Solver() throws Exception{
-		pieces = new ArrayList<Piece>(Puzzles.getPuzzle(puzzleNumber));
+	public Solver(Game game) throws Exception{
+		pieces = new ArrayList<Piece>(game.getBoard());
 		visitedPieces = new HashMap<Piece, Boolean>();
 		movesTaken = new LinkedList<String>();
-		game = new Game(board, puzzleNumber);
+		solverGame = new Game(board, 0 );
+		solverGame.setBoard(pieces);
 		}
 	
 	
