@@ -42,23 +42,6 @@ public class Solver {
 		}
 	
 	
-	private void bunnyDepthSearch(Coord coord) {
-		Queue<String> currentPath = new LinkedList<String>();
-//		find all available routes
-//		take one path
-//		if cant go further
-//		find fox move to location needed
-// 		if dead end do not record path
-//		
-//		Take next available path start at bunny
-//		if cant go further
-//		find fox move to location needed
-//		if path complete record path
-//		
-//		
-//		
-	}
-	
 	public void puzzleDepthSearch() {
 //		 for (all bunnys in pieces){
 //		 	visitedPieces.put(bunny);
