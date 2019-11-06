@@ -2,7 +2,6 @@ package Solver;
 
 import java.util.ArrayList;
 
-import GUI.ButtonTile;
 import GUI.Tile;
 import Model.Game;
 import Model.Puzzles;
@@ -10,6 +9,7 @@ import Pieces.Piece;
 
 /**
  * The solver for the puzzles, with hints and how to solve each puzzle
+ * using Depth-First Search
  * @authors Jay McCracken, Matthew Harris
  * 			101066860       101073502
  */
