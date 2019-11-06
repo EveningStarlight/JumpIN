@@ -33,7 +33,11 @@ public class JumpInGUI implements ActionListener {
     /* The quit menu item */
     private JMenuItem quitItem;
     
+    /* items for each level */
     private JMenuItem levelSelect;
+    private JMenuItem levelSolver;
+    private JMenuItem levelHint;
+    
     /* the selected tile and the game board */
     private ButtonTile selectedTile;
     private ButtonTile board[][];
@@ -66,11 +70,20 @@ public class JumpInGUI implements ActionListener {
 	    JMenuBar menubar = new JMenuBar();
 	    frame.setJMenuBar(menubar); // add menu bar to our frame
 	
-	    JMenu fileMenu = new JMenu("Options"); // create a menu
+	    JMenu fileMenu = new JMenu("File"); // create a menu
 	    menubar.add(fileMenu); // and add to our menu bar
 	    
+	    JMenu level = new JMenu("Level Options");
+	    menubar.add(level);
+	    
 	    levelSelect = new JMenuItem("Level Select");// creates a new option on the menu
-	    menubar.add(levelSelect);	    // add to the menu bar
+	    level.add(levelSelect);	    // add to the menu bar
+	    
+	    levelSolver = new JMenuItem("Level Solution");// creates a new option on the menu
+	    level.add(levelSolver);	    // add to the menu bar
+	    
+	    levelHint = new JMenuItem("Hint");// creates a new option on the menu
+	    level.add(levelHint);	    // add to the menu bar
 	
 	    resetItem = new JMenuItem("Reset"); // create a menu item called "Reset"
 	    fileMenu.add(resetItem); // and add to our menu
