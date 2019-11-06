@@ -30,6 +30,9 @@ public class Solver {
 	public Solver(int puzzleNumber) throws Exception{
 		pieces = new ArrayList<Piece>(Puzzles.getPuzzle(puzzleNumber));
 		visitedPieces = new HashMap<Piece, Boolean>();
+		for(int i = 0; i<pieces.size();i++){
+			visitedPieces.put(pieces.get(i),false);
+		}
 		movesTaken = new LinkedList<String>();
 		solverGame = new Game(board, puzzleNumber);
 		}
@@ -37,20 +40,22 @@ public class Solver {
 	public Solver(Game game) throws Exception{
 		pieces = new ArrayList<Piece>(game.getBoard());
 		visitedPieces = new HashMap<Piece, Boolean>();
+		for(int i = 0; i<pieces.size();i++){
+			visitedPieces.put(pieces.get(i),false);
+		}
 		movesTaken = new LinkedList<String>();
 		solverGame = new Game(board, 0 );
 		solverGame.setBoard(pieces);
 		}
 	
 	
-	public void puzzleDepthSearch() {
-//		 for (all bunnys in pieces){
-//		 	visitedPieces.put(bunny);
-//		  	bunnyDepthSearch(bunny.getCoord);
-//		}
-//		 
-//		 
-//		 
+	public void puzzleBreadthSearch() {
+		visitedPieces.replace(pieces.get(0), true);
+		while(visitedPieces.containsValue(false)){
+			if(solverGame.endGame()){
+				break;
+			}
+		}
 	}
 	
 	public String toString() {
