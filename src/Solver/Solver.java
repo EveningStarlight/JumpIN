@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import GUI.ButtonTile;
 import GUI.Tile;
 import Model.Coord;
 import Model.Game;
@@ -14,6 +13,7 @@ import Pieces.Piece;
 
 /**
  * The solver for the puzzles, with hints and how to solve each puzzle
+ * using Depth-First Search
  * @authors Jay McCracken, Matthew Harris
  * 			101066860       101073502
  * @version 1.0.1

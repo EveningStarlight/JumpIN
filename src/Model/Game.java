@@ -11,8 +11,8 @@ import java.util.Stack;
  * contains the board and is in charge of swapping pieces
  * @authors Adam Prins, Matthew Harris
  * 			100 879 683, 101 073 502
- * @version 2.1.4
- * 		Move fields renamed
+ * @version 2.1.5
+ * 		getboard method added 
  * 
  */
 public class Game {
@@ -115,6 +115,35 @@ public class Game {
 		}
 	}
 	
+	public Tile[][] getBoard(){
+		Tile[][] boardState = new Tile[BOARD_SIZE][BOARD_SIZE];
+		for(int i = 0; i< BOARD_SIZE; i++){
+			for(int j = 0; j<BOARD_SIZE; j++){
+				boardState[i][j] = new TextTile(new Coord(i,j));
+			}
+		}
+		for(int i = 0; i< BOARD_SIZE; i++){
+			for(int j = 0; j<BOARD_SIZE; j++){
+				if(!board[i][j].isEmpty()){
+					Piece piece = board[i][j].getPiece(); 
+					if (piece instanceof Fox) {
+						Fox fox = (Fox) piece;
+						try {
+						boardState[i][j].setPiece(new Fox(piece.getCoord(),((Fox) piece).getTail()));
+						} catch (Exception e) {}
+					}
+					else if (piece instanceof Bunny) {
+						boardState[i][j].setPiece(new Bunny(piece.getCoord()));
+					}
+					else if (piece instanceof Mushroom) {
+						boardState[i][j].setPiece(new Mushroom(piece.getCoord()));
+					}
+				}
+				
+			}
+		}
+		return boardState;
+	}
 	/**
 	 * undoes the last move made as described on the undoStack
 	 */
