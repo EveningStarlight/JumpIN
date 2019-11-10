@@ -11,8 +11,11 @@ import java.util.Stack;
  * contains the board and is in charge of swapping pieces
  * @authors Adam Prins, Matthew Harris
  * 			100 879 683, 101 073 502
- * @version 2.1.5
- * 		getboard method added 
+ * @version 2.2.0
+ * 		Splitting of trySwapPiece into multiple check methods.
+ * 		These methods have the same throws that trySwapPiece had
+ * 		TrySwapPiece now catches and rethrows these Exceptions 
+ * 		Fox will now be able to move when the last row or column is selected.
  * 
  */
 public class Game {
@@ -115,6 +118,12 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * Returns an ArrayList of Pieces that are a copy of the current board state.
+	 * This allows for manipulation of tiles for solving, without changing the current board state.
+	 * 
+	 * @return an ArrayList of Pieces that copy the current board state
+	 */
 	public ArrayList<Piece> getBoard(){
 		ArrayList<Piece> pieces = new ArrayList<Piece>();
 		for(int i = 0; i< BOARD_SIZE; i++){
@@ -124,7 +133,7 @@ public class Game {
 					if (piece instanceof Fox) {
 						Fox fox = (Fox) piece;
 						try {
-						pieces.add(new Fox(piece.getCoord(),((Fox) piece).getTail()));
+							pieces.add(new Fox(piece.getCoord(),fox.getTail()));
 						} catch (Exception e) {}
 					}
 					else if (piece instanceof Bunny) {
@@ -139,6 +148,7 @@ public class Game {
 		}
 		return pieces;
 	}
+	
 	/**
 	 * undoes the last move made as described on the undoStack
 	 */
@@ -204,72 +214,114 @@ public class Game {
 	 */
 	private void trySwapPiece(Coord coord) {
 		Piece piece = selectedTile.getPiece();
+
 		if (!(piece.isValidMove(coord)) ) {
-			throw new IllegalArgumentException("Not a valid move.");
-		}
-		else if (!(this.getTile(coord).isEmpty()) && 
-				!piece.equals(this.getTile(coord).getPiece())) {
-			throw new IllegalArgumentException("The destination must be empty.");
+			if (piece instanceof Fox && piece.isValidMove(((Fox)piece).tailToHead(coord))) {
+				//allows for the selection of the last row or column for a fox to be a valid move.
+				trySwapPiece(((Fox)piece).tailToHead(coord));
+			}
+			else throw new IllegalArgumentException("Not a valid move.");
 		}
 		else { //Makes sure the attempted move is valid
-			boolean empty;
-			
-			if (piece instanceof Bunny ) {
-				empty=true; // empty spaces throw error
-			}else if (piece instanceof Fox ) {
-				empty=false; // full spaces throw error
-			}else{
-				selectedTile=null;
-				throw new IllegalArgumentException("only Bunnies and Foxes can move.");
+			try {
+				checkDestination(coord);
+				checkTilesBetween(coord);
+				checkTail(coord);
+			} catch (Exception e) {
+				throw e;
 			}
-			
-			
-			int x = Math.min(selectedTile.getCoord().x, coord.x);		//Lower y value
-			int xMax = Math.max(selectedTile.getCoord().x, coord.x);	//Higher y value
-			int xChange=0;
-			int y = Math.min(selectedTile.getCoord().y, coord.y);		//Lower y value
-			int yMax = Math.max(selectedTile.getCoord().y, coord.y);	//Higher y value
-			int yChange=0;
-			
-			if 		(x==xMax) yChange=1;
-			else if (y==yMax) xChange=1;
-			else {
-				selectedTile=null;
-				throw new IllegalArgumentException("Can not attempt a diagonal swap.");
-			}
-			x+=xChange;
-			y+=yChange;
-			//Will test to make sure all in between squares are filled or empty
-			while (x<xMax || y<yMax) {
-				Tile tileCurr = this.getTile(new Coord(x,y)); 
-				if (piece.equals(tileCurr.getPiece())) {
-					
-				}
-				else if (tileCurr.isEmpty()==empty) {
-					selectedTile=null;
-					if (piece instanceof Bunny) throw new IllegalArgumentException("The bunny cannot hop over empty spaces");
-					if (piece instanceof Fox) throw new IllegalArgumentException("The Fox cannot slide through full spaces");
-				}
-				x+=xChange;
-				y+=yChange;
-			}
-			
-			//If the piece is a fox, its tail must be on an empty spot
-			if (piece instanceof Fox ) {
-				Coord head = piece.getCoord();
-				Coord tail = ((Fox)piece).getTail();
-				
-				Coord newTail = new Coord(coord.x + tail.x - head.x,
-										  coord.y + tail.y - head.y);
-				
-				if ( !(this.getTile(newTail).isEmpty() || piece.equals(this.getTile(newTail).getPiece())) ) {
-					throw new IllegalArgumentException("The tail must end in an empty spot");
-				}
-			}
-			
 			//If the for loop hasn't thrown an error, swap the pieces
 			swapPiece(coord, true);
 
+		}
+	}
+
+	/**
+	 * Checks to see if the destination tile is a valid tile to move to.
+	 * 
+	 * @param coord destination of piece stored at TileSelected
+	 * @throws IllegalArgumentException Throws if the destination is not empty
+	 */
+	private void checkDestination(Coord coord) throws IllegalArgumentException {
+		Piece piece = selectedTile.getPiece();
+		if (!(this.getTile(coord).isEmpty()) && 
+				!piece.equals(this.getTile(coord).getPiece())) {
+			throw new IllegalArgumentException("The destination must be empty.");
+		}
+	}
+
+	/**
+	 * Checks to see if the attempted location of the tail is a valid position.
+	 * 
+	 * @param coord destination of piece stored at TileSelected
+	 * @throws IllegalArgumentException Throws if the tail position is not valid
+	 */
+	private void checkTail(Coord coord) throws IllegalArgumentException {
+		Piece piece = selectedTile.getPiece();
+		if (piece instanceof Fox ) {
+			Coord head = piece.getCoord();
+			Coord tail = ((Fox)piece).getTail();
+			
+			Coord newTail = new Coord(coord.x + tail.x - head.x,
+									  coord.y + tail.y - head.y);
+			
+			if ( !(this.getTile(newTail).isEmpty() || piece.equals(this.getTile(newTail).getPiece())) ) {
+				throw new IllegalArgumentException("The tail must end in an empty spot");
+			}
+		}
+	}
+
+
+	/**
+	 * Checks to see if the tiles between the piece and its destination is valid.
+	 * For a Bunny it is valid if they contain a Piece
+	 * For a Fox it is valid if they do not contain any Pieces
+	 * 
+	 * @param coord destination of piece stored at TileSelected
+	 * @throws IllegalArgumentException Throws if tiles between the selected tile and the destination tile are not valid
+	 */
+	private void checkTilesBetween(Coord coord) throws IllegalArgumentException {
+		Piece piece = selectedTile.getPiece();
+		boolean empty;
+		
+		if (piece instanceof Bunny ) {
+			empty=true; // empty spaces throw error
+		}else if (piece instanceof Fox ) {
+			empty=false; // full spaces throw error
+		}else{
+			selectedTile=null;
+			throw new IllegalArgumentException("only Bunnies and Foxes can move.");
+		}
+		
+		
+		int x = Math.min(selectedTile.getCoord().x, coord.x);		//Lower y value
+		int xMax = Math.max(selectedTile.getCoord().x, coord.x);	//Higher y value
+		int xChange=0;
+		int y = Math.min(selectedTile.getCoord().y, coord.y);		//Lower y value
+		int yMax = Math.max(selectedTile.getCoord().y, coord.y);	//Higher y value
+		int yChange=0;
+		
+		if 		(x==xMax) yChange=1;
+		else if (y==yMax) xChange=1;
+		else {
+			selectedTile=null;
+			throw new IllegalArgumentException("Can not attempt a diagonal swap.");
+		}
+		x+=xChange;
+		y+=yChange;
+		//Will test to make sure all in between squares are filled or empty
+		while (x<xMax || y<yMax) {
+			Tile tileCurr = this.getTile(new Coord(x,y)); 
+			if (piece.equals(tileCurr.getPiece())) {
+				
+			}
+			else if (tileCurr.isEmpty()==empty) {
+				selectedTile=null;
+				if (piece instanceof Bunny) throw new IllegalArgumentException("The bunny cannot hop over empty spaces");
+				if (piece instanceof Fox) throw new IllegalArgumentException("The Fox cannot slide through full spaces");
+			}
+			x+=xChange;
+			y+=yChange;
 		}
 	}
 	
