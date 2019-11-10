@@ -9,8 +9,8 @@ import javax.swing.ImageIcon;
  * @author Jay McCracken
  * 			101066860
  * 
- * @version 2.0.1
- * fields now represent their static nature
+ * @version 2.1.0
+ * 		Added tailToHead() that can shift coordinates from the last row or column to the one before it.
  *
  */
 
@@ -57,6 +57,24 @@ public class Fox extends Piece{
         }else {
     	return false;
         }
+    }
+    
+    /**
+     * Changes a coordinate from row or column 4 to 3. This lets us select the tile in the last row or column
+     * as a valid move for Fox.
+     * 
+     * @return the new coord for the Fox movement
+     */
+    public Coord tailToHead(Coord coord){
+    	if(this.head.x == coord.x && this.tail.x == coord.x && coord.y == 4) {
+    		return new Coord(coord.x, 3);
+    	} 
+    	else if (this.head.y == coord.y && this.tail.y == coord.y && coord.x == 4) {
+    		return new Coord(3, coord.y);
+    	}
+    	else {
+    		return coord;
+    	}
     }
 
     /**
