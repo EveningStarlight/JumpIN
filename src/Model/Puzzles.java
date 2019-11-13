@@ -2,85 +2,33 @@ package Model;
 
 import Pieces.*;
 
+import java.io.File;
 import java.util.ArrayList;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+
+import org.w3c.dom.Node;
+import org.w3c.dom.Element;
 
 /**
  * A collection of the puzzles that can be played through for the game JumpIN
  * 
- * @authors Adam Prins, Matthew Harris
- * 			100 879 683, 101 073 502
- * @version 2.0.2
- * 		Renaming of field
- * 		made field explicitly public and also final
+ * @authors Adam Prins
+ * 			100 879 683
+ * @version 3.0.0
+ * 		Converted code to read from the XML file, Puzzles.xml
  *
  */
 public class Puzzles {
 	
-	// How to populate a static array:
-	// https://alvinalexander.com/source-code/java/how-create-populate-static-list-arraylist-linkedlist-syntax-in-java
-	private static final ArrayList<ArrayList<Piece>> PUZZLE_ARRAY = new ArrayList<ArrayList<Piece>>() {{
-		try {
-		// Puzzle 0 - Used for Testing. Not to be called while playing the game
-		add(new ArrayList<Piece>() {{
-			add(new Mushroom(new Coord(2,1)));
-			add(new Bunny(new Coord(2,0)));
-		}});
-		// Puzzle 1
-		add(new ArrayList<Piece>() {{
-			add(new Mushroom(new Coord(2,1)));
-			add(new Bunny(new Coord(2,0)));
-		}});
-		// Puzzle 2
-		add(new ArrayList<Piece>() {{
-			add(new Mushroom(new Coord(3,2)));
-			add(new Mushroom(new Coord(0,1)));
-			add(new Bunny(new Coord(4,2)));
-			add(new Bunny(new Coord(0,2)));
-		}});
-		// Puzzle 3
-		add(new ArrayList<Piece>() {{
-			add(new Fox(new Coord(3,1), new Coord(4,1)));
-			add(new Bunny(new Coord(0,2)));
-		}});
-		// Puzzle 4
-		add(new ArrayList<Piece>() {{
-			add(new Fox(new Coord(3,1), new Coord(4,1)));
-			add(new Fox(new Coord(1,0), new Coord(1,1)));
-			add(new Mushroom(new Coord(0,2)));
-			add(new Bunny(new Coord(0,3)));
-		}});
-		// Puzzle 5
-		add(new ArrayList<Piece>() {{
-			add(new Fox(new Coord(3,1), new Coord(4,1)));
-			add(new Fox(new Coord(1,0), new Coord(1,1)));
-			add(new Mushroom(new Coord(0,2)));
-			add(new Bunny(new Coord(0,3)));
-			add(new Bunny(new Coord(2,4)));
-		}});
-		// Puzzle 6
-		add(new ArrayList<Piece>() {{
-			add(new Fox(new Coord(3,0), new Coord(3,1)));
-			add(new Mushroom(new Coord(0,1)));
-			add(new Mushroom(new Coord(1,2)));
-			add(new Mushroom(new Coord(2,3)));
-			add(new Bunny(new Coord(4,2)));
-			add(new Bunny(new Coord(2,4)));
-		}});
-		// Puzzle end Bunnies!
-		add(new ArrayList<Piece>() {{
-			add(new Bunny(new Coord(0,0)));
-			add(new Bunny(new Coord(0,4)));
-			add(new Bunny(new Coord(2,2)));
-			add(new Bunny(new Coord(4,0)));
-			add(new Bunny(new Coord(4,4)));
-			add(new Bunny(new Coord(2,1)));
-		}});
-		}
-		catch(Exception e) {
-			
-		}
-	}};
-	
+	private static final File file = new File ("src/Model/Puzzles.xml");
 
 	/**
 	 * @param puzzleNumber the puzzle you would like to initialize
@@ -88,23 +36,55 @@ public class Puzzles {
 	 * @throws Exception 
 	 */
 	public static ArrayList<Piece> getPuzzle(int puzzleNumber) {
-		if (puzzleNumber < 0 || puzzleNumber > getMaxPuzzle()) puzzleNumber=1;
-		
 		ArrayList<Piece> array = new ArrayList<Piece>();
-		for (Piece piece:PUZZLE_ARRAY.get(puzzleNumber)) {
-			if (piece instanceof Fox) {
-				Fox fox = (Fox) piece;
-				try {
-				array.add(new Fox(fox.getCoord(), fox.getTail()));
-				} catch (Exception e) {}
-			}
-			else if (piece instanceof Bunny) {
-				array.add(new Bunny(piece.getCoord()));
-			}
-			else if (piece instanceof Mushroom) {
-				array.add(new Mushroom(piece.getCoord()));
-			}
-		}
+		try {
+	         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+	         DocumentBuilder dBuilder;
+
+	         dBuilder = dbFactory.newDocumentBuilder();
+
+	         Document doc = dBuilder.parse(file);
+	         doc.getDocumentElement().normalize();
+
+	         XPath xPath =  XPathFactory.newInstance().newXPath();
+
+	         String expression = "//Puzzle";	        
+	         NodeList nodeList = (NodeList) xPath.compile(expression).evaluate( doc, XPathConstants.NODESET);
+
+	         if (0<puzzleNumber && puzzleNumber<nodeList.getLength()) {
+	        	 Node nNode = nodeList.item(puzzleNumber);
+	        	 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+	                 Element eElement = (Element) nNode;
+	                 NodeList pieceNodes = eElement.getElementsByTagName("Piece");
+	                 for (int i=0; i<pieceNodes.getLength(); i++ ) {
+	                	 Element pElement = (Element) pieceNodes.item(i);
+	                	 int x = Integer.parseInt(pElement.getElementsByTagName("X_Head").item(0).getTextContent());
+	                	 int y = Integer.parseInt(pElement.getElementsByTagName("Y_Head").item(0).getTextContent());
+	                	 String type = pElement.getElementsByTagName("Type").item(0).getTextContent();
+	                	 Coord coord = new Coord(x,y);
+	                	 
+	                	 if ("Mushroom".equals(type))		array.add(new Mushroom(coord));
+	                	 else if ("Bunny".equals(type)) 	array.add(new Bunny(coord));
+	                	 else if ("Fox".equals(type)) {
+	                		 int xTail = Integer.parseInt(pElement.getElementsByTagName("X_Tail").item(0).getTextContent());
+	                		 int yTail = Integer.parseInt(pElement.getElementsByTagName("Y_Tail").item(0).getTextContent());
+	                		 Coord coordTail = new Coord(xTail,yTail);
+	                		 array.add(new Fox(coord,coordTail));
+	                	 }
+	                	 else {
+	                		 throw new IllegalArgumentException("The type of Piece: " + type + " is not a valid Piece.");
+	                	 }
+	                 }
+	        	 }
+	         }
+	         else {
+	        	 throw new IllegalArgumentException("The Puzzle Number: " + puzzleNumber + " is not a valid Puzzle.");
+	         }
+	         
+	         
+	      } catch (Exception e) {
+	         System.out.print("Puzzle XML Exception: " + e.getMessage());
+	      }
 		return array;
 	}
 
@@ -114,9 +94,24 @@ public class Puzzles {
 	 * this is one higher than the puzzleNumber of the last puzzle
 	 */
 	public static int getMaxPuzzle() {
-		return PUZZLE_ARRAY.size();
+		try {
+	         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+	         DocumentBuilder dBuilder;
+
+	         dBuilder = dbFactory.newDocumentBuilder();
+
+	         Document doc = dBuilder.parse(file);
+	         doc.getDocumentElement().normalize();
+
+	         XPath xPath =  XPathFactory.newInstance().newXPath();
+
+	         String expression = "//Puzzle";	        
+	         NodeList nodeList = (NodeList) xPath.compile(expression).evaluate( doc, XPathConstants.NODESET);
+
+	         return nodeList.getLength();
+		} catch(Exception e) {
+			System.out.print("getMaxPuzzle Exception: " + e.getMessage());
+		}
+		return -1;
 	}
-	
-	
-	
 }
