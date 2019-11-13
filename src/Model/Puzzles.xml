@@ -1,72 +1,166 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<predefined_Puzzles>
-	<puzzle>
+<!-- Authors: -->
+<!-- Adam Prins 	100 879 683-->
+<!-- Matthew Harris 101 073 502 -->
+<PredefinedPuzzles>
+	<Puzzle>
 		<Number>0</Number>
-	</puzzle>
+	</Puzzle>
 	
-	<puzzle>
+	<Puzzle>
 		<Number>1</Number>
-		<piece>
+		<Piece>
 			<Type>Mushroom</Type>
 			<X_Head>2</X_Head>
 			<Y_Head>1</Y_Head>
-		</piece>
-		<piece>
+		</Piece>
+		<Piece>
 			<Type>Bunny</Type>
 			<X_Head>2</X_Head>
 			<Y_Head>0</Y_Head>
-		</piece>
-	</puzzle>
+		</Piece>
+	</Puzzle>
 	
-	<puzzle>
+	<Puzzle>
 		<Number>2</Number>
-		<piece>
+		<Piece>
 			<Type>Mushroom</Type>
 			<X_Head>3</X_Head>
 			<Y_Head>2</Y_Head>
-		</piece>
-		<piece>
+		</Piece>
+		<Piece>
 			<Type>Mushroom</Type>
 			<X_Head>0</X_Head>
 			<Y_Head>1</Y_Head>
-		</piece>
-		<piece>
+		</Piece>
+		<Piece>
 			<Type>Bunny</Type>
 			<X_Head>4</X_Head>
 			<Y_Head>2</Y_Head>
-		</piece>
-		<piece>
+		</Piece>
+		<Piece>
 			<Type>Bunny</Type>
 			<X_Head>0</X_Head>
 			<Y_Head>2</Y_Head>
-		</piece>
-	</puzzle>
+		</Piece>
+	</Puzzle>
 	
-	<puzzle>
+	<Puzzle>
 		<Number>3</Number>
-		<piece>
+		<Piece>
+			<Type>Bunny</Type>
+			<X_Head>0</X_Head>
+			<Y_Head>2</Y_Head>
+		</Piece>
+		<Piece>
 			<Type>Fox</Type>
 			<X_Head>3</X_Head>
 			<Y_Head>1</Y_Head>
 			<X_Tail>4</X_Tail>
 			<Y_Tail>1</Y_Tail>
-		</piece>
-		<piece>
-			<Type>Bunny</Type>
+		</Piece>
+	</Puzzle>
+	
+	<Puzzle>
+		<Number>4</Number>
+		<Piece>
+			<Type>Mushroom</Type>
 			<X_Head>0</X_Head>
 			<Y_Head>2</Y_Head>
-		</piece>
-	</puzzle>
+		</Piece>
+		<Piece>
+			<Type>Bunny</Type>
+			<X_Head>0</X_Head>
+			<Y_Head>3</Y_Head>
+		</Piece>
+		<Piece>
+			<Type>Fox</Type>
+			<X_Head>3</X_Head>
+			<Y_Head>1</Y_Head>
+			<X_Tail>4</X_Tail>
+			<Y_Tail>1</Y_Tail>
+		</Piece>
+		<Piece>
+			<Type>Fox</Type>
+			<X_Head>1</X_Head>
+			<Y_Head>0</Y_Head>
+			<X_Tail>1</X_Tail>
+			<Y_Tail>1</Y_Tail>
+		</Piece>
+	</Puzzle>
 	
-	<puzzle>
-		<Number>4</Number>
-	</puzzle>
-	
-	<puzzle>
+	<Puzzle>
 		<Number>5</Number>
-	</puzzle>
+		<Piece>
+			<Type>Mushroom</Type>
+			<X_Head>0</X_Head>
+			<Y_Head>2</Y_Head>
+		</Piece>
+		<Piece>
+			<Type>Bunny</Type>
+			<X_Head>0</X_Head>
+			<Y_Head>3</Y_Head>
+		</Piece>
+		<Piece>
+			<Type>Bunny</Type>
+			<X_Head>2</X_Head>
+			<Y_Head>4</Y_Head>
+		</Piece>
+		<Piece>
+			<Type>Fox</Type>
+			<X_Head>3</X_Head>
+			<Y_Head>1</Y_Head>
+			<X_Tail>4</X_Tail>
+			<Y_Tail>1</Y_Tail>
+		</Piece>
+		<Piece>
+			<Type>Fox</Type>
+			<X_Head>1</X_Head>
+			<Y_Head>0</Y_Head>
+			<X_Tail>1</X_Tail>
+			<Y_Tail>1</Y_Tail>
+		</Piece>
+	</Puzzle>
 	
-	<puzzle>
+	<Puzzle>
 		<Number>6</Number>
-	</puzzle>
-</predefined_Puzzles>
+		<Piece>
+			<Type>Mushroom</Type>
+			<X_Head>0</X_Head>
+			<Y_Head>1</Y_Head>
+		</Piece>
+		<Piece>
+			<Type>Mushroom</Type>
+			<X_Head>1</X_Head>
+			<Y_Head>2</Y_Head>
+		</Piece>
+		<Piece>
+			<Type>Mushroom</Type>
+			<X_Head>2</X_Head>
+			<Y_Head>3</Y_Head>
+		</Piece>
+		<Piece>
+			<Type>Mushroom</Type>
+			<X_Head>3</X_Head>
+			<Y_Head>3</Y_Head>
+		</Piece>
+		<Piece>
+			<Type>Bunny</Type>
+			<X_Head>4</X_Head>
+			<Y_Head>2</Y_Head>
+		</Piece>
+		<Piece>
+			<Type>Bunny</Type>
+			<X_Head>2</X_Head>
+			<Y_Head>4</Y_Head>
+		</Piece>
+		<Piece>
+			<Type>Fox</Type>
+			<X_Head>3</X_Head>
+			<Y_Head>0</Y_Head>
+			<X_Tail>3</X_Tail>
+			<Y_Tail>1</Y_Tail>
+		</Piece>
+	</Puzzle>
+	
+</PredefinedPuzzles>
