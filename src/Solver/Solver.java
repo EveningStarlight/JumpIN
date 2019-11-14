@@ -8,6 +8,7 @@ import java.util.Queue;
 import GUI.Tile;
 import Model.Coord;
 import Model.Game;
+import Model.Move;
 import Model.Puzzles;
 import Pieces.Piece;
 
@@ -57,6 +58,8 @@ public class Solver {
 			}
 		}
 	}
+	
+	
 	
 	public String toString() {
 		return null;
