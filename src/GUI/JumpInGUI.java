@@ -14,9 +14,8 @@ import java.awt.event.*;
  * @author Adam Prins, Jay McCracken
  * 		   100 879 683, 101 066 860
  * 
- * @version 1.9.3
- * 		Output is cleared upon a valid selection or move
- * 		If statement removed from before while loop (duplication of tests)
+ * @version 1.10.0
+ * 		added save button for saving the board state
  *		
  */
 public class JumpInGUI implements ActionListener {
@@ -32,6 +31,8 @@ public class JumpInGUI implements ActionListener {
     
     /* The quit menu item */
     private JMenuItem quitItem;
+    /* The save menu item */
+    private JMenuItem saveItem;
     
     /* items for each level */
     private JMenuItem levelSelect;
@@ -85,6 +86,9 @@ public class JumpInGUI implements ActionListener {
 	    levelHint = new JMenuItem("Hint");// creates a new option on the menu
 	    level.add(levelHint);	    // add to the menu bar
 	
+	    saveItem = new JMenuItem("Save"); // create a menu item called "Save"
+	    fileMenu.add(saveItem); // and add to our menu
+	    
 	    resetItem = new JMenuItem("Reset"); // create a menu item called "Reset"
 	    fileMenu.add(resetItem); // and add to our menu
 	
@@ -94,8 +98,9 @@ public class JumpInGUI implements ActionListener {
 	    // listen for menu selections
 	    resetItem.addActionListener(this); 
 	    quitItem.addActionListener(this); 
+	    saveItem.addActionListener(this);
 	    levelSelect.addActionListener(this);// create an anonymous inner class
-	
+	    
 	    
 	    
 	    
@@ -281,6 +286,9 @@ public class JumpInGUI implements ActionListener {
             } 
             else if (item == quitItem) {
                 System.exit(0);
+            }
+            else if (item == saveItem) {
+            	game.saveState();
             }
             else if (item == levelSelect) {
             	String level =  JOptionPane.showInputDialog("Please enter the level you wish to go to (1-" + (Puzzles.getMaxPuzzle() - 1) + ")");

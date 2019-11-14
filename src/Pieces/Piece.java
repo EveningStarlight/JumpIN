@@ -4,6 +4,9 @@ import Model.*;
 
 import javax.swing.ImageIcon;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 /**
  * 
  * @author Jay McCracken
@@ -54,5 +57,13 @@ public abstract class Piece {
      */
 	public Coord getCoord() {
 		return this.coord;
-	};	
-}
+	}	
+	
+	public Element getElement(Document document) {
+		return null;
+	}
+	
+	public static Piece importCoord(Element element) {
+		return null;
+	}
+};

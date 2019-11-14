@@ -1,13 +1,17 @@
 package Model;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 /**
  * 
  * This class holds coordinates for other objects
  * 
  * @author Adam Prins
  * 			100 879 683
- * @version 1.4.1
- *		wrong logic. Used && instead of || 
+ * @version 1.5.0
+ *		Added xml element support for saving Coords
+ * 		Added xml import support
  */
 
 public class Coord {
@@ -71,5 +75,40 @@ public class Coord {
 	 */
 	public Boolean isHole() {
 		return ((x==0 || x==4) && (y==0 || y==4)) || (x==2 && y==2);
+	}
+	
+	/**
+	 * This creates an Element that represents this Coord for use in Saving into an XML
+	 * 
+	 * @param document document that will help create the Coord Element
+	 * @return the Element created to Represent the Coord
+	 */
+	public Element getElement(Document document) {
+		
+		Element XElement = document.createElement("X");
+		Element YElement = document.createElement("X");
+		Element coordElement = document.createElement("Coord");
+		
+		XElement.appendChild(document.createTextNode(Integer.toString(x)));
+		YElement.appendChild(document.createTextNode(Integer.toString(y)));
+		
+		coordElement.appendChild(XElement);
+		coordElement.appendChild(YElement);
+		
+		return coordElement;
+	}
+	
+	/**
+	 * This method imports an Element that contains data for a Coord and 
+	 * returns a new Coord created from those values.
+	 * 
+	 * @param element that is to be used to create a new Coord
+	 * @return the Coord created using the passed Element
+	 */
+	public static Coord importCoord(Element element) {
+		int x = Integer.parseInt(element.getElementsByTagName("X").item(0).getTextContent());
+   	 	int y = Integer.parseInt(element.getElementsByTagName("Y").item(0).getTextContent());
+   	 	
+   	 	return new Coord(x,y);
 	}
 }

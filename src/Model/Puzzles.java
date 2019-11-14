@@ -7,28 +7,22 @@ import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-
-import org.w3c.dom.Node;
-import org.w3c.dom.Element;
+import javax.xml.xpath.*;
+import org.w3c.dom.*;
 
 /**
  * A collection of the puzzles that can be played through for the game JumpIN
  * 
  * @authors Adam Prins
  * 			100 879 683
- * @version 3.0.0
- * 		Converted code to read from the XML file, Puzzles.xml
+ * @version 3.0.1
+ * 		Refactored some variable names and removed unused imports.
  *
  */
 public class Puzzles {
 	
-	private static final File file = new File ("src/Model/Puzzles.xml");
+	private static final File PREDEFINED_PUZZLES = new File ("src/Model/Puzzles.xml");
+	private static final File USER_PUZZLES = new File ("src/Model/UserPuzzles.xml");
 
 	/**
 	 * @param puzzleNumber the puzzle you would like to initialize
@@ -36,14 +30,12 @@ public class Puzzles {
 	 * @throws Exception 
 	 */
 	public static ArrayList<Piece> getPuzzle(int puzzleNumber) {
-		ArrayList<Piece> array = new ArrayList<Piece>();
+		ArrayList<Piece> pieces = new ArrayList<Piece>();
 		try {
 	         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-	         DocumentBuilder dBuilder;
+	         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 
-	         dBuilder = dbFactory.newDocumentBuilder();
-
-	         Document doc = dBuilder.parse(file);
+	         Document doc = dBuilder.parse(PREDEFINED_PUZZLES);
 	         doc.getDocumentElement().normalize();
 
 	         XPath xPath =  XPathFactory.newInstance().newXPath();
@@ -63,13 +55,13 @@ public class Puzzles {
 	                	 String type = pElement.getElementsByTagName("Type").item(0).getTextContent();
 	                	 Coord coord = new Coord(x,y);
 	                	 
-	                	 if ("Mushroom".equals(type))		array.add(new Mushroom(coord));
-	                	 else if ("Bunny".equals(type)) 	array.add(new Bunny(coord));
+	                	 if ("Mushroom".equals(type))		pieces.add(new Mushroom(coord));
+	                	 else if ("Bunny".equals(type)) 	pieces.add(new Bunny(coord));
 	                	 else if ("Fox".equals(type)) {
 	                		 int xTail = Integer.parseInt(pElement.getElementsByTagName("X_Tail").item(0).getTextContent());
 	                		 int yTail = Integer.parseInt(pElement.getElementsByTagName("Y_Tail").item(0).getTextContent());
 	                		 Coord coordTail = new Coord(xTail,yTail);
-	                		 array.add(new Fox(coord,coordTail));
+	                		 pieces.add(new Fox(coord,coordTail));
 	                	 }
 	                	 else {
 	                		 throw new IllegalArgumentException("The type of Piece: " + type + " is not a valid Piece.");
@@ -85,7 +77,7 @@ public class Puzzles {
 	      } catch (Exception e) {
 	         System.out.print("Puzzle XML Exception: " + e.getMessage());
 	      }
-		return array;
+		return pieces;
 	}
 
 	/**
@@ -96,11 +88,9 @@ public class Puzzles {
 	public static int getMaxPuzzle() {
 		try {
 	         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-	         DocumentBuilder dBuilder;
+	         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 
-	         dBuilder = dbFactory.newDocumentBuilder();
-
-	         Document doc = dBuilder.parse(file);
+	         Document doc = dBuilder.parse(PREDEFINED_PUZZLES);
 	         doc.getDocumentElement().normalize();
 
 	         XPath xPath =  XPathFactory.newInstance().newXPath();
@@ -114,4 +104,5 @@ public class Puzzles {
 		}
 		return -1;
 	}
+	
 }

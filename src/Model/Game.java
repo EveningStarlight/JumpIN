@@ -3,19 +3,31 @@ package Model;
 import GUI.*;
 import Pieces.*;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Stack;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * Overall game implementation 
  * contains the board and is in charge of swapping pieces
  * @authors Adam Prins, Matthew Harris
  * 			100 879 683, 101 073 502
- * @version 2.2.0
- * 		Splitting of trySwapPiece into multiple check methods.
- * 		These methods have the same throws that trySwapPiece had
- * 		TrySwapPiece now catches and rethrows these Exceptions 
- * 		Fox will now be able to move when the last row or column is selected.
+ * @version 2.3.0
+ * 		Added first start of State Saving
+ * 		Saves basic pieces
+ * 		Saves Undo and Redo Stacks
  * 
  */
 public class Game {
@@ -31,6 +43,8 @@ public class Game {
 	private Stack<Move> redoStack;
 	/* The list of all Bunny pieces on the game board */
 	private ArrayList<Bunny> buns;
+	
+	private static final File SAVED_STATE = new File ("src/Model/SavedState.xml");
 	
 	
 	/**
@@ -395,6 +409,60 @@ public class Game {
 			for(Tile tile:tileLine) {
 				tile.removePiece();
 			}
+		}
+	}
+	
+	
+	public void saveState() {
+		try {
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+	        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+	        Document document = dBuilder.newDocument();
+	        
+	        Element rootElement = document.createElement("SavedState");
+	        
+	        /*
+	        Element levelElement = document.createElement("Level");
+	        levelElement.appendChild(document.createTextNode("2"));
+	        rootElement.appendChild(levelElement);
+	        */
+	        
+	        ArrayList<Piece> pieces = getBoard();
+	        Element pieceRootElement = document.createElement("Pieces");
+	        for (Piece piece:pieces) {
+	        	//TODO Jay replace these first two lines with a call to the piece to get the Element
+	        	Element pieceElement = document.createElement("Piece");
+	        	pieceElement.appendChild(document.createTextNode(piece.getCoord().toString()));
+	        	pieceRootElement.appendChild(pieceElement);
+	        }
+	        rootElement.appendChild(pieceRootElement);
+	        
+	        Element undoRootElement = document.createElement("UndoStack");
+	        for (Move move:undoStack) {
+	        	undoRootElement.appendChild(move.getElement(document));
+	        }
+	        rootElement.appendChild(undoRootElement);
+	        
+	        Element redoRootElement = document.createElement("RedoStack");
+	        for (Move move:redoStack) {
+	        	redoRootElement.appendChild(move.getElement(document));
+	        }
+	        rootElement.appendChild(redoRootElement);
+	        
+	        document.appendChild(rootElement);
+	        
+	        Transformer tr = TransformerFactory.newInstance().newTransformer();
+            tr.setOutputProperty(OutputKeys.INDENT, "yes");
+            tr.setOutputProperty(OutputKeys.METHOD, "xml");
+            tr.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            tr.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+
+            // send DOM to file
+            tr.transform(new DOMSource(document), 
+                                 new StreamResult(new FileOutputStream(SAVED_STATE.getPath())));
+	        
+		} catch (Exception e) {
+			System.out.print(e.getMessage());
 		}
 	}
 }
