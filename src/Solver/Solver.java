@@ -8,7 +8,10 @@ import java.util.Queue;
 import GUI.Tile;
 import Model.Coord;
 import Model.Game;
+import Model.Move;
 import Model.Puzzles;
+import Pieces.Bunny;
+import Pieces.Fox;
 import Pieces.Piece;
 
 /**
@@ -51,11 +54,39 @@ public class Solver {
 	
 	public void puzzleBreadthSearch() {
 		visitedPieces.replace(pieces.get(0), true);
-		while(visitedPieces.containsValue(false)){
-			if(solverGame.endGame()){
-				break;
-			}
+		ArrayList<Move> moves;
+		for(int i =0; i< visitedPieces.size(); i++) {
+			moves = avaliableMoves((Piece) visitedPieces.keySet().toArray()[i]);
+			while(!moves.isEmpty()){
+				if(solverGame.endGame()){
+					break;
+				}
+			}	
 		}
+		
+	}
+	
+	public ArrayList<Move> avaliableMoves(Piece piece) {
+		ArrayList<Move> moves = new ArrayList<Move>();
+			for(int i = 1; i < 5;i++) {
+				Coord left = new Coord((piece.getCoord().x-i), piece.getCoord().y);
+				Coord right = new Coord((piece.getCoord().x+i), piece.getCoord().y);
+				Coord up = new Coord((piece.getCoord().x), piece.getCoord().y-i);
+				Coord down = new Coord((piece.getCoord().x), piece.getCoord().y+i);
+				if(piece.isValidMove(left)) {
+					moves.add(new Move(piece.getCoord(),left));
+				}
+				if(piece.isValidMove(right)) {
+					moves.add(new Move(piece.getCoord(),right));
+				}
+				if(piece.isValidMove(up)) {
+					moves.add(new Move(piece.getCoord(),up));
+				}
+				if(piece.isValidMove(down)) {
+					moves.add(new Move(piece.getCoord(),down));
+				}
+			}
+		return moves;	
 	}
 	
 	public String toString() {
