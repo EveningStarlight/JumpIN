@@ -3,22 +3,29 @@ package Tests;
 
 import GUI.*;
 import Model.*;
+import Pieces.Piece;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * Test cases for the Game class 
  * 
- * @author Matthew Harris,
- * 			101 073 502
+ * @author Matthew Harris, Jay McCracken
+ * 			101 073 502,   101 066 860
  *
  */
 public class GameTest {
 
     private Game game = null;
     private TextTile[][] board = null;
+    private ArrayList<Piece> original;
+	private ArrayList<Piece> tester;
     
    /**
     * Method that runs before all the test methods 
@@ -33,6 +40,8 @@ public class GameTest {
             }
         }
         game = new Game(board,1);
+        original = Puzzles.getPuzzle(2);
+		tester = Puzzles.getPuzzle(2);
     }
 
     /**
@@ -119,5 +128,43 @@ public class GameTest {
 		game.selectTile(new Coord(2, 2));
 		assertTrue(game.endGame());
 	}
+	
+	@Test
+	public void testUndoMove() throws Exception {
+		game.setBoard(tester);
+		assertEquals(original.get(3).getCoord(), tester.get(3).getCoord());
+		game.selectTile(new Coord(0, 2));
+		game.selectTile(new Coord(0, 0));
+		assertNotEquals(original.get(3).getCoord(), tester.get(3).getCoord());
+		game.undoMove();
+		assertEquals(original.get(3).getCoord(), tester.get(3).getCoord());
+	}
+	
+	@Test
+	public void testIsUndoEmpty() throws Exception {
+		assertEquals(true, game.isUndoEmpty());
+		game.setBoard(original);
+		game.selectTile(new Coord(0, 2));
+		game.selectTile(new Coord(0, 0));
+		assertEquals(false, game.isUndoEmpty());
+	}
 
+	@Test
+	public void testRedoMove() throws Exception {
+		testUndoMove();
+		game.redoMove();
+		assertNotEquals(original.get(3).getCoord(), tester.get(3).getCoord());
+	}
+	
+	@Test
+	public void testIsRedoEmpty() throws Exception {
+		assertEquals(true, game.isRedoEmpty());
+		game.setBoard(original);
+		game.selectTile(new Coord(0, 2));
+		game.selectTile(new Coord(0, 0));
+		assertEquals(true, game.isRedoEmpty());
+		game.undoMove();
+		assertEquals(false, game.isRedoEmpty());
+	}
+	
 }
