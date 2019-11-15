@@ -10,9 +10,8 @@ import org.w3c.dom.Element;
  * @author Adam Prins
  * 			100 879 683
  * 
- * @version 1.1
- * 		Added xml element support for saving moves
- * 		Added xml import support
+ * @version 1.1.1
+ * 		xml for Move is called Move
  */
 public class Move {
 
@@ -41,7 +40,7 @@ public class Move {
 		
 		Element oldElement = document.createElement("OldCoord");
 		Element newElement = document.createElement("NewCoord");
-		Element moveElement = document.createElement("Coord");
+		Element moveElement = document.createElement("Move");
 		
 		oldElement.appendChild(COORD_OLD.getElement(document));
 		newElement.appendChild(COORD_NEW.getElement(document));
