@@ -52,48 +52,70 @@ public class Solver {
 		}
 	
 	
-	public ArrayList<Move> puzzleBreadthSearch() throws Exception {
+	public ArrayList<Move> puzzleBreadthSearch(){
 		ArrayList<ArrayList<Move>> superMoves = new ArrayList<ArrayList<Move>>();
 		superMoves.add(new ArrayList<Move>());
 		int i=0;
 		do {
 			doAllMoves(superMoves.get(i));
-			ArrayList<Move> moves=avaliableMoves(pieces.get(i));
-			for (int j=0; j<moves.size(); j++) {
+			ArrayList<Move> moves=avaliableMoves();
+			for (int j=0; j<moves.size(); j++){
 				ArrayList<Move> currMove=(ArrayList<Move>) superMoves.get(i).clone();
 				currMove.add(moves.get(j));
 				superMoves.add(currMove);
+				try{
+				solverGame.selectTile(currMove.get(currMove.size()-1).COORD_OLD);
+				solverGame.selectTile(currMove.get(currMove.size()-1).COORD_NEW);
+				}
+				catch(Exception e){
+					
+				}
+				if(solverGame.endGame()){
+					return currMove;
+				}
+				else{
+					solverGame.undoMove();
+				}
 			}
-		i++;
+			while(!solverGame.isUndoEmpty()){
+				solverGame.undoMove();
+			}
+			i++;
+			if(superMoves.size()>1000){
+				System.out.println("NOT FAR ENOUGH");
+				break;
+			}
 		}while (i<superMoves.size());
 		return null;
 	}
 	
-	private void doAllMoves(ArrayList<Move> arrayList) {
+	private void doAllMoves(ArrayList<Move> arrayList){
 		
 	}
 
-	public ArrayList<Move> avaliableMoves() {
-		ArrayList<Move> moves = new ArrayList<Move>();
+	private ArrayList<Move> avaliableMoves() {
+		ArrayList<Move> allMoves = new ArrayList<Move>();
 		for(int i = 0; i<pieces.size();i++){
 			Piece piece = pieces.get(i);
 			for(int j = 0; j < 5;j++) {
 				Coord x = new Coord(j, piece.getCoord().y);
 				Coord y = new Coord(piece.getCoord().x, j);
-				if() {
-					moves.add(new Move(piece.getCoord(),left));
+				if(solverGame.canSwapPiece(piece.getCoord(), x)) {
+					allMoves.add(new Move(piece.getCoord(),x));
 				}
-				if(piece.isValidMove(right)) {
-					moves.add(new Move(piece.getCoord(),right));
+				if(solverGame.canSwapPiece(piece.getCoord(), y)) {
+					allMoves.add(new Move(piece.getCoord(),y));
 				}
 			}
 			}
-		return moves;	
+		return allMoves;	
 	}
 	
 	
-	
+	@Override
 	public String toString() {
-		return null;
+		ArrayList<Move> path = puzzleBreadthSearch();
+		String s = path.get(0).toString();
+		return s;
 	}
 }
