@@ -10,8 +10,8 @@ import org.w3c.dom.Element;
  * @author Adam Prins
  * 			100 879 683
  * 
- * @version 1.1.1
- * 		xml for Move is called Move
+ * @version 1.2.0
+ * 		Added toString method
  */
 public class Move {
 
@@ -28,6 +28,16 @@ public class Move {
 	public Move(Coord coordOld, Coord coordNew) {
 		this.COORD_OLD=coordOld;
 		this.COORD_NEW=coordNew;
+	}
+	
+	/**
+	 * This generates a string that represents the Move Object
+	 * 
+	 * @return the string representation of the move;
+	 */
+	@Override
+	public String toString() {
+		return COORD_OLD.toString() + " to " + COORD_NEW.toString();
 	}
 	
 	/**
