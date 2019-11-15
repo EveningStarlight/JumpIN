@@ -9,9 +9,8 @@ import org.w3c.dom.Element;
  * 
  * @author Adam Prins
  * 			100 879 683
- * @version 1.5.0
- *		Added xml element support for saving Coords
- * 		Added xml import support
+ * @version 1.5.1
+ *		xml for Y coord is now labled Y
  */
 
 public class Coord {
@@ -86,7 +85,7 @@ public class Coord {
 	public Element getElement(Document document) {
 		
 		Element XElement = document.createElement("X");
-		Element YElement = document.createElement("X");
+		Element YElement = document.createElement("Y");
 		Element coordElement = document.createElement("Coord");
 		
 		XElement.appendChild(document.createTextNode(Integer.toString(x)));
