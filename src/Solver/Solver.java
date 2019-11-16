@@ -21,8 +21,9 @@ import Pieces.Piece;
  * using Depth-First Search
  * @authors Jay McCracken, Matthew Harris
  * 			101066860       101073502
- * @version 1.1.0
- * 		Created getNextMove() for easy selection of Tiles for the GUI
+ * @version 1.1.1
+ * 		added not equal test for finding new moves
+ * 		Passes Puzzle 3
  */
 public class Solver {
 
@@ -109,10 +110,10 @@ public class Solver {
 			for(int j = 0; j < 5;j++) {
 				Coord x = new Coord(j, piece.getCoord().y);
 				Coord y = new Coord(piece.getCoord().x, j);
-				if(solverGame.canSwapPiece(piece.getCoord(), x)) {
+				if(solverGame.canSwapPiece(piece.getCoord(), x) && !piece.getCoord().equals(x)) {
 					allMoves.add(new Move(piece.getCoord(),x));
 				}
-				if(solverGame.canSwapPiece(piece.getCoord(), y)) {
+				if(solverGame.canSwapPiece(piece.getCoord(), y) && !piece.getCoord().equals(y)) {
 					allMoves.add(new Move(piece.getCoord(),y));
 				}
 			}
@@ -129,7 +130,9 @@ public class Solver {
 		try {
 			path = puzzleBreadthSearch();
 			return path.get(0);
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		throw new RuntimeException("Failed to find solution");
 	}
 	
