@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import GUI.ButtonTile;
+import GUI.TextTile;
 import GUI.Tile;
 import Model.Coord;
 import Model.Game;
@@ -31,23 +33,27 @@ public class Solver {
 	private Queue<String> movesTaken;
 	
 	public Solver(int puzzleNumber) throws Exception{
+		board = new TextTile[Game.BOARD_SIZE][Game.BOARD_SIZE];
 		pieces = new ArrayList<Piece>(Puzzles.getPuzzle(puzzleNumber));
-		visitedPieces = new ArrayList<Piece>();
-		for(int i = 0; i<pieces.size();i++){
-			visitedPieces.add(pieces.get(i));
-		}
 		movesTaken = new LinkedList<String>();
+		for (int x=0; x<Game.BOARD_SIZE; x++) {
+			for (int y=0; y<Game.BOARD_SIZE; y++) {
+				 board[x][y]= new TextTile(new Coord(x,y));
+			}
+		}
 		solverGame = new Game(board, puzzleNumber);
 		}
 	
 	public Solver(Game game) throws Exception{
+		board = new TextTile[Game.BOARD_SIZE][Game.BOARD_SIZE];
 		pieces = new ArrayList<Piece>(game.getBoard());
-		visitedPieces = new ArrayList<Piece>();
-		for(int i = 0; i<pieces.size();i++){
-			visitedPieces.add(pieces.get(i));
-		}
 		movesTaken = new LinkedList<String>();
-		solverGame = new Game(board, 0);
+		for (int x=0; x<Game.BOARD_SIZE; x++) {
+			for (int y=0; y<Game.BOARD_SIZE; y++) {
+				 board[x][y]= new TextTile(new Coord(x,y));
+			}
+		}
+		solverGame = new Game(board, 1);
 		solverGame.setBoard(pieces);
 		}
 	
