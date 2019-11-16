@@ -24,11 +24,8 @@ import org.w3c.dom.Element;
  * contains the board and is in charge of swapping pieces
  * @authors Adam Prins, Matthew Harris
  * 			100 879 683, 101 073 502
- * @version 2.4.0
- * 		Changed trySwapPiece to canSwapPiece, it now returns a boolean.
- * 		canSwapPiece no longer actually swaps the piece
- * 		selectTile now actually does the swapping after reciving if the move is valid or not
- * 		added a public canSwapPiece that accepts two coordinate arguments that will be useful for the solver
+ * @version 2.4.1
+ * 		Unnested functionality from public canSwapPiece
  * 
  * 
  */
@@ -270,16 +267,16 @@ public class Game {
 	 * @return returns true if the move is valid, false if it is possible the a valid move for a fox tail
 	 * and throws an exception otherwise.
 	 */
-	public boolean canSwapPiece(Coord origin, Coord destination) {
-		try {
-			Tile savedTile = selectedTile;
-			selectedTile = this.getTile(origin);
-			boolean validMove = canSwapPiece(destination); 
-			selectedTile = savedTile;
-			return validMove;
-		} catch (Exception e) {
-			return false;
-		}
+
+	public boolean canSwapPiece(Coord destination, Coord origin) {
+		Tile savedTile = selectedTile;
+		selectedTile = this.getTile(origin);
+		boolean validMove = false;
+		
+		try { validMove = canSwapPiece(destination); } catch (Exception e) {}
+		
+		selectedTile = savedTile;
+		return validMove;
 	}
 
 	/**

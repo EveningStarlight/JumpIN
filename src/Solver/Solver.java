@@ -52,7 +52,7 @@ public class Solver {
 		}
 	
 	
-	public ArrayList<Move> puzzleBreadthSearch(){
+	public ArrayList<Move> puzzleBreadthSearch() throws Exception{
 		ArrayList<ArrayList<Move>> superMoves = new ArrayList<ArrayList<Move>>();
 		superMoves.add(new ArrayList<Move>());
 		int i=0;
@@ -89,8 +89,11 @@ public class Solver {
 		return null;
 	}
 	
-	private void doAllMoves(ArrayList<Move> arrayList){
-		
+	private void doAllMoves(ArrayList<Move> arrayList) throws Exception{
+		for (Move move: arrayList) {
+			solverGame.selectTile(move.COORD_OLD);
+			solverGame.selectTile(move.COORD_NEW);
+		}
 	}
 
 	private ArrayList<Move> avaliableMoves() {
@@ -114,8 +117,14 @@ public class Solver {
 	
 	@Override
 	public String toString() {
-		ArrayList<Move> path = puzzleBreadthSearch();
-		String s = path.get(0).toString();
-		return s;
+		ArrayList<Move> path;
+		try {
+			path = puzzleBreadthSearch();
+			String s = path.get(0).toString();
+			return s;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
