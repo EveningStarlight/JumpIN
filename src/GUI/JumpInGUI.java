@@ -15,8 +15,8 @@ import java.awt.event.*;
  * @author Adam Prins, Jay McCracken
  * 		   100 879 683, 101 066 860
  * 
- * @version 1.10.0
- * 		added save button for saving the board state
+ * @version 1.11.1
+ * 		Level Solver now outputs results to the board instead of the console.
  *		
  */
 public class JumpInGUI implements ActionListener {
@@ -294,9 +294,9 @@ public class JumpInGUI implements ActionListener {
 	        }else if (item == levelSolver) {
 	        	try {     		
 					Solver solution = new Solver(game);
-					System.out.println(solution.toString());
+					output.setText(solution.toString());
 				} catch (Exception e1) {
-					e1.printStackTrace();
+					System.out.println("Level Solver error: " +e1.getMessage());
 				}
 	        }
             else if (item == levelSelect) {
