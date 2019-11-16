@@ -21,8 +21,8 @@ import Pieces.Piece;
  * using Depth-First Search
  * @authors Jay McCracken, Matthew Harris
  * 			101066860       101073502
- * @version 1.0.1
- * 	constructor created
+ * @version 1.1.0
+ * 		Created getNextMove() for easy selection of Tiles for the GUI
  */
 public class Solver {
 
@@ -118,6 +118,19 @@ public class Solver {
 			}
 			}
 		return allMoves;	
+	}
+	
+	/**
+	 * Gets the next move to help solve the puzzle as according to the solver
+	 * @return next Move needed to solve the puzzle
+	 */
+	public Move getNextMove() {
+		ArrayList<Move> path;
+		try {
+			path = puzzleBreadthSearch();
+			return path.get(0);
+		} catch (Exception e) {}
+		throw new RuntimeException("Failed to find solution");
 	}
 	
 	
