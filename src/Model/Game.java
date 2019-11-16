@@ -24,8 +24,8 @@ import org.w3c.dom.Element;
  * contains the board and is in charge of swapping pieces
  * @authors Adam Prins, Matthew Harris
  * 			100 879 683, 101 073 502
- * @version 2.4.1
- * 		Unnested functionality from public canSwapPiece
+ * @version 2.4.2
+ * 		public canSwapPiece arguments swapped sides
  * 
  * 
  */
@@ -268,7 +268,7 @@ public class Game {
 	 * and throws an exception otherwise.
 	 */
 
-	public boolean canSwapPiece(Coord destination, Coord origin) {
+	public boolean canSwapPiece(Coord origin, Coord destination) {
 		Tile savedTile = selectedTile;
 		selectedTile = this.getTile(origin);
 		boolean validMove = false;
