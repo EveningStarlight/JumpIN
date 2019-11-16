@@ -1,6 +1,7 @@
 package GUI;
 
 import Pieces.*;
+import Solver.Solver;
 import Model.*;
 
 import java.awt.*;
@@ -99,7 +100,8 @@ public class JumpInGUI implements ActionListener {
 	    resetItem.addActionListener(this); 
 	    quitItem.addActionListener(this); 
 	    saveItem.addActionListener(this);
-	    levelSelect.addActionListener(this);// create an anonymous inner class
+	    levelSelect.addActionListener(this);
+	    levelSolver.addActionListener(this);// create an anonymous inner class
 	    
 	    
 	    
@@ -289,7 +291,14 @@ public class JumpInGUI implements ActionListener {
             }
             else if (item == saveItem) {
             	game.saveState();
-            }
+	        }else if (item == levelSolver) {
+	        	try {     		
+					Solver solution = new Solver(game);
+					System.out.println(solution.toString());
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+	        }
             else if (item == levelSelect) {
             	String level =  JOptionPane.showInputDialog("Please enter the level you wish to go to (1-" + (Puzzles.getMaxPuzzle() - 1) + ")");
             	int levelNumber = 0;
@@ -333,10 +342,10 @@ public class JumpInGUI implements ActionListener {
         					JFrame f = new JFrame();
         					JOptionPane.showMessageDialog(f, "YOU LOSE");
         					System.exit(0);
-        			}   		
+        			}
+        			
         		}
             	setBoard(levelNumber);
-            	
             }
         }
 
