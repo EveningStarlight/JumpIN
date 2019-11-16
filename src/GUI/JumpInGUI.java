@@ -15,8 +15,8 @@ import java.awt.event.*;
  * @author Adam Prins, Jay McCracken
  * 		   100 879 683, 101 066 860
  * 
- * @version 1.11.1
- * 		Level Solver now outputs results to the board instead of the console.
+ * @version 1.11.2
+ * 		Level Solver now Highlights Tiles
  *		
  */
 public class JumpInGUI implements ActionListener {
@@ -294,7 +294,9 @@ public class JumpInGUI implements ActionListener {
 	        }else if (item == levelSolver) {
 	        	try {     		
 					Solver solution = new Solver(game);
-					output.setText(solution.toString());
+					Move hint = solution.getNextMove();
+					board[hint.COORD_OLD.x][hint.COORD_OLD.y].setBorder(BorderFactory.createLineBorder(Color.orange));
+					board[hint.COORD_NEW.x][hint.COORD_NEW.y].setBorder(BorderFactory.createLineBorder(Color.orange));
 				} catch (Exception e1) {
 					System.out.println("Level Solver error: " +e1.getMessage());
 				}
