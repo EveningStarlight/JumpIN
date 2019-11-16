@@ -270,7 +270,7 @@ public class Game {
 	 * @return returns true if the move is valid, false if it is possible the a valid move for a fox tail
 	 * and throws an exception otherwise.
 	 */
-	public boolean canSwapPiece(Coord destination, Coord origin) {
+	public boolean canSwapPiece(Coord origin, Coord destination) {
 		try {
 			Tile savedTile = selectedTile;
 			selectedTile = this.getTile(origin);

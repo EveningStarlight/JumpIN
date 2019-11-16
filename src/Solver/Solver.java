@@ -47,7 +47,7 @@ public class Solver {
 			visitedPieces.add(pieces.get(i));
 		}
 		movesTaken = new LinkedList<String>();
-		solverGame = new Game(board, 0 );
+		solverGame = new Game(board, 0);
 		solverGame.setBoard(pieces);
 		}
 	
