@@ -117,7 +117,6 @@ public class Solver {
 	
 	@Override
 	public String toString() {
-		System.out.print("in string");
 		ArrayList<Move> path;
 		try {
 			path = puzzleBreadthSearch();
