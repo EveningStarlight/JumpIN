@@ -3,10 +3,9 @@ package Tests;
 
 import GUI.*;
 import Model.*;
-import Pieces.Piece;
+import Pieces.*;
 
 import static org.junit.Assert.*;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 import java.util.ArrayList;
 
@@ -16,8 +15,16 @@ import org.junit.Test;
 /**
  * Test cases for the Game class 
  * 
- * @author Matthew Harris, Jay McCracken
- * 			101 073 502,   101 066 860
+ * @author Matthew Harris, Jay McCracken, 	Adam  Prins
+ * 			101 073 502,   101 066 860		100 879 683
+ * 
+ * @version 1.2.0
+ * 		Added 5 methods for testing piece swapping
+ * 		testSelectTileDestinationFull()
+ * 		testSelectTileBunnyOverEmptyTiles()
+ * 		testSelectTileFoxOverFullTiles()
+ * 		testSelectTileFoxTailFullTile()
+ * 		testSelectTileFoxSelectLastTile()
  *
  */
 public class GameTest {
@@ -88,6 +95,88 @@ public class GameTest {
 	public void testSelectTileTileOutOfRange() throws Exception{
 		Coord coordinate = new Coord(5,5);
 		game.selectTile(coordinate);
+	}
+	
+	/**
+	 * Method to test the selectTile method in the Game class
+	 * for the case that the destination already has a piece
+	 * @throws Exception
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testSelectTileDestinationFull() throws Exception{
+		ArrayList<Piece> pieces = new ArrayList<Piece>();
+		pieces.add(new Bunny(new Coord(0,0)));
+		pieces.add(new Bunny(new Coord(0,1)));
+		pieces.add(new Bunny(new Coord(0,2)));
+		game.setBoard(pieces);
+		
+		game.selectTile(pieces.get(0).getCoord());
+		game.selectTile(pieces.get(2).getCoord());
+	}
+	
+	/**
+	 * Method to test the selectTile method in the Game class
+	 * for the case that a Bunny tries to go over an empty Tile
+	 * @throws Exception
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testSelectTileBunnyOverEmptyTiles() throws Exception{
+		ArrayList<Piece> pieces = new ArrayList<Piece>();
+		pieces.add(new Bunny(new Coord(0,0)));
+		pieces.add(new Bunny(new Coord(0,1)));
+		game.setBoard(pieces);
+		
+		game.selectTile(pieces.get(0).getCoord());
+		game.selectTile(new Coord(0,4));
+	}
+	
+	/**
+	 * Method to test the selectTile method in the Game class
+	 * for the case that a Fox tries to go over a full Tile
+	 * @throws Exception
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testSelectTileFoxOverFullTiles() throws Exception{
+		ArrayList<Piece> pieces = new ArrayList<Piece>();
+		pieces.add(new Bunny(new Coord(1,2)));
+		pieces.add(new   Fox(new Coord(1,3),new Coord(1,4)));
+		game.setBoard(pieces);
+		
+		game.selectTile(pieces.get(1).getCoord());
+		game.selectTile(new Coord(1,0));
+	}
+	
+	/**
+	 * Method to test the selectTile method in the Game class
+	 * for the case that a Fox tail tries to go in a Full location
+	 * @throws Exception
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testSelectTileFoxTailFullTile() throws Exception{
+		ArrayList<Piece> pieces = new ArrayList<Piece>();
+		pieces.add(new Bunny(new Coord(1,4)));
+		pieces.add(new   Fox(new Coord(1,0),new Coord(1,1)));
+		game.setBoard(pieces);
+		
+		game.selectTile(pieces.get(1).getCoord());
+		game.selectTile(new Coord(1,3));
+	}
+	
+	/**
+	 * Method to test the selectTile method in the Game class
+	 * for the case that a Fox tail tries to go in a Full location
+	 * @throws Exception
+	 */
+	@Test
+	public void testSelectTileFoxSelectLastTile() throws Exception{
+		ArrayList<Piece> pieces = new ArrayList<Piece>();
+		pieces.add(new Bunny(new Coord(3,4)));
+		pieces.add(new   Fox(new Coord(1,0),new Coord(1,1)));
+		game.setBoard(pieces);
+		
+		game.selectTile(pieces.get(1).getCoord());
+		game.selectTile(new Coord(1,4));
+		assertEquals(new Coord(1,3),pieces.get(1).getCoord());
 	}
 
 	/**
