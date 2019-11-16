@@ -15,8 +15,8 @@ import java.awt.event.*;
  * @author Adam Prins, Jay McCracken
  * 		   100 879 683, 101 066 860
  * 
- * @version 1.11.2
- * 		Level Solver now Highlights Tiles
+ * @version 1.11.3
+ * 		Level Solver now Highlights All of the Fox
  *		
  */
 public class JumpInGUI implements ActionListener {
@@ -297,6 +297,11 @@ public class JumpInGUI implements ActionListener {
 					Move hint = solution.getNextMove();
 					board[hint.COORD_OLD.x][hint.COORD_OLD.y].setBorder(BorderFactory.createLineBorder(Color.orange));
 					board[hint.COORD_NEW.x][hint.COORD_NEW.y].setBorder(BorderFactory.createLineBorder(Color.orange));
+					
+					if (board[hint.COORD_OLD.x][hint.COORD_OLD.y].getPiece() instanceof Fox) {
+						Coord foxCoord = ((Fox) board[hint.COORD_OLD.x][hint.COORD_OLD.y].getPiece()).getTail();
+						board[foxCoord.x][foxCoord.y].setBorder(BorderFactory.createLineBorder(Color.orange));
+					}
 				} catch (Exception e1) {
 					System.out.println("Level Solver error: " +e1.getMessage());
 				}
