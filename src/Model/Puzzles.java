@@ -15,8 +15,8 @@ import org.w3c.dom.*;
  * 
  * @authors Adam Prins
  * 			100 879 683
- * @version 3.0.1
- * 		Refactored some variable names and removed unused imports.
+ * @version 3.0.2
+ * 		Allowed for the use of Puzzle 0 once more
  *
  */
 public class Puzzles {
@@ -43,7 +43,7 @@ public class Puzzles {
 	         String expression = "//Puzzle";	        
 	         NodeList nodeList = (NodeList) xPath.compile(expression).evaluate( doc, XPathConstants.NODESET);
 
-	         if (0<puzzleNumber && puzzleNumber<nodeList.getLength()) {
+	         if (0<=puzzleNumber && puzzleNumber<nodeList.getLength()) {
 	        	 Node nNode = nodeList.item(puzzleNumber);
 	        	 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 	                 Element eElement = (Element) nNode;

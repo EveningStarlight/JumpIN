@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import GUI.ButtonTile;
+import GUI.TextTile;
 import GUI.Tile;
 import Model.Coord;
 import Model.Game;
@@ -19,8 +21,9 @@ import Pieces.Piece;
  * using Depth-First Search
  * @authors Jay McCracken, Matthew Harris
  * 			101066860       101073502
- * @version 1.0.1
- * 	constructor created
+ * @version 1.1.1
+ * 		added not equal test for finding new moves
+ * 		Passes Puzzle 3
  */
 public class Solver {
 
@@ -36,12 +39,14 @@ public class Solver {
 	 * @throws Exception
 	 */
 	public Solver(int puzzleNumber) throws Exception{
+		board = new TextTile[Game.BOARD_SIZE][Game.BOARD_SIZE];
 		pieces = new ArrayList<Piece>(Puzzles.getPuzzle(puzzleNumber));
-		visitedPieces = new ArrayList<Piece>();
-		for(int i = 0; i<pieces.size();i++){
-			visitedPieces.add(pieces.get(i));
-		}
 		movesTaken = new LinkedList<String>();
+		for (int x=0; x<Game.BOARD_SIZE; x++) {
+			for (int y=0; y<Game.BOARD_SIZE; y++) {
+				 board[x][y]= new TextTile(new Coord(x,y));
+			}
+		}
 		solverGame = new Game(board, puzzleNumber);
 		}
 	
@@ -51,12 +56,14 @@ public class Solver {
 	 * @throws Exception
 	 */
 	public Solver(Game game) throws Exception{
+		board = new TextTile[Game.BOARD_SIZE][Game.BOARD_SIZE];
 		pieces = new ArrayList<Piece>(game.getBoard());
-		visitedPieces = new ArrayList<Piece>();
-		for(int i = 0; i<pieces.size();i++){
-			visitedPieces.add(pieces.get(i));
-		}
 		movesTaken = new LinkedList<String>();
+		for (int x=0; x<Game.BOARD_SIZE; x++) {
+			for (int y=0; y<Game.BOARD_SIZE; y++) {
+				 board[x][y]= new TextTile(new Coord(x,y));
+			}
+		}
 		solverGame = new Game(board, 1);
 		solverGame.setBoard(pieces);
 		}
@@ -126,15 +133,30 @@ public class Solver {
 			for(int j = 0; j < 5;j++) {
 				Coord x = new Coord(j, piece.getCoord().y);
 				Coord y = new Coord(piece.getCoord().x, j);
-				if(solverGame.canSwapPiece(piece.getCoord(), x)) {
+				if(solverGame.canSwapPiece(piece.getCoord(), x) && !piece.getCoord().equals(x)) {
 					allMoves.add(new Move(piece.getCoord(),x));
 				}
-				if(solverGame.canSwapPiece(piece.getCoord(), y)) {
+				if(solverGame.canSwapPiece(piece.getCoord(), y) && !piece.getCoord().equals(y)) {
 					allMoves.add(new Move(piece.getCoord(),y));
 				}
 			}
 			}
 		return allMoves;	
+	}
+	
+	/**
+	 * Gets the next move to help solve the puzzle as according to the solver
+	 * @return next Move needed to solve the puzzle
+	 */
+	public Move getNextMove() {
+		ArrayList<Move> path;
+		try {
+			path = puzzleBreadthSearch();
+			return path.get(0);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		throw new RuntimeException("Failed to find solution");
 	}
 	
 	
