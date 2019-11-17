@@ -101,6 +101,7 @@ public class JumpInGUI implements ActionListener {
 	    quitItem.addActionListener(this); 
 	    saveItem.addActionListener(this);
 	    levelSelect.addActionListener(this);
+	    levelHint.addActionListener(this);
 	    levelSolver.addActionListener(this);// create an anonymous inner class
 	    
 	    
@@ -291,7 +292,15 @@ public class JumpInGUI implements ActionListener {
             }
             else if (item == saveItem) {
             	game.saveState();
-	        }else if (item == levelSolver) {
+            }else if (item == levelSolver) {
+            	try {
+					Solver solution = new Solver(game);
+					JFrame f = new JFrame();
+					JOptionPane.showMessageDialog(f, solution.toString());
+				} catch (Exception e1) {
+					System.out.println("Level Solver error: " +e1.getMessage());
+				}
+	        }else if (item == levelHint) {
 	        	try {     		
 					Solver solution = new Solver(game);
 					Move hint = solution.getNextMove();
