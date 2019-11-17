@@ -1,37 +1,29 @@
 package Solver;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Queue;
 
-import GUI.ButtonTile;
 import GUI.TextTile;
 import GUI.Tile;
 import Model.Coord;
 import Model.Game;
 import Model.Move;
 import Model.Puzzles;
-import Pieces.Bunny;
-import Pieces.Fox;
-import Pieces.Piece;
+import Pieces.*;
 
 /**
  * The solver for the puzzles, with hints and how to solve each puzzle
  * using Depth-First Search
  * @authors Jay McCracken, Matthew Harris
  * 			101066860       101073502
- * @version 1.1.1
- * 		added not equal test for finding new moves
- * 		Passes Puzzle 3
+ * @version 1.1.3
+ * 		(repush) updated toString() to pass the entire path instead of only the first
+ * 		removed unused fields and imports
  */
 public class Solver {
 
 	private ArrayList<Piece> pieces;
-	private ArrayList<Piece> visitedPieces;
 	private Game solverGame;
 	private Tile[][] board;
-	private Queue<String> movesTaken;
 	
 	/**
 	 * 
@@ -41,7 +33,6 @@ public class Solver {
 	public Solver(int puzzleNumber) throws Exception{
 		board = new TextTile[Game.BOARD_SIZE][Game.BOARD_SIZE];
 		pieces = new ArrayList<Piece>(Puzzles.getPuzzle(puzzleNumber));
-		movesTaken = new LinkedList<String>();
 		for (int x=0; x<Game.BOARD_SIZE; x++) {
 			for (int y=0; y<Game.BOARD_SIZE; y++) {
 				 board[x][y]= new TextTile(new Coord(x,y));
@@ -58,7 +49,6 @@ public class Solver {
 	public Solver(Game game) throws Exception{
 		board = new TextTile[Game.BOARD_SIZE][Game.BOARD_SIZE];
 		pieces = new ArrayList<Piece>(game.getBoard());
-		movesTaken = new LinkedList<String>();
 		for (int x=0; x<Game.BOARD_SIZE; x++) {
 			for (int y=0; y<Game.BOARD_SIZE; y++) {
 				 board[x][y]= new TextTile(new Coord(x,y));
@@ -167,8 +157,11 @@ public class Solver {
 	public String toString() {
 		ArrayList<Move> path;
 		try {
+			String s = "";
 			path = puzzleBreadthSearch();
-			String s = path.get(0).toString();
+			for (Move move:path) {
+				s+=move.toString()+"\n";
+			}
 			return s;
 		} catch (Exception e) {
 			e.printStackTrace();
