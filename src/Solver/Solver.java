@@ -21,8 +21,9 @@ import Pieces.Piece;
  * using Depth-First Search
  * @authors Jay McCracken, Matthew Harris
  * 			101066860       101073502
- * @version 1.1.2
- * 		updated toString() to pass the entire path instead of only the first
+ * @version 1.1.1
+ * 		added not equal test for finding new moves
+ * 		Passes Puzzle 3
  */
 public class Solver {
 
@@ -78,9 +79,9 @@ public class Solver {
 		int i=0;
 		do {
 			doAllMoves(superMoves.get(i));
-			ArrayList<Move> moves=avaliableMoves();
+			ArrayList<Move> moves = avaliableMoves();
 			for (int j=0; j<moves.size(); j++){
-				ArrayList<Move> currMove=(ArrayList<Move>) superMoves.get(i).clone();
+				ArrayList<Move> currMove = (ArrayList<Move>) superMoves.get(i).clone();
 				currMove.add(moves.get(j));
 				superMoves.add(currMove);
 				try{
@@ -166,11 +167,8 @@ public class Solver {
 	public String toString() {
 		ArrayList<Move> path;
 		try {
-			String s = "";
 			path = puzzleBreadthSearch();
-			for (Move move:path) {
-				s+=move.toString()+"\n";
-			}
+			String s = path.get(0).toString();
 			return s;
 		} catch (Exception e) {
 			e.printStackTrace();
