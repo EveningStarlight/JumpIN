@@ -30,6 +30,11 @@ public class Solver {
 	private Tile[][] board;
 	private Queue<String> movesTaken;
 	
+	/**
+	 * 
+	 * @param puzzleNumber
+	 * @throws Exception
+	 */
 	public Solver(int puzzleNumber) throws Exception{
 		pieces = new ArrayList<Piece>(Puzzles.getPuzzle(puzzleNumber));
 		visitedPieces = new ArrayList<Piece>();
@@ -40,6 +45,11 @@ public class Solver {
 		solverGame = new Game(board, puzzleNumber);
 		}
 	
+	/**
+	 * 
+	 * @param game
+	 * @throws Exception
+	 */
 	public Solver(Game game) throws Exception{
 		pieces = new ArrayList<Piece>(game.getBoard());
 		visitedPieces = new ArrayList<Piece>();
@@ -47,11 +57,15 @@ public class Solver {
 			visitedPieces.add(pieces.get(i));
 		}
 		movesTaken = new LinkedList<String>();
-		solverGame = new Game(board, 0 );
+		solverGame = new Game(board, 1);
 		solverGame.setBoard(pieces);
 		}
 	
-	
+	/**
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
 	public ArrayList<Move> puzzleBreadthSearch() throws Exception{
 		ArrayList<ArrayList<Move>> superMoves = new ArrayList<ArrayList<Move>>();
 		superMoves.add(new ArrayList<Move>());
@@ -89,6 +103,11 @@ public class Solver {
 		return null;
 	}
 	
+	/**
+	 * 
+	 * @param arrayList
+	 * @throws Exception
+	 */
 	private void doAllMoves(ArrayList<Move> arrayList) throws Exception{
 		for (Move move: arrayList) {
 			solverGame.selectTile(move.COORD_OLD);
@@ -96,6 +115,10 @@ public class Solver {
 		}
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	private ArrayList<Move> avaliableMoves() {
 		ArrayList<Move> allMoves = new ArrayList<Move>();
 		for(int i = 0; i<pieces.size();i++){
@@ -115,6 +138,9 @@ public class Solver {
 	}
 	
 	
+	/**
+	 * 
+	 */
 	@Override
 	public String toString() {
 		ArrayList<Move> path;
