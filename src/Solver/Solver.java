@@ -15,9 +15,10 @@ import Pieces.*;
  * using Depth-First Search
  * @authors Jay McCracken, Matthew Harris
  * 			101066860       101073502
- * @version 1.1.3
- * 		(repush) updated toString() to pass the entire path instead of only the first
- * 		removed unused fields and imports
+ * @version 1.2.0
+ * 		unnested availableMoves() with new method addPossibleMove()
+ * 		added preventions for inefficient moves (reversals or poor fox movement)
+ * 		increased max puzzle iteration from 1000 to 10000
  */
 public class Solver {
 
@@ -69,18 +70,22 @@ public class Solver {
 		int i=0;
 		do {
 			doAllMoves(superMoves.get(i));
-			ArrayList<Move> moves = avaliableMoves();
+			
+			Move previousMove;
+			previousMove=null;
+			if (superMoves.get(i).size()==0)  previousMove=null;
+			else  previousMove=superMoves.get(i).get(superMoves.get(i).size()-1);
+			
+			ArrayList<Move> moves = avaliableMoves(previousMove);
 			for (int j=0; j<moves.size(); j++){
 				ArrayList<Move> currMove = (ArrayList<Move>) superMoves.get(i).clone();
 				currMove.add(moves.get(j));
 				superMoves.add(currMove);
 				try{
-				solverGame.selectTile(currMove.get(currMove.size()-1).COORD_OLD);
-				solverGame.selectTile(currMove.get(currMove.size()-1).COORD_NEW);
+					solverGame.selectTile(currMove.get(currMove.size()-1).COORD_OLD);
+					solverGame.selectTile(currMove.get(currMove.size()-1).COORD_NEW);
 				}
-				catch(Exception e){
-					
-				}
+				catch(Exception e){}
 				if(solverGame.endGame()){
 					return currMove;
 				}
@@ -92,7 +97,7 @@ public class Solver {
 				solverGame.undoMove();
 			}
 			i++;
-			if(superMoves.size()>100000){
+			if(superMoves.size()>10000){
 				System.out.println("NOT FAR ENOUGH");
 				break;
 			}
@@ -116,22 +121,36 @@ public class Solver {
 	 * 
 	 * @return
 	 */
-	private ArrayList<Move> avaliableMoves() {
+	private ArrayList<Move> avaliableMoves(Move previousMove) {
 		ArrayList<Move> allMoves = new ArrayList<Move>();
 		for(int i = 0; i<pieces.size();i++){
 			Piece piece = pieces.get(i);
 			for(int j = 0; j < 5;j++) {
-				Coord x = new Coord(j, piece.getCoord().y);
-				Coord y = new Coord(piece.getCoord().x, j);
-				if(solverGame.canSwapPiece(piece.getCoord(), x) && !piece.getCoord().equals(x)) {
-					allMoves.add(new Move(piece.getCoord(),x));
-				}
-				if(solverGame.canSwapPiece(piece.getCoord(), y) && !piece.getCoord().equals(y)) {
-					allMoves.add(new Move(piece.getCoord(),y));
-				}
+				Move x = new Move(piece.getCoord(),new Coord(j, piece.getCoord().y));
+				Move y = new Move(piece.getCoord(),new Coord(piece.getCoord().x, j));
+				addPossibleMove(allMoves, previousMove, x);
+				addPossibleMove(allMoves, previousMove, y);
 			}
-			}
+		}
 		return allMoves;	
+	}
+	
+	private ArrayList<Move> addPossibleMove(ArrayList<Move> allMoves, Move previousMove,  Move move) {
+		boolean validSwap = solverGame.canSwapPiece(move.COORD_OLD, move.COORD_NEW);
+		boolean notSameCoord = !move.COORD_OLD.equals(move.COORD_NEW);
+		
+		if (previousMove==null) {
+			if (validSwap && notSameCoord) allMoves.add(move);
+		}
+		else {
+			boolean notReverseMove = !move.isReverseMove(previousMove);
+			Piece newPiece = solverGame.getTile(move.COORD_OLD).getPiece();
+			Piece oldPiece = solverGame.getTile(previousMove.COORD_NEW).getPiece();
+			boolean notSameFox = !((newPiece instanceof Fox) && newPiece.equals(oldPiece));
+			
+			if (validSwap && notSameCoord && notReverseMove && notSameFox) allMoves.add(move);
+		}
+		return allMoves;
 	}
 	
 	/**

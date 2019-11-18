@@ -15,8 +15,9 @@ import java.awt.event.*;
  * @author Adam Prins, Jay McCracken
  * 		   100 879 683, 101 066 860
  * 
- * @version 1.11.3
- * 		Level Solver now Highlights All of the Fox
+ * @version 1.12.0
+ * 		Finishing all completed puzzles outputs a lovely message now.
+ * 		
  *		
  */
 public class JumpInGUI implements ActionListener {
@@ -278,7 +279,17 @@ public class JumpInGUI implements ActionListener {
         		 }
         	 }
         	 else if (button == nextLevel) {
-        		 setBoard(++puzzleNumber);
+        		 puzzleNumber++;
+        		 if (puzzleNumber<0) {
+        			 throw new IllegalArgumentException("I don't know how you got here for next level, honest.");
+        		 }
+        		 else if (puzzleNumber<Puzzles.getMaxPuzzle()) {
+        			 setBoard(puzzleNumber);
+        		 }
+        		 else {
+        			 setBoard(0);
+        			 JOptionPane.showMessageDialog(new JFrame(), "Congratulations!\nYou have compleated all the available Puzzles.\nI hope you look forward to our next release!","YOU WIN",JOptionPane.INFORMATION_MESSAGE,Bunny.ICON_HOLE);
+        		 }
         	 }
         }
         else if (o instanceof JMenuItem){ // it's a JMenuItem
@@ -305,12 +316,13 @@ public class JumpInGUI implements ActionListener {
 					Solver solution = new Solver(game);
 					Move hint = solution.getNextMove();
 					board[hint.COORD_OLD.x][hint.COORD_OLD.y].setBorder(BorderFactory.createLineBorder(Color.orange));
-					board[hint.COORD_NEW.x][hint.COORD_NEW.y].setBorder(BorderFactory.createLineBorder(Color.orange));
 					
 					if (board[hint.COORD_OLD.x][hint.COORD_OLD.y].getPiece() instanceof Fox) {
 						Coord foxCoord = ((Fox) board[hint.COORD_OLD.x][hint.COORD_OLD.y].getPiece()).getTail();
 						board[foxCoord.x][foxCoord.y].setBorder(BorderFactory.createLineBorder(Color.orange));
 					}
+					
+					board[hint.COORD_NEW.x][hint.COORD_NEW.y].setBorder(BorderFactory.createLineBorder(Color.magenta));
 				} catch (Exception e1) {
 					System.out.println("Level Solver error: " +e1.getMessage());
 				}
