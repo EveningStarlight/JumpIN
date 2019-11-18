@@ -34,7 +34,8 @@ public class LevelBuilder{
 		}
 	}
 	
-	public boolean save() throws Exception{
+	public boolean save(){
+		try{
 		if(isSolvable()){
 			try{
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -57,7 +58,9 @@ public class LevelBuilder{
 		else{
 			return false;
 		}
+		}
+		catch(Exception e){
+			return false;
+		}
 	}
-	
-
 }
