@@ -92,7 +92,7 @@ public class Solver {
 				solverGame.undoMove();
 			}
 			i++;
-			if(superMoves.size()>1000){
+			if(superMoves.size()>100000){
 				System.out.println("NOT FAR ENOUGH");
 				break;
 			}
