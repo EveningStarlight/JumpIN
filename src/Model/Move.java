@@ -10,8 +10,8 @@ import org.w3c.dom.Element;
  * @author Adam Prins
  * 			100 879 683
  * 
- * @version 1.2.0
- * 		Added toString method
+ * @version 1.3.0
+ * 		Added isReverseMove() that is able to tell if a move is the reverse of another move
  */
 public class Move {
 
@@ -28,6 +28,19 @@ public class Move {
 	public Move(Coord coordOld, Coord coordNew) {
 		this.COORD_OLD=coordOld;
 		this.COORD_NEW=coordNew;
+	}
+	
+	/**
+	 * This tests if a Move is just the reverse of this Move
+	 * 
+	 * @param move the Move that is being tested as the reverse of this Move
+	 * @return a boolean that is true if this move just undoes the previous move, and false otherwise.
+	 */
+	public boolean isReverseMove(Move move) {
+		return (move.COORD_OLD.x==this.COORD_NEW.x &&
+				move.COORD_OLD.y==this.COORD_NEW.y &&
+				move.COORD_NEW.x==this.COORD_OLD.x &&
+				move.COORD_NEW.y==this.COORD_OLD.y);
 	}
 	
 	/**
