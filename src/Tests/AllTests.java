@@ -11,7 +11,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * 			101 073 502
  */
 @RunWith(Suite.class)
-@SuiteClasses({BunnyTest.class, CoordTest.class, GameTest.class, TextTileTest.class, FoxTest.class})
+@SuiteClasses({BunnyTest.class, CoordTest.class, GameTest.class, TextTileTest.class, FoxTest.class, SolverTest.class})
 public class AllTests{
 	
 }
