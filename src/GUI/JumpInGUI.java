@@ -305,12 +305,13 @@ public class JumpInGUI implements ActionListener {
 					Solver solution = new Solver(game);
 					Move hint = solution.getNextMove();
 					board[hint.COORD_OLD.x][hint.COORD_OLD.y].setBorder(BorderFactory.createLineBorder(Color.orange));
-					board[hint.COORD_NEW.x][hint.COORD_NEW.y].setBorder(BorderFactory.createLineBorder(Color.orange));
 					
 					if (board[hint.COORD_OLD.x][hint.COORD_OLD.y].getPiece() instanceof Fox) {
 						Coord foxCoord = ((Fox) board[hint.COORD_OLD.x][hint.COORD_OLD.y].getPiece()).getTail();
 						board[foxCoord.x][foxCoord.y].setBorder(BorderFactory.createLineBorder(Color.orange));
 					}
+					
+					board[hint.COORD_NEW.x][hint.COORD_NEW.y].setBorder(BorderFactory.createLineBorder(Color.magenta));
 				} catch (Exception e1) {
 					System.out.println("Level Solver error: " +e1.getMessage());
 				}
