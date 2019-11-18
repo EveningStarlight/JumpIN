@@ -1,41 +1,38 @@
 package Solver;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Queue;
 
-import GUI.ButtonTile;
 import GUI.TextTile;
 import GUI.Tile;
 import Model.Coord;
 import Model.Game;
 import Model.Move;
 import Model.Puzzles;
-import Pieces.Bunny;
-import Pieces.Fox;
-import Pieces.Piece;
+import Pieces.*;
 
 /**
  * The solver for the puzzles, with hints and how to solve each puzzle
  * using Depth-First Search
  * @authors Jay McCracken, Matthew Harris
  * 			101066860       101073502
- * @version 1.0.1
- * 	constructor created
+ * @version 1.1.3
+ * 		(repush) updated toString() to pass the entire path instead of only the first
+ * 		removed unused fields and imports
  */
 public class Solver {
 
 	private ArrayList<Piece> pieces;
-	private ArrayList<Piece> visitedPieces;
 	private Game solverGame;
 	private Tile[][] board;
-	private Queue<String> movesTaken;
 	
+	/**
+	 * 
+	 * @param puzzleNumber
+	 * @throws Exception
+	 */
 	public Solver(int puzzleNumber) throws Exception{
 		board = new TextTile[Game.BOARD_SIZE][Game.BOARD_SIZE];
 		pieces = new ArrayList<Piece>(Puzzles.getPuzzle(puzzleNumber));
-		movesTaken = new LinkedList<String>();
 		for (int x=0; x<Game.BOARD_SIZE; x++) {
 			for (int y=0; y<Game.BOARD_SIZE; y++) {
 				 board[x][y]= new TextTile(new Coord(x,y));
@@ -44,10 +41,14 @@ public class Solver {
 		solverGame = new Game(board, puzzleNumber);
 		}
 	
+	/**
+	 * 
+	 * @param game
+	 * @throws Exception
+	 */
 	public Solver(Game game) throws Exception{
 		board = new TextTile[Game.BOARD_SIZE][Game.BOARD_SIZE];
 		pieces = new ArrayList<Piece>(game.getBoard());
-		movesTaken = new LinkedList<String>();
 		for (int x=0; x<Game.BOARD_SIZE; x++) {
 			for (int y=0; y<Game.BOARD_SIZE; y++) {
 				 board[x][y]= new TextTile(new Coord(x,y));
@@ -57,16 +58,20 @@ public class Solver {
 		solverGame.setBoard(pieces);
 		}
 	
-	
+	/**
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
 	public ArrayList<Move> puzzleBreadthSearch() throws Exception{
 		ArrayList<ArrayList<Move>> superMoves = new ArrayList<ArrayList<Move>>();
 		superMoves.add(new ArrayList<Move>());
 		int i=0;
 		do {
 			doAllMoves(superMoves.get(i));
-			ArrayList<Move> moves=avaliableMoves();
+			ArrayList<Move> moves = avaliableMoves();
 			for (int j=0; j<moves.size(); j++){
-				ArrayList<Move> currMove=(ArrayList<Move>) superMoves.get(i).clone();
+				ArrayList<Move> currMove = (ArrayList<Move>) superMoves.get(i).clone();
 				currMove.add(moves.get(j));
 				superMoves.add(currMove);
 				try{
@@ -95,6 +100,11 @@ public class Solver {
 		return null;
 	}
 	
+	/**
+	 * 
+	 * @param arrayList
+	 * @throws Exception
+	 */
 	private void doAllMoves(ArrayList<Move> arrayList) throws Exception{
 		for (Move move: arrayList) {
 			solverGame.selectTile(move.COORD_OLD);
@@ -102,6 +112,10 @@ public class Solver {
 		}
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	private ArrayList<Move> avaliableMoves() {
 		ArrayList<Move> allMoves = new ArrayList<Move>();
 		for(int i = 0; i<pieces.size();i++){
@@ -109,10 +123,10 @@ public class Solver {
 			for(int j = 0; j < 5;j++) {
 				Coord x = new Coord(j, piece.getCoord().y);
 				Coord y = new Coord(piece.getCoord().x, j);
-				if(solverGame.canSwapPiece(piece.getCoord(), x)) {
+				if(solverGame.canSwapPiece(piece.getCoord(), x) && !piece.getCoord().equals(x)) {
 					allMoves.add(new Move(piece.getCoord(),x));
 				}
-				if(solverGame.canSwapPiece(piece.getCoord(), y)) {
+				if(solverGame.canSwapPiece(piece.getCoord(), y) && !piece.getCoord().equals(y)) {
 					allMoves.add(new Move(piece.getCoord(),y));
 				}
 			}
@@ -120,13 +134,34 @@ public class Solver {
 		return allMoves;	
 	}
 	
+	/**
+	 * Gets the next move to help solve the puzzle as according to the solver
+	 * @return next Move needed to solve the puzzle
+	 */
+	public Move getNextMove() {
+		ArrayList<Move> path;
+		try {
+			path = puzzleBreadthSearch();
+			return path.get(0);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		throw new RuntimeException("Failed to find solution");
+	}
 	
+	
+	/**
+	 * 
+	 */
 	@Override
 	public String toString() {
 		ArrayList<Move> path;
 		try {
+			String s = "";
 			path = puzzleBreadthSearch();
-			String s = path.get(0).toString();
+			for (Move move:path) {
+				s+=move.toString()+"\n";
+			}
 			return s;
 		} catch (Exception e) {
 			e.printStackTrace();

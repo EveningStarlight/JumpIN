@@ -24,8 +24,8 @@ import org.w3c.dom.Element;
  * contains the board and is in charge of swapping pieces
  * @authors Adam Prins, Matthew Harris
  * 			100 879 683, 101 073 502
- * @version 2.4.1
- * 		Unnested functionality from public canSwapPiece
+ * @version 2.4.3
+ * 		Fix in getBoard() so that it no longer passes duplicates due to a Fox's tail
  * 
  * 
  */
@@ -147,7 +147,7 @@ public class Game {
 			for(int j = 0; j<BOARD_SIZE; j++){
 				if(!board[i][j].isEmpty()){
 					Piece piece = board[i][j].getPiece(); 
-					if (piece instanceof Fox) {
+					if (piece instanceof Fox && piece.getCoord().equals(new Coord(i,j))) {
 						Fox fox = (Fox) piece;
 						try {
 							pieces.add(new Fox(piece.getCoord(),fox.getTail()));
@@ -268,7 +268,7 @@ public class Game {
 	 * and throws an exception otherwise.
 	 */
 
-	public boolean canSwapPiece(Coord destination, Coord origin) {
+	public boolean canSwapPiece(Coord origin, Coord destination) {
 		Tile savedTile = selectedTile;
 		selectedTile = this.getTile(origin);
 		boolean validMove = false;
