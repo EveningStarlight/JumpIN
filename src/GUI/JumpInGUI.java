@@ -15,8 +15,8 @@ import java.awt.event.*;
  * @author Adam Prins, Jay McCracken
  * 		   100 879 683, 101 066 860
  * 
- * @version 1.11.3
- * 		Level Solver now Highlights All of the Fox
+ * @version 1.11.4
+ * 		Hint destination is now magenta
  *		
  */
 public class JumpInGUI implements ActionListener {
