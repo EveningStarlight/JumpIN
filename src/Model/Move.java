@@ -10,8 +10,9 @@ import org.w3c.dom.Element;
  * @author Adam Prins
  * 			100 879 683
  * 
- * @version 1.3.0
- * 		Added isReverseMove() that is able to tell if a move is the reverse of another move
+ * @version 1.4.0
+ * 		Added equals() method
+ * 		simplified isReverseMove()
  */
 public class Move {
 
@@ -31,16 +32,31 @@ public class Move {
 	}
 	
 	/**
+	 * This tests if an object is Equal to this move
+	 * 
+	 * @param o, the Object that equivalence is being tested on.
+	 * @return true if they contain the same coordinates, false otherwise.
+	 */
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Move) {
+			Move move = (Move) o;
+			return (move.COORD_OLD.equals(this.COORD_OLD) &&
+					move.COORD_NEW.equals(this.COORD_NEW));
+		}
+		else return false;
+		
+	}
+	
+	/**
 	 * This tests if a Move is just the reverse of this Move
 	 * 
 	 * @param move the Move that is being tested as the reverse of this Move
 	 * @return a boolean that is true if this move just undoes the previous move, and false otherwise.
 	 */
 	public boolean isReverseMove(Move move) {
-		return (move.COORD_OLD.x==this.COORD_NEW.x &&
-				move.COORD_OLD.y==this.COORD_NEW.y &&
-				move.COORD_NEW.x==this.COORD_OLD.x &&
-				move.COORD_NEW.y==this.COORD_OLD.y);
+		return (move.COORD_OLD.equals(this.COORD_NEW) &&
+				move.COORD_NEW.equals(this.COORD_OLD));
 	}
 	
 	/**
