@@ -6,8 +6,6 @@ import Model.*;
 import Pieces.Piece;
 
 import static org.junit.Assert.*;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-
 import java.util.ArrayList;
 
 import org.junit.Before;
