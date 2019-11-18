@@ -15,8 +15,9 @@ import java.awt.event.*;
  * @author Adam Prins, Jay McCracken
  * 		   100 879 683, 101 066 860
  * 
- * @version 1.11.4
- * 		Hint destination is now magenta
+ * @version 1.12.0
+ * 		Finishing all completed puzzles outputs a lovely message now.
+ * 		
  *		
  */
 public class JumpInGUI implements ActionListener {
@@ -278,7 +279,17 @@ public class JumpInGUI implements ActionListener {
         		 }
         	 }
         	 else if (button == nextLevel) {
-        		 setBoard(++puzzleNumber);
+        		 puzzleNumber++;
+        		 if (puzzleNumber<0) {
+        			 throw new IllegalArgumentException("I don't know how you got here for next level, honest.");
+        		 }
+        		 else if (puzzleNumber<Puzzles.getMaxPuzzle()) {
+        			 setBoard(puzzleNumber);
+        		 }
+        		 else {
+        			 setBoard(0);
+        			 JOptionPane.showMessageDialog(new JFrame(), "Congratulations!\nYou have compleated all the available Puzzles.\nI hope you look forward to our next release!","YOU WIN",JOptionPane.INFORMATION_MESSAGE,Bunny.ICON_HOLE);
+        		 }
         	 }
         }
         else if (o instanceof JMenuItem){ // it's a JMenuItem
