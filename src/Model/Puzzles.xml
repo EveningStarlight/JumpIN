@@ -1,10 +1,35 @@
-<?xml version="1.1" encoding="UTF-8"?>
+<?xml version="1.2" encoding="UTF-8"?>
 <!-- Authors: -->
 <!-- Adam Prins 	100 879 683-->
 <!-- Matthew Harris 101 073 502 -->
 <PredefinedPuzzles>
 	<Puzzle>
 		<Number>0</Number>
+		<Piece>
+			<Type>Mushroom</Type>
+			<X_Head>2</X_Head>
+			<Y_Head>2</Y_Head>
+		</Piece>
+		<Piece>
+			<Type>Bunny</Type>
+			<X_Head>2</X_Head>
+			<Y_Head>1</Y_Head>
+		</Piece>
+		<Piece>
+			<Type>Bunny</Type>
+			<X_Head>2</X_Head>
+			<Y_Head>3</Y_Head>
+		</Piece>
+		<Piece>
+			<Type>Bunny</Type>
+			<X_Head>1</X_Head>
+			<Y_Head>2</Y_Head>
+		</Piece>
+		<Piece>
+			<Type>Bunny</Type>
+			<X_Head>3</X_Head>
+			<Y_Head>2</Y_Head>
+		</Piece>
 	</Puzzle>
 	
 	<Puzzle>
