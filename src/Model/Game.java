@@ -494,4 +494,13 @@ public class Game {
 			System.out.print(e.getMessage());
 		}
 	}
+	public static Tile[][] buildBoard(){
+		Tile[][] board = new TextTile[Game.BOARD_SIZE][Game.BOARD_SIZE];
+		for (int x=0; x<Game.BOARD_SIZE; x++) {
+			for (int y=0; y<Game.BOARD_SIZE; y++) {
+				 board[x][y]= new TextTile(new Coord(x,y));
+			}
+		}
+		return board;
+	}
 }
