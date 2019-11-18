@@ -32,13 +32,8 @@ public class Solver {
 	 * @throws Exception
 	 */
 	public Solver(int puzzleNumber) throws Exception{
-		board = new TextTile[Game.BOARD_SIZE][Game.BOARD_SIZE];
+		board = Game.buildBoard();
 		pieces = new ArrayList<Piece>(Puzzles.getPuzzle(puzzleNumber));
-		for (int x=0; x<Game.BOARD_SIZE; x++) {
-			for (int y=0; y<Game.BOARD_SIZE; y++) {
-				 board[x][y]= new TextTile(new Coord(x,y));
-			}
-		}
 		solverGame = new Game(board, puzzleNumber);
 		}
 	
@@ -48,17 +43,23 @@ public class Solver {
 	 * @throws Exception
 	 */
 	public Solver(Game game) throws Exception{
-		board = new TextTile[Game.BOARD_SIZE][Game.BOARD_SIZE];
+		board = Game.buildBoard();
 		pieces = new ArrayList<Piece>(game.getBoard());
-		for (int x=0; x<Game.BOARD_SIZE; x++) {
-			for (int y=0; y<Game.BOARD_SIZE; y++) {
-				 board[x][y]= new TextTile(new Coord(x,y));
-			}
-		}
 		solverGame = new Game(board, 1);
 		solverGame.setBoard(pieces);
 		}
 	
+	/**
+	 * 
+	 * @param piecesArg
+	 * @throws Exception
+	 */
+	public Solver(ArrayList<Piece> piecesArg) throws Exception{
+		board = Game.buildBoard();
+		pieces = new ArrayList<Piece>(piecesArg);
+		solverGame = new Game(board, 1);
+		solverGame.setBoard(pieces);
+		}
 	/**
 	 * 
 	 * @return
@@ -98,7 +99,6 @@ public class Solver {
 			}
 			i++;
 			if(superMoves.size()>10000){
-				System.out.println("NOT FAR ENOUGH");
 				break;
 			}
 		}while (i<superMoves.size());
