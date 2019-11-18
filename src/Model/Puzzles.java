@@ -15,14 +15,13 @@ import org.w3c.dom.*;
  * 
  * @authors Adam Prins
  * 			100 879 683
- * @version 3.0.2
- * 		Allowed for the use of Puzzle 0 once more
+ * @version 3.0.3
+ * 		Renamed path location and made it public
  *
  */
 public class Puzzles {
 	
-	private static final File PREDEFINED_PUZZLES = new File ("src/Model/Puzzles.xml");
-	private static final File USER_PUZZLES = new File ("src/Model/UserPuzzles.xml");
+	public static final File PUZZLES = new File ("src/Model/Puzzles.xml");
 
 	/**
 	 * @param puzzleNumber the puzzle you would like to initialize
@@ -35,7 +34,7 @@ public class Puzzles {
 	         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 	         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 
-	         Document doc = dBuilder.parse(PREDEFINED_PUZZLES);
+	         Document doc = dBuilder.parse(PUZZLES);
 	         doc.getDocumentElement().normalize();
 
 	         XPath xPath =  XPathFactory.newInstance().newXPath();
@@ -90,7 +89,7 @@ public class Puzzles {
 	         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 	         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 
-	         Document doc = dBuilder.parse(PREDEFINED_PUZZLES);
+	         Document doc = dBuilder.parse(PUZZLES);
 	         doc.getDocumentElement().normalize();
 
 	         XPath xPath =  XPathFactory.newInstance().newXPath();
