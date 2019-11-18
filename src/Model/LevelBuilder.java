@@ -1,5 +1,6 @@
 package Model;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import Pieces.*;
 import Solver.Solver;
@@ -7,6 +8,7 @@ import java.util.*;
 import javax.xml.transform.*;
 import javax.xml.transform.stream.*;
 import javax.xml.transform.dom.*;
+
 import org.w3c.dom.*;
 
 import javax.xml.parsers.*;
@@ -49,6 +51,16 @@ public class LevelBuilder{
 	        for (Piece piece:pieces){
 	        	puzzleRootElement.appendChild(piece.getElement(document));
 	        }
+	        Transformer tr = TransformerFactory.newInstance().newTransformer();
+            tr.setOutputProperty(OutputKeys.INDENT, "yes");
+            tr.setOutputProperty(OutputKeys.METHOD, "xml");
+            tr.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            tr.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+
+            // send DOM to file
+            tr.transform(new DOMSource(document), 
+                                 new StreamResult(new FileOutputStream(Puzzles.PUZZLES.getPath())));
+	        
 	        	return true;
 			}
 			catch(Exception e){
