@@ -9,8 +9,8 @@ import javax.swing.ImageIcon;
  * @author Jay McCracken
  * 			101066860
  * 
- * @version 2.1.0
- * 		Added tailToHead() that can shift coordinates from the last row or column to the one before it.
+ * @version 2.1.1
+ * 		Icons imported more dynamically for better exports
  *
  */
 
@@ -21,8 +21,8 @@ public class Fox extends Piece{
     private Coord tail;
 
     //the images to be placed on the buttons
-    public static final ImageIcon ICON_HEAD = new ImageIcon("ButtonIcons/foxHead.png");
-    public static final ImageIcon ICON_TAIL = new ImageIcon("ButtonIcons/foxTail.png");
+    public static final ImageIcon ICON_HEAD = new ImageIcon(Fox.class.getClassLoader().getResource("Pieces/ButtonIcons/foxHead.png"));
+    public static final ImageIcon ICON_TAIL = new ImageIcon(Fox.class.getClassLoader().getResource("Pieces/ButtonIcons/foxTail.png"));
 
 
 
