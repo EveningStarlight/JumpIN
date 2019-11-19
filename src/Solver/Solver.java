@@ -15,10 +15,8 @@ import Pieces.*;
  * using Depth-First Search
  * @authors Jay McCracken, Matthew Harris
  * 			101066860       101073502
- * @version 1.2.0
- * 		unnested availableMoves() with new method addPossibleMove()
- * 		added preventions for inefficient moves (reversals or poor fox movement)
- * 		increased max puzzle iteration from 1000 to 10000
+ * @version 1.3.0
+ * 		Generalized the Constructors
  */
 public class Solver {
 
@@ -28,38 +26,30 @@ public class Solver {
 	
 	/**
 	 * 
-	 * @param puzzleNumber
-	 * @throws Exception
-	 */
-	public Solver(int puzzleNumber) throws Exception{
-		board = Game.buildBoard();
-		pieces = new ArrayList<Piece>(Puzzles.getPuzzle(puzzleNumber));
-		solverGame = new Game(board, puzzleNumber);
-		}
-	
-	/**
-	 * 
-	 * @param game
-	 * @throws Exception
-	 */
-	public Solver(Game game) throws Exception{
-		board = Game.buildBoard();
-		pieces = new ArrayList<Piece>(game.getBoard());
-		solverGame = new Game(board, 1);
-		solverGame.setBoard(pieces);
-		}
-	
-	/**
-	 * 
-	 * @param piecesArg
-	 * @throws Exception
+	 * @param piecesArg the ArrayList of Pieces that will populate the board
 	 */
 	public Solver(ArrayList<Piece> piecesArg) throws Exception{
 		board = Game.buildBoard();
 		pieces = new ArrayList<Piece>(piecesArg);
-		solverGame = new Game(board, 1);
+		solverGame = new Game(board);
 		solverGame.setBoard(pieces);
-		}
+	}
+	
+	/**
+	 * @param puzzleNumber The puzzle number that will populate the board
+	 */
+	public Solver(int puzzleNumber) throws Exception{
+		this(Puzzles.getPuzzle(puzzleNumber));
+	}
+	
+	/**
+	 * @param game The game that for which you want to solve
+	 */
+	public Solver(Game game) throws Exception{
+		this(new ArrayList<Piece>(game.getBoard()));
+	}
+	
+	
 	/**
 	 * 
 	 * @return
