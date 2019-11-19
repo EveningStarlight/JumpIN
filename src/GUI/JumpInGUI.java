@@ -15,19 +15,8 @@ import java.awt.event.*;
  * @author Adam Prins, Jay McCracken
  * 		   100 879 683, 101 066 860
  * 
- * @version 2.0.0
- * 		Decoupled the Constructor
- * 		Added createMenus(JFrame frame)
- *	    Added createBoardPanel(Container contentPane);
- *	    Added createPanelSpacing(Container contentPane);
- *	    Added createInterfacePanel(Container contentPane);
- *
- *		Decoupled the ActionListener
- * 		Added ActionOnButtonTile(ButtonTile button)
- * 		Added ActionOnJButton(JButton button)
- * 		Added ActionOnJMenu(JMenuItem item)
- * 
- * 		Refactored level select so that code is not duplicated inside switch statements
+ * @version 2.1.0
+ * 		Added support for LevelBuilder
  *		
  */
 public class JumpInGUI implements ActionListener {
@@ -38,13 +27,13 @@ public class JumpInGUI implements ActionListener {
 	
 	private int puzzleNumber=1;
 	
-	/* The reset menu item */
+	/* JMenu File items */
     private JMenuItem resetItem;
     private JMenuItem quitItem;
     private JMenuItem saveItem;
     private JMenuItem levelBuilderItem;
     
-    /* items for each level */
+    /* JMenu Level items */
     private JMenuItem levelSelect;
     private JMenuItem levelSolver;
     private JMenuItem levelHint;
@@ -350,6 +339,9 @@ public class JumpInGUI implements ActionListener {
         }
         else if (item == saveItem) {
         	game.saveState();
+        }
+        else if(item==levelBuilderItem) {
+        	new LevelBuilderGUI();
         }else if (item == levelSolver) {
         	try {
 				Solver solution = new Solver(game);
@@ -358,7 +350,8 @@ public class JumpInGUI implements ActionListener {
 			} catch (Exception e1) {
 				System.out.println("Level Solver error: " +e1.getMessage());
 			}
-        }else if (item == levelHint) {
+        }//end levelSolver
+        else if (item == levelHint) {
         	try {     		
 				Solver solution = new Solver(game);
 				Move hint = solution.getNextMove();
@@ -373,7 +366,7 @@ public class JumpInGUI implements ActionListener {
 			} catch (Exception e1) {
 				System.out.println("Level Solver error: " +e1.getMessage());
 			}
-        }
+        }//end levelHint
         else if (item == levelSelect) {
         	String level="0";
         	int maxPuzzles = (Puzzles.getMaxPuzzle() - 1);
@@ -407,7 +400,7 @@ public class JumpInGUI implements ActionListener {
     			counter++;
     		}//end While
         	setBoard(levelNumber);
-        }
+        }//end levelSelect
 	}
     
     /**
