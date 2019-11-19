@@ -24,8 +24,8 @@ import org.w3c.dom.Element;
  * contains the board and is in charge of swapping pieces
  * @authors Adam Prins, Matthew Harris
  * 			100 879 683, 101 073 502
- * @version 2.4.3
- * 		Fix in getBoard() so that it no longer passes duplicates due to a Fox's tail
+ * @version 2.5.0
+ * 		Removed puzzleNumber from the game constructor
  * 
  * 
  */
@@ -56,14 +56,12 @@ public class Game {
 	 * @param puzzleNum the puzzle that is to be initialized from Puzzles
 	 * @throws Exception 
 	 */
-	public Game(Tile[][] board, int puzzleNum) throws Exception {
+	public Game(Tile[][] board) throws Exception {
 		
 		this.board=board;
 		undoStack = new Stack<Move>();
 		redoStack = new Stack<Move>();
 		buns  = new ArrayList<Bunny>();
-		
-		setBoard(Puzzles.getPuzzle(puzzleNum));
 	}
 	
 	

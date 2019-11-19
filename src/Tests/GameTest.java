@@ -46,7 +46,8 @@ public class GameTest {
                 board[x][y]= new TextTile(new Coord(x,y));
             }
         }
-        game = new Game(board,1);
+        game = new Game(board);
+        game.setBoard(Puzzles.getPuzzle(1));
         original = Puzzles.getPuzzle(2);
 		tester = Puzzles.getPuzzle(2);
     }
@@ -57,8 +58,7 @@ public class GameTest {
      */
 	@Test
 	public void testGame() throws Exception {
-		Game testGame = new Game(board,1);
-		assertNotNull(testGame);
+		assertNotNull(game);
 	}
 
 	/**

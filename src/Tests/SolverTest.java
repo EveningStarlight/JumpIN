@@ -37,7 +37,8 @@ public class SolverTest {
 				 board[x][y]= new TextTile(new Coord(x,y));
 			}
 		}
-		game = new Game(board,2);
+		game = new Game(board);
+		game.setBoard(Puzzles.getPuzzle(2));
 		solver1 = new Solver(3);
 		move1 = new Move (new Coord(3,1), new Coord(0,1));
 		move2 = new Move (new Coord(0,2), new Coord(0,0));
