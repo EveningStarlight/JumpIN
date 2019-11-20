@@ -60,10 +60,36 @@ public abstract class Piece {
 	}	
 	
 	public Element getElement(Document document) {
-		return null;
+		Element PieceElement = document.createElement("Piece");
+		Element TypeElement = document.createElement("Type");
+		Element X_HeadElement = document.createElement("X_Head");
+		Element Y_HeadElement = document.createElement("Y_Head");
+		
+		if(this instanceof Mushroom) {
+			TypeElement.appendChild(document.createTextNode("Mushroom"));
+		}else if (this instanceof Bunny) {
+			TypeElement.appendChild(document.createTextNode("Bunny"));
+		}else if (this instanceof Fox) {
+			TypeElement.appendChild(document.createTextNode("Fox"));
+			
+			Element X_TailElement = document.createElement("X_Tail");
+			Element Y_TailElement = document.createElement("Y_Tail");
+			
+			X_TailElement.appendChild(document.createTextNode(Integer.toString(((Fox) this.getPiece()).getTail().x)));
+			Y_TailElement.appendChild(document.createTextNode(Integer.toString(((Fox) this.getPiece()).getTail().y)));
+			
+			PieceElement.appendChild(X_TailElement);
+			PieceElement.appendChild(Y_TailElement);
+		}
+
+		X_HeadElement.appendChild(document.createTextNode(Integer.toString(this.getCoord().x)));
+		Y_HeadElement.appendChild(document.createTextNode(Integer.toString(this.getCoord().y)));
+		
+		PieceElement.appendChild(TypeElement);
+		PieceElement.appendChild(X_HeadElement);
+		PieceElement.appendChild(Y_HeadElement);
+		
+		return PieceElement;
 	}
 	
-	public static Piece importCoord(Element element) {
-		return null;
-	}
 };
