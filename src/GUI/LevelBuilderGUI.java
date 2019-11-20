@@ -6,14 +6,15 @@ import Model.*;
 
 import java.awt.*;
 import javax.swing.*;
+
 import java.awt.event.*;
 
 /**
  * GUI for LevelBuilder
  * holds the game layout and the other intractable elements
  *  
- * @author Adam Prins
- * 		   100 879 683
+ * @authors Adam Prins Matthew Harris
+ * 		   100 879 683  101073502
  * 
  * @version 1.1.1
  * 		Improved handling of fox placement
@@ -25,6 +26,10 @@ public class LevelBuilderGUI implements ActionListener {
     private ButtonTile selectedTile;
     private ButtonTile board[][];
     private ButtonTile pieces[][];
+    
+    /*The Buttons*/
+    private JButton save;
+    private JButton reset;
     
     /* The output fields */
     private JLabel outputStatic;
@@ -129,20 +134,20 @@ public class LevelBuilderGUI implements ActionListener {
 	    
 	    c.gridx = 1;			c.gridy = 0;
 	    c.weightx=0;			c.weighty=0;
-	    /*
-	    undo = new JButton("undo");
-	    undo.setPreferredSize(new Dimension(100,40));
-	    undo.addActionListener(this);
-	    interfacePanel.add(undo, c);
-	    */
+	    
+	    save = new JButton("save");
+	    save.setPreferredSize(new Dimension(100,40));
+	    save.addActionListener(this);
+	    interfacePanel.add(save, c);
+	    
 	    
 	    c.gridx = 2;
-	    /*
-	    redo = new JButton("redo");
-	    redo.setPreferredSize(new Dimension(100,40));
-	    redo.addActionListener(this);
-	    interfacePanel.add(redo, c);
-	    */
+	    
+	    reset = new JButton("reset");
+	    reset.setPreferredSize(new Dimension(100,40));
+	    reset.addActionListener(this);
+	    interfacePanel.add(reset, c);
+	    
 	    
 	    c.gridx = 3;
 	    c.weightx=1;
@@ -162,13 +167,6 @@ public class LevelBuilderGUI implements ActionListener {
 	    c.gridx = 0;			c.gridy = 10;
 	    c.weightx=1;			c.weighty=1;
 	    c.gridwidth=4;
-	    /*
-	    nextLevel = new JButton("Next Level");
-	    nextLevel.setPreferredSize(new Dimension(150,30));
-	    nextLevel.addActionListener(this);
-	    nextLevel.setEnabled(false);
-	    interfacePanel.add(nextLevel,c);
-	    */
 	    
 	    
 	    int maxX=2;
@@ -236,7 +234,7 @@ public class LevelBuilderGUI implements ActionListener {
         } 
         else if (o instanceof JButton) {
         	JButton button = (JButton) o;
-        	 actionOnJButton(button);
+        	actionOnJButton(button);
         }
     }
     
@@ -309,9 +307,27 @@ public class LevelBuilderGUI implements ActionListener {
      * This method handles the pressing of a JButton
      * 
      * @param button the button that was pressed
+     * @throws Exception 
      */
-	private void actionOnJButton(JButton button) {
-		
+	private void actionOnJButton(JButton button){
+		if(button == save){
+			LevelBuilder lb = new LevelBuilder(game.getBoard());
+			if(lb.save()==true){
+				output.setText("Level Saved");
+			}
+			else{
+				output.setText("Level Not Solvable");
+			}
+		}
+		if(button == reset){
+			output.setText(" ");
+			for(Tile[] tileLine:board) {
+				for(Tile tile:tileLine) {
+					tile.removePiece();
+				}
+			}
+			drawButtons();
+		}
 	}
 	
     /**
