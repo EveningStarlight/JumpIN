@@ -15,8 +15,8 @@ import java.awt.event.*;
  * @author Adam Prins
  * 		   100 879 683
  * 
- * @version 1.0.0
- * 		First instantiation of the LevelBuilder
+ * @version 1.1.0
+ * 		GUI now supports the placement and removal of Pieces
  *		
  */
 public class LevelBuilderGUI implements ActionListener {
@@ -24,6 +24,7 @@ public class LevelBuilderGUI implements ActionListener {
     /* the selected tile and the game board */
     private ButtonTile selectedTile;
     private ButtonTile board[][];
+    private ButtonTile pieces[][];
     
     /* The output fields */
     private JLabel outputStatic;
@@ -47,11 +48,11 @@ public class LevelBuilderGUI implements ActionListener {
 	    createPanelSpacing(contentPane);
 	    createInterfacePanel(contentPane);
 	    
-	    frame.setPreferredSize(new Dimension(750,600));
+	    frame.setPreferredSize(new Dimension(800,600));
 	    frame.pack(); // pack contents into our frame
-        frame.setResizable(false); // we can resize it
+        frame.setResizable(false); // we cann't resize it
         frame.setVisible(true); // make it visible
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //stops the program when the x is pressed
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //closes only the builder on X
         
         try {
 			game = new Game(board);
@@ -169,6 +170,43 @@ public class LevelBuilderGUI implements ActionListener {
 	    interfacePanel.add(nextLevel,c);
 	    */
 	    
+	    
+	    int maxX=2;
+	    int maxY=3;
+	    JPanel pieceTiles = new JPanel();
+	    pieceTiles.setLayout(new GridLayout(maxY,maxX));
+	    pieces = new ButtonTile[maxX][maxY];
+	    for (int y=0; y<maxY; y++) {	
+	    	for (int x=0; x<maxX; x++) {
+	    		pieces[x][y]=new ButtonTile(new Coord(x,y));
+	    		pieces[x][y].setPreferredSize(new Dimension(100,100));
+	    		pieces[x][y].setMargin(new Insets(0,0,0,0));
+	    		pieces[x][y].setBorder(BorderFactory.createLineBorder(Color.black));
+	    		pieces[x][y].setEnabled(true);
+	    		pieces[x][y].addActionListener(this);
+	    		pieceTiles.add(pieces[x][y]);
+	    	}
+	    }
+	    
+	    c.weightx=1;			c.weighty=1;
+	    c.gridwidth=2;			c.gridheight=3;
+	    c.gridx = 1;			c.gridy = 12;
+	    interfacePanel.add(pieceTiles,c);
+	    
+	    try {
+		    pieces[0][0].setPiece(new Mushroom(new Coord(0,0)));
+		    pieces[0][1].setPiece(new Bunny(new Coord(0,1)));
+		    Fox foxV = new Fox(new Coord(1,0),new Coord(1,1));
+		    pieces[1][0].setPiece(foxV);
+		    pieces[1][1].setPiece(foxV);
+		    Fox foxH = new Fox(new Coord(0,2),new Coord(1,2));
+		    pieces[0][2].setPiece(foxH);
+		    pieces[1][2].setPiece(foxH);
+	    } catch (Exception e) {}
+	    
+	    
+	    
+	    
 	    c.gridx = 0;			c.gridy = 20;
 	    c.weightx=1;			c.weighty=1;
 	    c.gridwidth=3;
@@ -209,18 +247,61 @@ public class LevelBuilderGUI implements ActionListener {
      */
     private void actionOnButtonTile(ButtonTile button) {
     	output.setText(" ");
-    	try {
-    		game.selectTile(button.getCoord());
-    		selectedTile = (ButtonTile) game.getSelectedTile();
-    		
-    		drawButtons();
-    		if (game.endGame()) endGame();
-    		
-    	} catch (Exception exception) {
-    		output.setText(exception.getMessage());
-    		selectedTile=null;
-    		drawButtons();
-    	}
+    	for(ButtonTile[] tileLine:board) {
+			for(ButtonTile tile:tileLine) {
+				if (button==tile) {
+					if (!button.isEmpty()) {
+						Piece piece = button.getPiece();
+						game.getTile(piece.getCoord()).removePiece();
+						if (piece instanceof Fox) game.getTile(((Fox)piece).getTail()).removePiece();
+					}
+					if (selectedTile!=null){
+						Piece piece = selectedTile.getPiece();
+						if (piece instanceof Bunny) {
+							button.setPiece(new Bunny(button.getCoord()));
+							output.setText("Bunny created at: " + button.getCoord().toString());
+						}
+						else if (piece instanceof Mushroom) {
+							button.setPiece(new Mushroom(button.getCoord()));
+							output.setText("Mushroom created at: " + button.getCoord().toString());
+						}
+						else if (piece instanceof Fox) {
+							Coord coord = button.getCoord();
+							Coord head = piece.getCoord();
+							Coord tail = ((Fox)piece).getTail();
+							
+							Coord newTail = new Coord(coord.x + tail.x - head.x,
+													  coord.y + tail.y - head.y);
+							if (game.getTile(newTail).isEmpty()) {
+								try {
+									Fox fox = new Fox(coord, newTail);
+									button.setPiece(fox);
+									game.getTile(newTail).setPiece(fox);
+									output.setText("Fox created at: " + coord.toString());
+								} catch (Exception e) {
+									System.out.println("Placing Fox Exception: " + e.getMessage());
+								}
+							}
+						}
+						
+					}
+				}
+			}
+		}
+    	for(ButtonTile[] tileLine:pieces) {
+			for(ButtonTile tile:tileLine) {
+				if (button==tile) {
+					if (selectedTile==null || tile.getPiece()!=selectedTile.getPiece()) {
+						Coord coord = tile.getPiece().getCoord();
+						selectedTile=pieces[coord.x][coord.y];
+					}
+					else {
+						selectedTile=null;
+					}
+				}
+			}
+		}
+		drawButtons();
     }
     
     /**
@@ -232,78 +313,52 @@ public class LevelBuilderGUI implements ActionListener {
 		
 	}
 	
-	
-    /**
-     * Handles the logic of setting the board
-     * 
-     * @param puzzleNumber the puzzle number that is to be set up
-     */
-    private void setBoard(int puzzleNumber) {
-    	//this.puzzleNumber=puzzleNumber;
-    	if (selectedTile!=null)  selectedTile.setSelected(false);
-		selectedTile=null;
-		
-		for(ButtonTile[] tileLine:board) {
-			for(ButtonTile tile:tileLine) {
-				tile.setEnabled(true);
-			}
-		}
-		try {
-			game.setBoard(Puzzles.getPuzzle(puzzleNumber));
-		} catch(Exception e) {
-			System.out.print(e.getMessage());
-		}
-		drawButtons();
-		output.setText("Welcome to puzzle: " + puzzleNumber);
-    }
-    
-    private void endGame() {
-    	if (selectedTile!=null)  selectedTile.setSelected(false);
-		selectedTile=null;
-		
-		for(ButtonTile[] tileLine:board) {
-			for(ButtonTile tile:tileLine) {
-				tile.setEnabled(false);
-			}
-		}
-    }
-    
     /**
      * Adding icons to the buttons
      */
-    protected void drawButtons() {
+    private void drawButtons() {
     	for(ButtonTile[] tileLine:board) {
 			for(ButtonTile tile:tileLine) {
-				Piece piece = tile.getPiece();
-				tile.setBorder(BorderFactory.createLineBorder(Color.black));
-				tile.setSelected(false);
-				if (piece == null) {
-					if (tile.getCoord().isHole()) {
-						tile.setIcon(Piece.ICON_HOLE);
-					}else tile.setIcon(Piece.ICON);
-					
-				} else if (piece instanceof Bunny) {
-					if (tile.getCoord().isHole()) {
-						tile.setIcon(Bunny.ICON_HOLE);
-					}else tile.setIcon(Bunny.ICON);
-					
-				} else if (piece instanceof Mushroom) {
-					tile.setIcon(Mushroom.ICON);
-				} else if (piece instanceof Fox) {
-					if (tile.getCoord().equals(piece.getCoord())) {
-						tile.setIcon(Fox.ICON_HEAD);
-					}else tile.setIcon(Fox.ICON_TAIL);	
-				}
+				drawTile(tile);
+			}
+		}
+    	for(ButtonTile[] tileLine:pieces) {
+			for(ButtonTile tile:tileLine) {
+				drawTile(tile);
 			}
 		}
     	if (selectedTile!=null)  {
 			selectedTile.setSelected(true);
 			selectedTile.setBorder(BorderFactory.createLineBorder(Color.white));
 			if (selectedTile.getPiece() instanceof Fox) {
-				ButtonTile tail = (ButtonTile) game.getTile(((Fox) selectedTile.getPiece()).getTail());
+				Coord tailCoord = ((Fox) selectedTile.getPiece()).getTail();
+				ButtonTile tail = pieces[tailCoord.x][tailCoord.y];
 				tail.setSelected(true);
 				tail.setBorder(BorderFactory.createLineBorder(Color.white));
 			}
+		}
+    }
+    
+    private void drawTile(ButtonTile tile) {
+    	Piece piece = tile.getPiece();
+		tile.setBorder(BorderFactory.createLineBorder(Color.black));
+		tile.setSelected(false);
+		if (piece == null) {
+			if (tile.getCoord().isHole()) {
+				tile.setIcon(Piece.ICON_HOLE);
+			}else tile.setIcon(Piece.ICON);
+			
+		} else if (piece instanceof Bunny) {
+			if (tile.getCoord().isHole()) {
+				tile.setIcon(Bunny.ICON_HOLE);
+			}else tile.setIcon(Bunny.ICON);
+			
+		} else if (piece instanceof Mushroom) {
+			tile.setIcon(Mushroom.ICON);
+		} else if (piece instanceof Fox) {
+			if (tile.getCoord().equals(piece.getCoord())) {
+				tile.setIcon(Fox.ICON_HEAD);
+			}else tile.setIcon(Fox.ICON_TAIL);	
 		}
     }
 }
