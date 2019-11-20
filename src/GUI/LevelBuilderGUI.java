@@ -15,8 +15,8 @@ import java.awt.event.*;
  * @author Adam Prins
  * 		   100 879 683
  * 
- * @version 1.1.0
- * 		GUI now supports the placement and removal of Pieces
+ * @version 1.1.1
+ * 		Improved handling of fox placement
  *		
  */
 public class LevelBuilderGUI implements ActionListener {
@@ -270,17 +270,18 @@ public class LevelBuilderGUI implements ActionListener {
 							Coord head = piece.getCoord();
 							Coord tail = ((Fox)piece).getTail();
 							
-							Coord newTail = new Coord(coord.x + tail.x - head.x,
+							try {
+								Coord newTail = new Coord(coord.x + tail.x - head.x,
 													  coord.y + tail.y - head.y);
-							if (game.getTile(newTail).isEmpty()) {
-								try {
+							
+								if (game.getTile(newTail).isEmpty()) {
 									Fox fox = new Fox(coord, newTail);
 									button.setPiece(fox);
 									game.getTile(newTail).setPiece(fox);
 									output.setText("Fox created at: " + coord.toString());
-								} catch (Exception e) {
-									System.out.println("Placing Fox Exception: " + e.getMessage());
 								}
+							} catch(Exception e) {
+								output.setText(e.getMessage());
 							}
 						}
 						
