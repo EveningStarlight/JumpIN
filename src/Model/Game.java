@@ -24,8 +24,9 @@ import org.w3c.dom.Element;
  * contains the board and is in charge of swapping pieces
  * @authors Adam Prins, Matthew Harris
  * 			100 879 683, 101 073 502
- * @version 2.5.0
- * 		Removed puzzleNumber from the game constructor
+ * @version 2.6.0
+ * 		Added stackControl() to improve undo/redo methods
+ * 		Improved method documentation
  * 
  * 
  */
@@ -172,19 +173,8 @@ public class Game {
 			throw new IllegalArgumentException("There is nothing to undo");
 		}
 		else {
-			Move move = undoStack.pop();
-			selectedTile=this.getTile(move.COORD_NEW);
-			swapPiece(move.COORD_OLD, false);
-			redoStack.add(move);
+			stackControl(undoStack, redoStack, undoStack.peek().COORD_NEW, undoStack.peek().COORD_OLD);
 		}
-	}
-	
-	/**
-	 * 
-	 * @return returns true if the undoStack is empty
-	 */
-	public boolean isUndoEmpty() {
-		return undoStack.isEmpty();
 	}
 	
 	/**
@@ -195,12 +185,30 @@ public class Game {
 			throw new IllegalArgumentException("There is nothing to redo");
 		}
 		else {
-			Move move = redoStack.pop();
-
-			selectedTile=this.getTile(move.COORD_OLD);
-			swapPiece(move.COORD_NEW, false);
-			undoStack.add(move);
+			stackControl(redoStack, undoStack, redoStack.peek().COORD_OLD, redoStack.peek().COORD_NEW);
 		}
+	}
+	
+	/**
+	 * Handles the movement moving from one stack to the other stack
+	 * 
+	 * @param origin undo/redo stack we are popping from
+	 * @param destination undo/redo stack we are popping to
+	 * @param selection coordinate of the piece
+	 * @param swap coordinate of the destination
+	 */
+	private void stackControl(Stack<Move> origin, Stack<Move> destination, Coord selection, Coord swap) {
+		selectedTile=this.getTile(selection);
+		swapPiece(swap, false);
+		destination.add(origin.pop());
+	}
+	
+	/**
+	 * 
+	 * @return returns true if the undoStack is empty
+	 */
+	public boolean isUndoEmpty() {
+		return undoStack.isEmpty();
 	}
 	
 	/**
@@ -439,7 +447,9 @@ public class Game {
 		}
 	}
 	
-	
+	/**
+	 * Saves the current state of the board as an XML file
+	 */
 	public void saveState() {
 		try {
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -448,16 +458,9 @@ public class Game {
 	        
 	        Element rootElement = document.createElement("SavedState");
 	        
-	        /*
-	        Element levelElement = document.createElement("Level");
-	        levelElement.appendChild(document.createTextNode("2"));
-	        rootElement.appendChild(levelElement);
-	        */
-	        
 	        ArrayList<Piece> pieces = getBoard();
 	        Element pieceRootElement = document.createElement("Pieces");
 	        for (Piece piece:pieces) {
-	        	//TODO Jay replace these first two lines with a call to the piece to get the Element
 	        	Element pieceElement = document.createElement("Piece");
 	        	pieceElement.appendChild(document.createTextNode(piece.getCoord().toString()));
 	        	pieceRootElement.appendChild(pieceElement);
@@ -489,9 +492,15 @@ public class Game {
                                  new StreamResult(new FileOutputStream(SAVED_STATE.getPath())));
 	        
 		} catch (Exception e) {
-			System.out.print(e.getMessage());
+			System.out.print("Save State Excetpion: " + e.getMessage());
 		}
 	}
+	
+	/**
+	 * This builds a double array of text tiles for use in other methods
+	 * 
+	 * @return an empty double array of text tiles
+	 */
 	public static Tile[][] buildBoard(){
 		Tile[][] board = new TextTile[Game.BOARD_SIZE][Game.BOARD_SIZE];
 		for (int x=0; x<Game.BOARD_SIZE; x++) {
