@@ -15,9 +15,14 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * Overall game implementation 
@@ -440,7 +445,7 @@ public class Game {
 	}
 	
 	
-	public void saveState() {
+	public void saveState(Integer puzzleNumber) {
 		try {
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 	        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -453,13 +458,13 @@ public class Game {
 	        levelElement.appendChild(document.createTextNode("2"));
 	        rootElement.appendChild(levelElement);
 	        */
-	        
+	        Element numberElement = document.createElement("PuzzleNumber");
+	        numberElement.appendChild(document.createTextNode(puzzleNumber.toString()));
+	        rootElement.appendChild(numberElement);
 	        ArrayList<Piece> pieces = getBoard();
 	        Element pieceRootElement = document.createElement("Pieces");
 	        for (Piece piece:pieces) {
-	        	//TODO Jay replace these first two lines with a call to the piece to get the Element
-	        	Element pieceElement = document.createElement("Piece");
-	        	pieceElement.appendChild(document.createTextNode(piece.getCoord().toString()));
+	        	Element pieceElement = piece.getElement(document);
 	        	pieceRootElement.appendChild(pieceElement);
 	        }
 	        rootElement.appendChild(pieceRootElement);
@@ -490,8 +495,116 @@ public class Game {
 	        
 		} catch (Exception e) {
 			System.out.print(e.getMessage());
+			e.printStackTrace();
 		}
 	}
+	
+	public int loadState(){
+		ArrayList<Piece> pieces = new ArrayList<Piece>();
+		int puzzleNumber = 0;
+		try {
+	         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+	         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+	         Document doc = dBuilder.parse(SAVED_STATE);
+	         doc.getDocumentElement().normalize();
+	         NodeList nList = doc.getElementsByTagName("PuzzleNumber");
+	         Node nNode = nList.item(0);
+	         if(nNode.getNodeType() == Node.ELEMENT_NODE){
+	        	 Element eElement = (Element) nNode;
+	        	 puzzleNumber = Integer.parseInt(nNode.getTextContent());
+	         }
+	         nList = doc.getElementsByTagName("Pieces");
+	         nNode = nList.item(0);
+	         if(nNode.getNodeType() == Node.ELEMENT_NODE){
+	        	 Element eElement = (Element) nNode;
+                 NodeList pieceNodes = eElement.getElementsByTagName("Piece");
+                 for (int i=0; i<pieceNodes.getLength(); i++ ) {
+                	 Element pElement = (Element) pieceNodes.item(i);
+                	 int x = Integer.parseInt(pElement.getElementsByTagName("X_Head").item(0).getTextContent());
+                	 int y = Integer.parseInt(pElement.getElementsByTagName("Y_Head").item(0).getTextContent());
+                	 String type = pElement.getElementsByTagName("Type").item(0).getTextContent();
+                	 Coord coord = new Coord(x,y);
+                	 
+                	 if ("Mushroom".equals(type))		pieces.add(new Mushroom(coord));
+                	 else if ("Bunny".equals(type)) 	pieces.add(new Bunny(coord));
+                	 else if ("Fox".equals(type)) {
+                		 int xTail = Integer.parseInt(pElement.getElementsByTagName("X_Tail").item(0).getTextContent());
+                		 int yTail = Integer.parseInt(pElement.getElementsByTagName("Y_Tail").item(0).getTextContent());
+                		 Coord coordTail = new Coord(xTail,yTail);
+                		 pieces.add(new Fox(coord,coordTail));
+                	 }
+                 }
+             }
+	         setBoard(pieces);
+	         nList = doc.getElementsByTagName("UndoStack");
+	         nNode = nList.item(0);
+	         if(nNode.getNodeType() == Node.ELEMENT_NODE){
+	        	 Element eElement = (Element) nNode;
+	        	 NodeList moveNodes = eElement.getElementsByTagName("Move");
+	        	 for (int i=0; i<moveNodes.getLength(); i++ ) {
+	        		 Element mElement = (Element) moveNodes.item(i);
+		        	 NodeList oldCNodes = mElement.getElementsByTagName("OldCoord");
+		        	 Node oldCNode = oldCNodes.item(0);
+		        	 Coord oldCoord = null;
+		        	 if(oldCNode.getNodeType() == Node.ELEMENT_NODE){
+		        		 Element oldCElement = (Element) oldCNode;
+		        		 int x = Integer.parseInt(oldCElement.getElementsByTagName("X").item(0).getTextContent());
+		        		 int y = Integer.parseInt(oldCElement.getElementsByTagName("Y").item(0).getTextContent());
+		        		 oldCoord = new Coord(x, y);
+		        	 }
+		        	 NodeList newCNodes = mElement.getElementsByTagName("NewCoord");
+		        	 Node newCNode = newCNodes.item(0);
+		        	 Coord newCoord = null;
+		        	 if(newCNode.getNodeType() == Node.ELEMENT_NODE){
+		        		 Element newCElement = (Element) newCNode;
+		        		 int x = Integer.parseInt(newCElement.getElementsByTagName("X").item(0).getTextContent());
+		        		 int y = Integer.parseInt(newCElement.getElementsByTagName("Y").item(0).getTextContent());
+		        		 newCoord = new Coord(x, y);
+		        	 }
+		        	 Move move = new Move(oldCoord, newCoord);
+		        	 undoStack.add(move);
+	         }
+	         }
+	         nList = doc.getElementsByTagName("RedoStack");
+	         nNode = nList.item(0);
+	         if(nNode.getNodeType() == Node.ELEMENT_NODE){
+	        	 Element eElement = (Element) nNode;
+	        	 NodeList moveNodes = eElement.getElementsByTagName("Move");
+	        	 for (int i=0; i<moveNodes.getLength(); i++ ) {
+	        		 Element mElement = (Element) moveNodes.item(i);
+		        	 NodeList oldCNodes = mElement.getElementsByTagName("OldCoord");
+		        	 Node oldCNode = oldCNodes.item(0);
+		        	 Coord oldCoord = null;
+		        	 if(oldCNode.getNodeType() == Node.ELEMENT_NODE){
+		        		 Element oldCElement = (Element) oldCNode;
+		        		 int x = Integer.parseInt(oldCElement.getElementsByTagName("X").item(0).getTextContent());
+		        		 int y = Integer.parseInt(oldCElement.getElementsByTagName("Y").item(0).getTextContent());
+		        		 oldCoord = new Coord(x, y);
+		        	 }
+		        	 NodeList newCNodes = mElement.getElementsByTagName("NewCoord");
+		        	 Node newCNode = newCNodes.item(0);
+		        	 Coord newCoord = null;
+		        	 if(newCNode.getNodeType() == Node.ELEMENT_NODE){
+		        		 Element newCElement = (Element) newCNode;
+		        		 int x = Integer.parseInt(newCElement.getElementsByTagName("X").item(0).getTextContent());
+		        		 int y = Integer.parseInt(newCElement.getElementsByTagName("Y").item(0).getTextContent());
+		        		 newCoord = new Coord(x, y);
+		        	 }
+		        	 Move move = new Move(oldCoord, newCoord);
+		        	 redoStack.add(move);
+	         }
+	         }
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return puzzleNumber;
+	}
+	
+	/**
+	 * static method that returns a board of textiles to reduce duplication of code in other classes
+	 * @return tile array of textTiles
+	 */
 	public static Tile[][] buildBoard(){
 		Tile[][] board = new TextTile[Game.BOARD_SIZE][Game.BOARD_SIZE];
 		for (int x=0; x<Game.BOARD_SIZE; x++) {

@@ -12,8 +12,8 @@ import java.awt.event.*;
  * GUI implementation 
  * holds the game layout and the other intractable elements
  *  
- * @author Adam Prins, Jay McCracken
- * 		   100 879 683, 101 066 860
+ * @authors Adam Prins, Jay McCracken, Matthew Harris
+ * 		   100 879 683, 101 066 860,   101 073 502
  * 
  * @version 2.1.0
  * 		Added support for LevelBuilder
@@ -31,12 +31,14 @@ public class JumpInGUI implements ActionListener {
     private JMenuItem resetItem;
     private JMenuItem quitItem;
     private JMenuItem saveItem;
-    private JMenuItem levelBuilderItem;
+    private JMenuItem loadItem;
+    
     
     /* JMenu Level items */
     private JMenuItem levelSelect;
     private JMenuItem levelSolver;
     private JMenuItem levelHint;
+    private JMenuItem levelBuilderItem;
     
     /* the selected tile and the game board */
     private ButtonTile selectedTile;
@@ -102,27 +104,30 @@ public class JumpInGUI implements ActionListener {
 	    menubar.add(levelMenu);
 	    
 	    //Populates the fileMenu
-	    levelBuilderItem = new JMenuItem("Level Builder");
 	    saveItem = new JMenuItem("Save");
+	    loadItem = new JMenuItem("Load");
 	    resetItem = new JMenuItem("Reset");
 	    quitItem = new JMenuItem("Quit");
-	    fileMenu.add(levelBuilderItem);
 	    fileMenu.add(saveItem);
+	    fileMenu.add(loadItem);
 	    fileMenu.add(resetItem);
 	    fileMenu.add(quitItem);
-	    levelBuilderItem.addActionListener(this);
 	    saveItem.addActionListener(this);
+	    loadItem.addActionListener(this);
 	    resetItem.addActionListener(this); 
 	    quitItem.addActionListener(this);
 	    
 	    //Populates the levelMenu
 	    levelSelect = new JMenuItem("Level Select");
+	    levelBuilderItem = new JMenuItem("Level Builder");
 	    levelSolver = new JMenuItem("Level Solution");
 	    levelHint = new JMenuItem("Hint");
 	    levelMenu.add(levelSelect);
+	    levelMenu.add(levelBuilderItem);
 	    levelMenu.add(levelSolver);
 	    levelMenu.add(levelHint);
 	    levelSelect.addActionListener(this);
+	    levelBuilderItem.addActionListener(this);
 	    levelHint.addActionListener(this);
 	    levelSolver.addActionListener(this);
 	}
@@ -338,7 +343,12 @@ public class JumpInGUI implements ActionListener {
             System.exit(0);
         }
         else if (item == saveItem) {
-        	game.saveState();
+        	game.saveState(puzzleNumber);
+        }
+        else if (item == loadItem) {
+        	puzzleNumber=game.loadState();
+        	output.setText("Puzzle: "+puzzleNumber);
+        	drawButtons();
         }
         else if(item==levelBuilderItem) {
         	new LevelBuilderGUI();

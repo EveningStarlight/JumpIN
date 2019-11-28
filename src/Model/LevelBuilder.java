@@ -21,14 +21,17 @@ import javax.xml.parsers.*;
  */
 public class LevelBuilder{
 	
-	ArrayList<Piece> pieces = new ArrayList<Piece>();
+	ArrayList<Piece> boardPieces;
+	ArrayList<Piece> solverPieces ;
 	
 	public LevelBuilder(ArrayList<Piece> pieces){
-		this.pieces=pieces;
+		this.boardPieces= new ArrayList<Piece>(pieces);
+		this.solverPieces=new ArrayList<Piece>(pieces);
+		
 	}
 	
 	private boolean isSolvable() throws Exception{
-		Solver solution = new Solver(pieces);
+		Solver solution = new Solver(solverPieces);
 		if(solution.puzzleBreadthSearch()==null){
 			return false;
 		}
@@ -48,7 +51,7 @@ public class LevelBuilder{
 		        Element numberElement = document.createElement("Number");
 		        numberElement.appendChild(document.createTextNode(Integer.toString(Puzzles.getMaxPuzzle()+1)));
 		        puzzleRootElement.appendChild(numberElement);
-		        for (Piece piece:pieces){
+		        for (Piece piece:boardPieces){
 		        	puzzleRootElement.appendChild(piece.getElement(document));
 		        }
 		        root.appendChild(puzzleRootElement);
