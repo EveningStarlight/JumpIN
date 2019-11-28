@@ -16,8 +16,8 @@ import java.awt.event.*;
  * @authors Adam Prins Matthew Harris
  * 		   100 879 683  101073502
  * 
- * @version 1.1.1
- * 		Improved handling of fox placement
+ * @version 1.2.0 
+ * 		levelBuilder now takes a game argument
  *		
  */
 public class LevelBuilderGUI implements ActionListener {
@@ -311,7 +311,7 @@ public class LevelBuilderGUI implements ActionListener {
      */
 	private void actionOnJButton(JButton button){
 		if(button == save){
-			LevelBuilder lb = new LevelBuilder(game.getBoard());
+			LevelBuilder lb = new LevelBuilder(game);
 			if(lb.save()==true){
 				output.setText("Level Saved");
 			}
