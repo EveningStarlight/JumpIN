@@ -3,14 +3,14 @@
     <PuzzleNumber>2</PuzzleNumber>
     <Pieces>
         <Piece>
+            <Type>Bunny</Type>
+            <X_Head>0</X_Head>
+            <Y_Head>0</Y_Head>
+        </Piece>
+        <Piece>
             <Type>Mushroom</Type>
             <X_Head>0</X_Head>
             <Y_Head>1</Y_Head>
-        </Piece>
-        <Piece>
-            <Type>Bunny</Type>
-            <X_Head>0</X_Head>
-            <Y_Head>2</Y_Head>
         </Piece>
         <Piece>
             <Type>Mushroom</Type>
@@ -23,8 +23,7 @@
             <Y_Head>2</Y_Head>
         </Piece>
     </Pieces>
-    <UndoStack/>
-    <RedoStack>
+    <UndoStack>
         <Move>
             <OldCoord>
                 <Coord>
@@ -39,5 +38,6 @@
                 </Coord>
             </NewCoord>
         </Move>
-    </RedoStack>
+    </UndoStack>
+    <RedoStack/>
 </SavedState>
