@@ -16,22 +16,19 @@ import javax.xml.parsers.*;
  * The level builder it writes a possible level to the puzzles xml 
  * @author Matthew Harris
  * 			101073502
- * @version 1.1.0
- * 		Fixed the input file
+ * @version 1.2.0
+ * 		LevelBuilder now takes a game as an argument
  */
 public class LevelBuilder{
 	
-	ArrayList<Piece> boardPieces;
-	ArrayList<Piece> solverPieces ;
+	Game game;
 	
-	public LevelBuilder(ArrayList<Piece> pieces){
-		this.boardPieces= new ArrayList<Piece>(pieces);
-		this.solverPieces=new ArrayList<Piece>(pieces);
-		
+	public LevelBuilder(Game game){
+		this.game = game;
 	}
 	
 	private boolean isSolvable() throws Exception{
-		Solver solution = new Solver(solverPieces);
+		Solver solution = new Solver(game.getBoard());
 		if(solution.puzzleBreadthSearch()==null){
 			return false;
 		}
@@ -43,6 +40,7 @@ public class LevelBuilder{
 	public boolean save(){
 		try{
 			if(isSolvable()){
+				ArrayList<Piece> boardPieces = game.getBoard();
 				DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			    DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			    Document document = documentBuilder.parse(Puzzles.PUZZLES);
