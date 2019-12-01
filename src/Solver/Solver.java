@@ -25,7 +25,7 @@ public class Solver {
 	private Tile[][] board;
 	
 	/**
-	 * 
+	 * constructor for the solver, creation of a new game and board
 	 * @param piecesArg the ArrayList of Pieces that will populate the board
 	 */
 	public Solver(ArrayList<Piece> piecesArg) throws Exception{
@@ -51,7 +51,9 @@ public class Solver {
 	
 	
 	/**
-	 * 
+	 * Search function, using breadth first method, stores a array list of moves
+	 * that will be the final solution. it checks all the avaliable moves and undoes the
+	 * move it it wont work.
 	 * @return
 	 * @throws Exception
 	 */
@@ -96,7 +98,7 @@ public class Solver {
 	}
 	
 	/**
-	 * 
+	 * Does all the move in the array list passed to it
 	 * @param arrayList
 	 * @throws Exception
 	 */
@@ -108,7 +110,8 @@ public class Solver {
 	}
 
 	/**
-	 * 
+	 * Finds all the avaliable moves a current piece can take, 
+	 * returns an array of moves
 	 * @return
 	 */
 	private ArrayList<Move> avaliableMoves(Move previousMove) {
@@ -125,6 +128,13 @@ public class Solver {
 		return allMoves;	
 	}
 	
+	/**
+	 * after a move is made see if that piece has any new moves that could be possiable
+	 * @param allMoves
+	 * @param previousMove
+	 * @param move
+	 * @return
+	 */
 	private ArrayList<Move> addPossibleMove(ArrayList<Move> allMoves, Move previousMove,  Move move) {
 		boolean validSwap = solverGame.canSwapPiece(move.COORD_OLD, move.COORD_NEW);
 		boolean notSameCoord = !move.COORD_OLD.equals(move.COORD_NEW);
@@ -160,7 +170,7 @@ public class Solver {
 	
 	
 	/**
-	 * 
+	 * converting the arraylist of moves to strings for printing reasons
 	 */
 	@Override
 	public String toString() {

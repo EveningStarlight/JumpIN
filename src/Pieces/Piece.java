@@ -59,6 +59,11 @@ public abstract class Piece {
 		return this.coord;
 	}	
 	
+	/**
+	 * The set up of a piece element for the xml
+	 * @param document
+	 * @return
+	 */
 	public Element getElement(Document document) {
 		Element PieceElement = document.createElement("Piece");
 		Element TypeElement = document.createElement("Type");

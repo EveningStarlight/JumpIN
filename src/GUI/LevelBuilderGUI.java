@@ -356,6 +356,10 @@ public class LevelBuilderGUI implements ActionListener {
 		}
     }
     
+    /**
+     * Setting the icon picture of the buttons on the board
+     * @param tile
+     */
     private void drawTile(ButtonTile tile) {
     	Piece piece = tile.getPiece();
 		tile.setBorder(BorderFactory.createLineBorder(Color.black));

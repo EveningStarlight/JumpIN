@@ -27,6 +27,11 @@ public class LevelBuilder{
 		this.game = game;
 	}
 	
+	/**
+	 * Checks if the game just created can be solved
+	 * @return
+	 * @throws Exception
+	 */
 	private boolean isSolvable() throws Exception{
 		Solver solution = new Solver(game.getBoard());
 		if(solution.puzzleBreadthSearch()==null){
@@ -37,6 +42,11 @@ public class LevelBuilder{
 		}
 	}
 	
+	/**
+	 * If the new game is solvable, set up the board to be in the
+	 * xml and then save the game to the xml
+	 * @return returns true is it save probably if solvable, false if otherwise
+	 */
 	public boolean save(){
 		try{
 			if(isSolvable()){
