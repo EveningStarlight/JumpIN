@@ -16,8 +16,9 @@ import java.awt.event.*;
  * @authors Adam Prins Matthew Harris
  * 		   100 879 683  101073502
  * 
- * @version 1.2.0 
- * 		levelBuilder now takes a game argument
+ * @version 1.3.0 
+ * 		levelBuilder methods are now static 
+ * 		added additional comments
  *		
  */
 public class LevelBuilderGUI implements ActionListener {
@@ -311,8 +312,7 @@ public class LevelBuilderGUI implements ActionListener {
      */
 	private void actionOnJButton(JButton button){
 		if(button == save){
-			LevelBuilder lb = new LevelBuilder(game);
-			if(lb.save()==true){
+			if(LevelBuilder.save(game)==true){
 				output.setText("Level Saved");
 			}
 			else{
@@ -331,7 +331,8 @@ public class LevelBuilderGUI implements ActionListener {
 	}
 	
     /**
-     * Adding icons to the buttons
+     * This calls draw tile on every tile on the board
+     * It also handles the white boarder colouring of selected tiles
      */
     private void drawButtons() {
     	for(ButtonTile[] tileLine:board) {
@@ -357,8 +358,10 @@ public class LevelBuilderGUI implements ActionListener {
     }
     
     /**
-     * Setting the icon picture of the buttons on the board
-     * @param tile
+     * This draws every tile with the icon corresponding to the piece that it contains.
+     * It also resets the boarder colours to the default black
+     * 
+     * @param tile the tile that is to be updated
      */
     private void drawTile(ButtonTile tile) {
     	Piece piece = tile.getPiece();

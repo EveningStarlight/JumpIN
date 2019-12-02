@@ -60,9 +60,10 @@ public abstract class Piece {
 	}	
 	
 	/**
-	 * The set up of a piece element for the xml
-	 * @param document
-	 * @return
+	 * The set up of a piece element for the XML
+	 * 
+	 * @param document the document in charge of handling the XML creation
+	 * @return the XML element that represents this given piece
 	 */
 	public Element getElement(Document document) {
 		Element PieceElement = document.createElement("Piece");

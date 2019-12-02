@@ -28,36 +28,40 @@ public class Solver {
 	 * constructor for the solver, creation of a new game and board
 	 * @param piecesArg the ArrayList of Pieces that will populate the board
 	 */
-	public Solver(ArrayList<Piece> piecesArg) throws Exception{
+	public Solver(ArrayList<Piece> piecesArg) {
 		board = Game.buildBoard();
 		pieces = new ArrayList<Piece>(piecesArg);
-		solverGame = new Game(board);
+		try {
+			solverGame = new Game(board);
+		} catch (Exception e) {
+			throw new IllegalArgumentException("The passed arrayList of Pieces is invalid");
+		}
 		solverGame.setBoard(pieces);
 	}
 	
 	/**
 	 * @param puzzleNumber The puzzle number that will populate the board
 	 */
-	public Solver(int puzzleNumber) throws Exception{
+	public Solver(int puzzleNumber) {
 		this(Puzzles.getPuzzle(puzzleNumber));
 	}
 	
 	/**
 	 * @param game The game that for which you want to solve
 	 */
-	public Solver(Game game) throws Exception{
+	public Solver(Game game) {
 		this(new ArrayList<Piece>(game.getBoard()));
 	}
 	
 	
 	/**
 	 * Search function, using breadth first method, stores a array list of moves
-	 * that will be the final solution. it checks all the avaliable moves and undoes the
+	 * that will be the final solution. it checks all the available moves and undoes the
 	 * move it it wont work.
-	 * @return
-	 * @throws Exception
+	 * 
+	 * @return returns the list of moves needed to complete the puzzle
 	 */
-	public ArrayList<Move> puzzleBreadthSearch() throws Exception{
+	public ArrayList<Move> puzzleBreadthSearch() {
 		ArrayList<ArrayList<Move>> superMoves = new ArrayList<ArrayList<Move>>();
 		superMoves.add(new ArrayList<Move>());
 		int i=0;
@@ -71,6 +75,7 @@ public class Solver {
 			
 			ArrayList<Move> moves = avaliableMoves(previousMove);
 			for (int j=0; j<moves.size(); j++){
+				@SuppressWarnings("unchecked")
 				ArrayList<Move> currMove = (ArrayList<Move>) superMoves.get(i).clone();
 				currMove.add(moves.get(j));
 				superMoves.add(currMove);
@@ -99,20 +104,25 @@ public class Solver {
 	
 	/**
 	 * Does all the move in the array list passed to it
-	 * @param arrayList
-	 * @throws Exception
+	 * 
+	 * @param arrayList the list of moves that are to be performed
 	 */
-	private void doAllMoves(ArrayList<Move> arrayList) throws Exception{
+	private void doAllMoves(ArrayList<Move> arrayList) {
 		for (Move move: arrayList) {
-			solverGame.selectTile(move.COORD_OLD);
-			solverGame.selectTile(move.COORD_NEW);
+			try {
+				solverGame.selectTile(move.COORD_OLD);
+				solverGame.selectTile(move.COORD_NEW);
+			} catch (Exception e) {
+				System.out.println("doAllMoves Exception: " + e.getMessage());
+				System.out.println("These moves should all be valid since they were previously used.");
+			}
 		}
 	}
 
 	/**
-	 * Finds all the avaliable moves a current piece can take, 
-	 * returns an array of moves
-	 * @return
+	 * Finds all the available moves a current piece can take, 
+	 * 
+	 * @return returns an array of moves
 	 */
 	private ArrayList<Move> avaliableMoves(Move previousMove) {
 		ArrayList<Move> allMoves = new ArrayList<Move>();
@@ -129,13 +139,13 @@ public class Solver {
 	}
 	
 	/**
-	 * after a move is made see if that piece has any new moves that could be possiable
-	 * @param allMoves
-	 * @param previousMove
-	 * @param move
-	 * @return
+	 * after a move is made see if that piece has any new moves that could be possible
+	 * 
+	 * @param allMoves the ArrayList of all possible moves
+	 * @param previousMove The last implemented move
+	 * @param move The new move to be considered
 	 */
-	private ArrayList<Move> addPossibleMove(ArrayList<Move> allMoves, Move previousMove,  Move move) {
+	private void addPossibleMove(ArrayList<Move> allMoves, Move previousMove,  Move move) {
 		boolean validSwap = solverGame.canSwapPiece(move.COORD_OLD, move.COORD_NEW);
 		boolean notSameCoord = !move.COORD_OLD.equals(move.COORD_NEW);
 		
@@ -150,7 +160,6 @@ public class Solver {
 			
 			if (validSwap && notSameCoord && notReverseMove && notSameFox) allMoves.add(move);
 		}
-		return allMoves;
 	}
 	
 	/**
@@ -170,7 +179,7 @@ public class Solver {
 	
 	
 	/**
-	 * converting the arraylist of moves to strings for printing reasons
+	 * converting the ArrayList of moves to strings for printing reasons
 	 */
 	@Override
 	public String toString() {

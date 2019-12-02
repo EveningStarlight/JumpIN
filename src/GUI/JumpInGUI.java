@@ -440,6 +440,9 @@ public class JumpInGUI implements ActionListener {
 		output.setText("Welcome to puzzle: " + puzzleNumber);
     }
     
+    /**
+     * If the level has been beaten, this disables all buttons other than the next level button
+     */
     private void endGame() {
     	if (selectedTile!=null)  selectedTile.setSelected(false);
 		selectedTile=null;
@@ -456,7 +459,8 @@ public class JumpInGUI implements ActionListener {
     }
     
     /**
-     * Adding icons to the buttons
+     * This draws every tile with the icon corresponding to the piece that it contains.
+     * It also handles the colouring of button boarders to convey additional information
      */
     private void drawButtons() {
     	for(ButtonTile[] tileLine:board) {
@@ -483,6 +487,7 @@ public class JumpInGUI implements ActionListener {
 				}
 			}
 		}
+    	//This colours the selected tile with a white boarder
     	if (selectedTile!=null)  {
 			selectedTile.setSelected(true);
 			selectedTile.setBorder(BorderFactory.createLineBorder(Color.white));

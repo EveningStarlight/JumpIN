@@ -16,23 +16,18 @@ import javax.xml.parsers.*;
  * The level builder it writes a possible level to the puzzles xml 
  * @author Matthew Harris
  * 			101073502
- * @version 1.2.0
- * 		LevelBuilder now takes a game as an argument
+ * @version 1.3.0
+ * 		LevelBuilder methods are now static
+ * 		constructor removed
  */
 public class LevelBuilder{
 	
-	Game game;
-	
-	public LevelBuilder(Game game){
-		this.game = game;
-	}
-	
 	/**
 	 * Checks if the game just created can be solved
-	 * @return
-	 * @throws Exception
+	 * 
+	 * @return returns true if solvable, false otherwise
 	 */
-	private boolean isSolvable() throws Exception{
+	private static boolean isSolvable(Game game) {
 		Solver solution = new Solver(game.getBoard());
 		if(solution.puzzleBreadthSearch()==null){
 			return false;
@@ -44,12 +39,13 @@ public class LevelBuilder{
 	
 	/**
 	 * If the new game is solvable, set up the board to be in the
-	 * xml and then save the game to the xml
+	 * XML and then save the game to the XML
+	 * 
 	 * @return returns true is it save probably if solvable, false if otherwise
 	 */
-	public boolean save(){
+	public static boolean save(Game game){
 		try{
-			if(isSolvable()){
+			if(isSolvable(game)){
 				ArrayList<Piece> boardPieces = game.getBoard();
 				DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			    DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
