@@ -4,13 +4,16 @@ import Model.*;
 
 import javax.swing.ImageIcon;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 /**
  *
  * @author Jay McCracken
  * 			101066860
  * 
- * @version 2.1.1
- * 		Icons imported more dynamically for better exports
+ * @version 2.2.0
+ * 		Implements an override of appendCoordElement so that it also adds the coordinates of the tail
  *
  */
 
@@ -106,4 +109,23 @@ public class Fox extends Piece{
     public Coord getTail() {
     	return this.tail;
     }
+    
+    /**
+	 * This method appends coordinate data to the document
+	 * It invokes the super for the writing of the head coordinates
+	 * then implements the tail coordinates after
+	 * 
+	 * @param document document the document in charge of handling the XML creation
+	 * @param pieceElement the element that we are appending to
+	 */
+    @Override
+	protected void appendCoordElement(Document document, Element pieceElement) {
+		super.appendCoordElement(document, pieceElement);
+		Element X_TailElement = document.createElement("X_Tail");
+		Element Y_TailElement = document.createElement("Y_Tail");
+		X_TailElement.appendChild(document.createTextNode(Integer.toString(((Fox) this.getPiece()).getTail().x)));
+		Y_TailElement.appendChild(document.createTextNode(Integer.toString(((Fox) this.getPiece()).getTail().y)));
+		pieceElement.appendChild(X_TailElement);
+		pieceElement.appendChild(Y_TailElement);
+	}
 }

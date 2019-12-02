@@ -11,8 +11,11 @@ import org.w3c.dom.Element;
  * 
  * @author Jay McCracken
  * 			101066860
- * @version 2.0.2
- *		Icons imported more dynamically for better exports
+ * @version 2.2.0
+ *		Separated getElement so that its implementation is more generic
+ *		getElement no longer uses any if statements
+ *		appendTypeElement uses getClass().getSimpleName() instead of staticlly giving strings in if statements
+ *		appendCoordElement handles the coordinates of the pieces
  */
 public abstract class Piece {
 	
@@ -66,36 +69,39 @@ public abstract class Piece {
 	 * @return the XML element that represents this given piece
 	 */
 	public Element getElement(Document document) {
-		Element PieceElement = document.createElement("Piece");
-		Element TypeElement = document.createElement("Type");
+		Element pieceElement = document.createElement("Piece");
+		
+		appendTypeElement(document, pieceElement);
+		appendCoordElement(document, pieceElement);
+		
+		return pieceElement;
+	}
+	
+	/**
+	 * This method appends the piece type to the document
+	 * 
+	 * @param document document the document in charge of handling the XML creation
+	 * @param pieceElement the element that we are appending to
+	 */
+	protected void appendTypeElement(Document document, Element pieceElement) {
+		Element typeElement = document.createElement("Type");
+		typeElement.appendChild(document.createTextNode(this.getClass().getSimpleName()));
+		pieceElement.appendChild(typeElement);
+	}
+	
+	/**
+	 * This method appends coordinate data to the document
+	 * 
+	 * @param document document the document in charge of handling the XML creation
+	 * @param pieceElement the element that we are appending to
+	 */
+	protected void appendCoordElement(Document document, Element pieceElement) {
 		Element X_HeadElement = document.createElement("X_Head");
 		Element Y_HeadElement = document.createElement("Y_Head");
-		
-		if(this instanceof Mushroom) {
-			TypeElement.appendChild(document.createTextNode("Mushroom"));
-		}else if (this instanceof Bunny) {
-			TypeElement.appendChild(document.createTextNode("Bunny"));
-		}else if (this instanceof Fox) {
-			TypeElement.appendChild(document.createTextNode("Fox"));
-			
-			Element X_TailElement = document.createElement("X_Tail");
-			Element Y_TailElement = document.createElement("Y_Tail");
-			
-			X_TailElement.appendChild(document.createTextNode(Integer.toString(((Fox) this.getPiece()).getTail().x)));
-			Y_TailElement.appendChild(document.createTextNode(Integer.toString(((Fox) this.getPiece()).getTail().y)));
-			
-			PieceElement.appendChild(X_TailElement);
-			PieceElement.appendChild(Y_TailElement);
-		}
-
 		X_HeadElement.appendChild(document.createTextNode(Integer.toString(this.getCoord().x)));
 		Y_HeadElement.appendChild(document.createTextNode(Integer.toString(this.getCoord().y)));
-		
-		PieceElement.appendChild(TypeElement);
-		PieceElement.appendChild(X_HeadElement);
-		PieceElement.appendChild(Y_HeadElement);
-		
-		return PieceElement;
+		pieceElement.appendChild(X_HeadElement);
+		pieceElement.appendChild(Y_HeadElement);
 	}
 	
 };
