@@ -1,4 +1,4 @@
-package Model;
+package Tests;
 
 import static org.junit.Assert.*;
 
@@ -9,6 +9,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import GUI.Tile;
+import Model.Coord;
+import Model.Game;
+import Model.LevelBuilder;
 import Pieces.Bunny;
 import Pieces.Mushroom;
 import Pieces.Piece;
