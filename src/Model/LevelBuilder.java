@@ -16,22 +16,18 @@ import javax.xml.parsers.*;
  * The level builder it writes a possible level to the puzzles xml 
  * @author Matthew Harris
  * 			101073502
- * @version 1.1.0
- * 		Fixed the input file
+ * @version 1.3.1
+ * 		Puzzle number was outputting 1 too high.
  */
 public class LevelBuilder{
 	
-	ArrayList<Piece> boardPieces;
-	ArrayList<Piece> solverPieces ;
-	
-	public LevelBuilder(ArrayList<Piece> pieces){
-		this.boardPieces= new ArrayList<Piece>(pieces);
-		this.solverPieces=new ArrayList<Piece>(pieces);
-		
-	}
-	
-	private boolean isSolvable() throws Exception{
-		Solver solution = new Solver(solverPieces);
+	/**
+	 * Checks if the game just created can be solved
+	 * 
+	 * @return returns true if solvable, false otherwise
+	 */
+	private static boolean isSolvable(Game game) {
+		Solver solution = new Solver(game.getBoard());
 		if(solution.puzzleBreadthSearch()==null){
 			return false;
 		}
@@ -40,16 +36,23 @@ public class LevelBuilder{
 		}
 	}
 	
-	public boolean save(){
+	/**
+	 * If the new game is solvable, set up the board to be in the
+	 * XML and then save the game to the XML
+	 * 
+	 * @return returns true is it save probably if solvable, false if otherwise
+	 */
+	public static boolean save(Game game){
 		try{
-			if(isSolvable()){
+			if(isSolvable(game)){
+				ArrayList<Piece> boardPieces = game.getBoard();
 				DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			    DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			    Document document = documentBuilder.parse(Puzzles.PUZZLES);
 			    Element root = document.getDocumentElement();
 		        Element puzzleRootElement = document.createElement("Puzzle");
 		        Element numberElement = document.createElement("Number");
-		        numberElement.appendChild(document.createTextNode(Integer.toString(Puzzles.getMaxPuzzle()+1)));
+		        numberElement.appendChild(document.createTextNode(Integer.toString(Puzzles.getMaxPuzzle())));
 		        puzzleRootElement.appendChild(numberElement);
 		        for (Piece piece:boardPieces){
 		        	puzzleRootElement.appendChild(piece.getElement(document));

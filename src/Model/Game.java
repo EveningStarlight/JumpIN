@@ -462,11 +462,6 @@ public class Game {
 	        Document document = dBuilder.newDocument();
 	        
 	        Element rootElement = document.createElement("SavedState");
-	        /*
-	        Element levelElement = document.createElement("Level");
-	        levelElement.appendChild(document.createTextNode("2"));
-	        rootElement.appendChild(levelElement);
-	        */
 	        Element numberElement = document.createElement("PuzzleNumber");
 	        numberElement.appendChild(document.createTextNode(puzzleNumber.toString()));
 	        rootElement.appendChild(numberElement);
@@ -508,6 +503,11 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * This loads a saved state from XML into the current game
+	 * 
+	 * @return returns the puzzle number so the GUI is able to select the next puzzle properly
+	 */
 	public int loadState(){
 		ArrayList<Piece> pieces = new ArrayList<Piece>();
 		int puzzleNumber = 0;
@@ -522,6 +522,7 @@ public class Game {
 	        	 Element eElement = (Element) nNode;
 	        	 puzzleNumber = Integer.parseInt(nNode.getTextContent());
 	         }
+	         //This recreates the current piece locations for the board
 	         nList = doc.getElementsByTagName("Pieces");
 	         nNode = nList.item(0);
 	         if(nNode.getNodeType() == Node.ELEMENT_NODE){
@@ -545,6 +546,7 @@ public class Game {
                  }
              }
 	         setBoard(pieces);
+	         //This sets up the undo stack to its recorded state
 	         nList = doc.getElementsByTagName("UndoStack");
 	         nNode = nList.item(0);
 	         if(nNode.getNodeType() == Node.ELEMENT_NODE){
@@ -574,6 +576,7 @@ public class Game {
 		        	 undoStack.add(move);
 	         }
 	         }
+	         //This sets up the redo stack to its recorded state
 	         nList = doc.getElementsByTagName("RedoStack");
 	         nNode = nList.item(0);
 	         if(nNode.getNodeType() == Node.ELEMENT_NODE){
