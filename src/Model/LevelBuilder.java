@@ -16,9 +16,8 @@ import javax.xml.parsers.*;
  * The level builder it writes a possible level to the puzzles xml 
  * @author Matthew Harris
  * 			101073502
- * @version 1.3.0
- * 		LevelBuilder methods are now static
- * 		constructor removed
+ * @version 1.3.1
+ * 		Puzzle number was outputting 1 too high.
  */
 public class LevelBuilder{
 	
@@ -53,7 +52,7 @@ public class LevelBuilder{
 			    Element root = document.getDocumentElement();
 		        Element puzzleRootElement = document.createElement("Puzzle");
 		        Element numberElement = document.createElement("Number");
-		        numberElement.appendChild(document.createTextNode(Integer.toString(Puzzles.getMaxPuzzle()+1)));
+		        numberElement.appendChild(document.createTextNode(Integer.toString(Puzzles.getMaxPuzzle())));
 		        puzzleRootElement.appendChild(numberElement);
 		        for (Piece piece:boardPieces){
 		        	puzzleRootElement.appendChild(piece.getElement(document));
