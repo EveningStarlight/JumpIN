@@ -138,7 +138,8 @@
 +setCoord(Coord)
 +getCoord():Coord
 +getTail():Coord
-+tailToHead(coord:Coord):Coord</string>
++tailToHead(coord:Coord):Coord
+#appendCoordElement(document:Document, pieceElement:Element)</string>
      </void>
     </void>
     <void property="name">
@@ -152,19 +153,19 @@
      <string>x</string>
      <void method="set">
       <object idref="Point2D$Double3"/>
-      <double>1290.0</double>
+      <double>1200.0</double>
      </void>
     </void>
     <void class="java.awt.geom.Point2D$Double" method="getField">
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double3"/>
-      <double>550.0</double>
+      <double>570.0</double>
      </void>
     </void>
     <void method="setLocation">
-     <double>1290.0</double>
-     <double>550.0</double>
+     <double>1200.0</double>
+     <double>570.0</double>
     </void>
    </object>
   </void>
@@ -438,7 +439,7 @@ Tile</string>
     </void>
     <void property="methods">
      <void property="text">
-      <string>+getPuzzle(puzzlesNumber:int):ArrayList&lt;Piece&gt;
+      <string>+&lt;u&gt;getPuzzle(puzzlesNumber:int):ArrayList&lt;Piece&gt;&lt;/u&gt;
 +&lt;u&gt;getMaxPuzzle(): int&lt;/u&gt;</string>
      </void>
     </void>
