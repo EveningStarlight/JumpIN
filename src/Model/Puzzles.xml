@@ -315,4 +315,17 @@
 			<Y_Tail>4</Y_Tail>
 		</Piece>
 	</Puzzle>
+<Puzzle>
+        <Number>11</Number>
+        <Piece>
+            <Type>Bunny</Type>
+            <X_Head>2</X_Head>
+            <Y_Head>0</Y_Head>
+        </Piece>
+        <Piece>
+            <Type>Mushroom</Type>
+            <X_Head>2</X_Head>
+            <Y_Head>1</Y_Head>
+        </Piece>
+    </Puzzle>
 </PredefinedPuzzles>

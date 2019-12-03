@@ -7,10 +7,18 @@ import Pieces.*;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.util.ArrayList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * Test cases for the Game class 
@@ -33,6 +41,7 @@ public class GameTest {
     private TextTile[][] board = null;
     private ArrayList<Piece> original;
 	private ArrayList<Piece> tester;
+	private static final File SAVED_STATE = new File ("src/Model/SavedState.xml");
     
    /**
     * Method that runs before all the test methods 
@@ -254,6 +263,35 @@ public class GameTest {
 		assertEquals(true, game.isRedoEmpty());
 		game.undoMove();
 		assertEquals(false, game.isRedoEmpty());
+	}
+	
+	@Test
+	public void testSaveState(){
+		game.saveState(0);
+		int puzzleNumber=56456565;
+		try{
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        Document doc = dBuilder.parse(SAVED_STATE);
+        doc.getDocumentElement().normalize();
+        NodeList nList = doc.getElementsByTagName("PuzzleNumber");
+        Node nNode = nList.item(0);
+        if(nNode.getNodeType() == Node.ELEMENT_NODE){
+       	 Element eElement = (Element) nNode;
+       	 
+       	 puzzleNumber = Integer.parseInt(nNode.getTextContent());
+        }
+		}
+		catch(Exception e){
+			fail("Created exception");
+		}
+		assertEquals(0, puzzleNumber);
+	}
+	
+	@Test
+	public void testLoadState(){
+		game.saveState(0);
+		assertEquals(0, game.loadState());
 	}
 	
 }
