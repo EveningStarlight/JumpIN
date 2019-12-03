@@ -1,43 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <SavedState>
-    <PuzzleNumber>2</PuzzleNumber>
+    <PuzzleNumber>7</PuzzleNumber>
     <Pieces>
         <Piece>
-            <Type>Bunny</Type>
-            <X_Head>0</X_Head>
-            <Y_Head>0</Y_Head>
+            <Type>Mushroom</Type>
+            <X_Head>1</X_Head>
+            <Y_Head>1</Y_Head>
         </Piece>
         <Piece>
-            <Type>Mushroom</Type>
-            <X_Head>0</X_Head>
+            <Type>Bunny</Type>
+            <X_Head>2</X_Head>
             <Y_Head>1</Y_Head>
         </Piece>
         <Piece>
             <Type>Mushroom</Type>
-            <X_Head>3</X_Head>
+            <X_Head>2</X_Head>
             <Y_Head>2</Y_Head>
         </Piece>
         <Piece>
-            <Type>Bunny</Type>
-            <X_Head>4</X_Head>
-            <Y_Head>2</Y_Head>
+            <Type>Mushroom</Type>
+            <X_Head>3</X_Head>
+            <Y_Head>0</Y_Head>
+        </Piece>
+        <Piece>
+            <Type>Fox</Type>
+            <X_Head>3</X_Head>
+            <Y_Head>1</Y_Head>
+            <X_Tail>4</X_Tail>
+            <Y_Tail>1</Y_Tail>
         </Piece>
     </Pieces>
-    <UndoStack>
-        <Move>
-            <OldCoord>
-                <Coord>
-                    <X>0</X>
-                    <Y>2</Y>
-                </Coord>
-            </OldCoord>
-            <NewCoord>
-                <Coord>
-                    <X>0</X>
-                    <Y>0</Y>
-                </Coord>
-            </NewCoord>
-        </Move>
-    </UndoStack>
+    <UndoStack/>
     <RedoStack/>
 </SavedState>
