@@ -21,11 +21,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * Test cases for the Game class 
- * 
- * @author Matthew Harris, Jay McCracken, 	Adam  Prins
+ * Test cases for the Game class
+ *
+ * @author Matthew Harris, Jay McCracken, 	Evening Starlight
  * 			101 073 502,   101 066 860		100 879 683
- * 
+ *
  * @version 1.2.0
  * 		Added 5 methods for testing piece swapping
  * 		testSelectTileDestinationFull()
@@ -42,9 +42,9 @@ public class GameTest {
     private ArrayList<Piece> original;
 	private ArrayList<Piece> tester;
 	private static final File SAVED_STATE = new File ("src/Model/SavedState.xml");
-    
+
    /**
-    * Method that runs before all the test methods 
+    * Method that runs before all the test methods
     * to set up a test game to test
     */
     @Before
@@ -82,7 +82,7 @@ public class GameTest {
 		game.selectTile(coordinate);
 		assertNull(game.getSelectedTile());
 	}
-	
+
 	/**
 	 * Method to test the selectTile method in the Game class
 	 * for the case that the tile is unselectable
@@ -93,10 +93,10 @@ public class GameTest {
 		Coord coordinate = new Coord(2,1);
 		game.selectTile(coordinate);
 	}
-	
+
 	/**
 	 * Method to test the selectTile method in the Game class
-	 * for the case that the coordinate is game of the range 
+	 * for the case that the coordinate is game of the range
 	 * of the game board
 	 * @throws Exception
 	 */
@@ -105,7 +105,7 @@ public class GameTest {
 		Coord coordinate = new Coord(5,5);
 		game.selectTile(coordinate);
 	}
-	
+
 	/**
 	 * Method to test the selectTile method in the Game class
 	 * for the case that the destination already has a piece
@@ -118,11 +118,11 @@ public class GameTest {
 		pieces.add(new Bunny(new Coord(0,1)));
 		pieces.add(new Bunny(new Coord(0,2)));
 		game.setBoard(pieces);
-		
+
 		game.selectTile(pieces.get(0).getCoord());
 		game.selectTile(pieces.get(2).getCoord());
 	}
-	
+
 	/**
 	 * Method to test the selectTile method in the Game class
 	 * for the case that a Bunny tries to go over an empty Tile
@@ -134,11 +134,11 @@ public class GameTest {
 		pieces.add(new Bunny(new Coord(0,0)));
 		pieces.add(new Bunny(new Coord(0,1)));
 		game.setBoard(pieces);
-		
+
 		game.selectTile(pieces.get(0).getCoord());
 		game.selectTile(new Coord(0,4));
 	}
-	
+
 	/**
 	 * Method to test the selectTile method in the Game class
 	 * for the case that a Fox tries to go over a full Tile
@@ -150,11 +150,11 @@ public class GameTest {
 		pieces.add(new Bunny(new Coord(1,2)));
 		pieces.add(new   Fox(new Coord(1,3),new Coord(1,4)));
 		game.setBoard(pieces);
-		
+
 		game.selectTile(pieces.get(1).getCoord());
 		game.selectTile(new Coord(1,0));
 	}
-	
+
 	/**
 	 * Method to test the selectTile method in the Game class
 	 * for the case that a Fox tail tries to go in a Full location
@@ -166,11 +166,11 @@ public class GameTest {
 		pieces.add(new Bunny(new Coord(1,4)));
 		pieces.add(new   Fox(new Coord(1,0),new Coord(1,1)));
 		game.setBoard(pieces);
-		
+
 		game.selectTile(pieces.get(1).getCoord());
 		game.selectTile(new Coord(1,3));
 	}
-	
+
 	/**
 	 * Method to test the selectTile method in the Game class
 	 * for the case that a Fox tail tries to go in a Full location
@@ -182,7 +182,7 @@ public class GameTest {
 		pieces.add(new Bunny(new Coord(3,4)));
 		pieces.add(new   Fox(new Coord(1,0),new Coord(1,1)));
 		game.setBoard(pieces);
-		
+
 		game.selectTile(pieces.get(1).getCoord());
 		game.selectTile(new Coord(1,4));
 		assertEquals(new Coord(1,3),pieces.get(1).getCoord());
@@ -197,7 +197,7 @@ public class GameTest {
 		Coord coordinate = new Coord(2,0);
 		assertEquals(board[2][0], game.getTile(coordinate));
 	}
-	
+
 	/**
 	 * Method to test the setBoard method in the Game class
 	 */
@@ -216,7 +216,7 @@ public class GameTest {
 
 	/**
 	 * Method to test the endGame method in the Game class
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Test
 	public void testEndGame() throws Exception {
@@ -226,7 +226,7 @@ public class GameTest {
 		game.selectTile(new Coord(2, 2));
 		assertTrue(game.endGame());
 	}
-	
+
 	@Test
 	public void testUndoMove() throws Exception {
 		game.setBoard(tester);
@@ -237,7 +237,7 @@ public class GameTest {
 		game.undoMove();
 		assertEquals(original.get(3).getCoord(), tester.get(3).getCoord());
 	}
-	
+
 	@Test
 	public void testIsUndoEmpty() throws Exception {
 		assertEquals(true, game.isUndoEmpty());
@@ -253,7 +253,7 @@ public class GameTest {
 		game.redoMove();
 		assertNotEquals(original.get(3).getCoord(), tester.get(3).getCoord());
 	}
-	
+
 	@Test
 	public void testIsRedoEmpty() throws Exception {
 		assertEquals(true, game.isRedoEmpty());
@@ -264,7 +264,7 @@ public class GameTest {
 		game.undoMove();
 		assertEquals(false, game.isRedoEmpty());
 	}
-	
+
 	@Test
 	public void testSaveState(){
 		game.saveState(0);
@@ -278,7 +278,7 @@ public class GameTest {
         Node nNode = nList.item(0);
         if(nNode.getNodeType() == Node.ELEMENT_NODE){
        	 Element eElement = (Element) nNode;
-       	 
+
        	 puzzleNumber = Integer.parseInt(nNode.getTextContent());
         }
 		}
@@ -287,11 +287,11 @@ public class GameTest {
 		}
 		assertEquals(0, puzzleNumber);
 	}
-	
+
 	@Test
 	public void testLoadState(){
 		game.saveState(0);
 		assertEquals(0, game.loadState());
 	}
-	
+
 }

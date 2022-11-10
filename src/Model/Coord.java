@@ -7,7 +7,7 @@ import org.w3c.dom.Element;
  * 
  * This class holds coordinates for other objects
  * 
- * @author Adam Prins
+ * @author Evening Starlight
  * 			100 879 683
  * @version 1.5.1
  *		xml for Y coord is now labled Y

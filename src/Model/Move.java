@@ -7,7 +7,7 @@ import org.w3c.dom.Element;
  * A simple class that holds a record of the game moves as a collection 
  * of the previous location and the new current location
  * 
- * @author Adam Prins
+ * @author Evening Starlight
  * 			100 879 683
  * 
  * @version 1.4.0

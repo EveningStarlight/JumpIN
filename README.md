@@ -3,7 +3,7 @@ Group Project for SYSC 3110
 
 Group Name: Exception("Taken");  
 Group Members:  
-  Adam Prins        100 879 683  
+  Evening Starlight        100 879 683  
   Jay McCracken     101 066 860  
   Matthew Harris    101 073 502  
 

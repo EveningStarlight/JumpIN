@@ -13,7 +13,7 @@ import Solver.Solver;
 
 /**
  * 
- * @author Jay McCracken	Adam Prins
+ * @author Jay McCracken	Evening Starlight
  * 			101 066 860		100 879 683
  * 
  * @version 1.0.0

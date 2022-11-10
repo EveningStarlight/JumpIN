@@ -13,7 +13,7 @@ import java.awt.event.*;
  * GUI for LevelBuilder
  * holds the game layout and the other intractable elements
  *  
- * @authors Adam Prins Matthew Harris
+ * @authors Evening Starlight Matthew Harris
  * 		   100 879 683  101073502
  * 
  * @version 1.3.0 

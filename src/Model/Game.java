@@ -27,7 +27,7 @@ import org.w3c.dom.NodeList;
 /**
  * Overall game implementation 
  * contains the board and is in charge of swapping pieces
- * @authors Adam Prins, Matthew Harris
+ * @authors Evening Starlight, Matthew Harris
  * 			100 879 683, 101 073 502
  * @version 2.6.0
  * 		Added stackControl() to improve undo/redo methods

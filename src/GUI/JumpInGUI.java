@@ -12,7 +12,7 @@ import java.awt.event.*;
  * GUI implementation 
  * holds the game layout and the other intractable elements
  *  
- * @authors Adam Prins, Jay McCracken, Matthew Harris
+ * @authors Evening Starlight, Jay McCracken, Matthew Harris
  * 		   100 879 683, 101 066 860,   101 073 502
  * 
  * @version 2.1.0

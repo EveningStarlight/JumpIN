@@ -9,7 +9,7 @@ import org.junit.Test;
 /**
  * Test cases for the Move class
  * 
- * @author Adam Prins
+ * @author Evening Starlight
  * 			100 879 683
  * @version 1.0.0
  * 		First implementation of Move tests

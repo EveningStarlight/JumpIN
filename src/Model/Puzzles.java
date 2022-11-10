@@ -13,7 +13,7 @@ import org.w3c.dom.*;
 /**
  * A collection of the puzzles that can be played through for the game JumpIN
  * 
- * @authors Adam Prins
+ * @authors Evening Starlight
  * 			100 879 683
  * @version 3.0.3
  * 		Renamed path location and made it public
